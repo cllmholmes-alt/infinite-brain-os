@@ -1,0 +1,58 @@
+{
+  "agents": [
+    {
+      "id": "command-interpreter",
+      "layer": "command",
+      "purpose": "NL->intent",
+      "allowedToolIds": [],
+      "approvalPosture": "notice_only",
+      "maxRiskLevelWithoutApproval": "low",
+      "escalationAgentId": "high-chair"
+    },
+    {
+      "id": "backend-engineer",
+      "layer": "build",
+      "purpose": "internal build tasks",
+      "allowedToolIds": ["file.read", "file.writeDraft"],
+      "approvalPosture": "scope_based_edit",
+      "maxRiskLevelWithoutApproval": "medium",
+      "escalationAgentId": "code-reviewer"
+    },
+    {
+      "id": "gtm-architect",
+      "layer": "business",
+      "purpose": "outreach drafting + gated send requests",
+      "allowedToolIds": ["file.writeDraft", "email.sendDraftedOutreach"],
+      "approvalPosture": "approval_gated",
+      "maxRiskLevelWithoutApproval": "low",
+      "escalationAgentId": "high-chair"
+    },
+    {
+      "id": "release-manager",
+      "layer": "build",
+      "purpose": "release packets; deploy requests only",
+      "allowedToolIds": ["deploy.production"],
+      "approvalPosture": "exact_phrase_required",
+      "maxRiskLevelWithoutApproval": "none",
+      "escalationAgentId": "high-chair"
+    },
+    {
+      "id": "code-reviewer",
+      "layer": "build",
+      "purpose": "verifier identity",
+      "allowedToolIds": ["file.read"],
+      "approvalPosture": "notice_only",
+      "maxRiskLevelWithoutApproval": "low",
+      "escalationAgentId": "high-chair"
+    },
+    {
+      "id": "high-chair",
+      "layer": "executive",
+      "purpose": "internal arbitration",
+      "allowedToolIds": [],
+      "approvalPosture": "draft_only",
+      "maxRiskLevelWithoutApproval": "low",
+      "escalationAgentId": "HUMAN"
+    }
+  ]
+}

@@ -1,0 +1,2533 @@
+# TALOS FROM SCRATCH — ONE-SHOT FULL-SPEC BUILD PROMPT
+## Total Agentic Lifecycle Orchestration System
+## Governed Local AI Operating System for Business, Software, Agents, Evidence, Approvals, Memory, and Automation
+
+You are the lead architect, senior full-stack engineer, product designer, security engineer, database designer, agent-runtime engineer, and QA/release engineer building TALOS from scratch.
+
+Your job is to create the complete TALOS implementation repo in one coherent build pass.
+
+Do not create a generic chatbot.
+Do not create a prompt library.
+Do not create a fake AI CEO toy.
+Do not create dashboard mockups only.
+Do not create dead documentation without enforcement.
+Do not create agents that can bypass permission, evidence, approvals, or tool contracts.
+
+Build TALOS as a real, local-first, governed, evidence-first, approval-gated, multi-agent operating system.
+
+TALOS stands for:
+
+Total Agentic Lifecycle Orchestration System
+
+TALOS must convert human intent into structured, traceable, verified work across:
+- software/product builds
+- business workstreams
+- research
+- GTM/sales/support workflows
+- repo/code tasks
+- audits
+- evidence gathering
+- approvals
+- memory/knowledge graph
+- agent execution
+- self-improvement proposals
+
+The human speaks to TALOS.
+TALOS routes the work internally.
+The user should not manually manage agents.
+
+---
+
+# 0. ABSOLUTE PRIME LAW
+
+Create this file first:
+
+TALOS_SYSTEM_LAW.md
+
+It must contain and enforce:
+
+No claim without evidence.
+No code without tests.
+No deployment without gates.
+No autonomy without permissions.
+No learning without rollback.
+No completion without traceability.
+
+Also enforce:
+
+- No fake completion.
+- No fabricated evidence.
+- No fabricated tests.
+- No hidden assumptions.
+- No secret leakage.
+- No client-settable authority.
+- No raw unrestricted tool execution.
+- No external/customer/public action without approval.
+- No protected branch merge without approval.
+- No production deployment without gates.
+- No memory promotion without source links and rollback.
+- No self-evolution acceptance without human sign-off.
+- Capability does not equal authority.
+
+If a task cannot be verified, say:
+STATUS: DRAFTED / UNVERIFIED
+Reason: [specific blocker]
+
+If a task is blocked, say:
+STATUS: BLOCKED
+Reason: [specific blocker]
+Safe next action: [specific repair]
+
+---
+
+# 1. PRODUCT DEFINITION
+
+Build TALOS as:
+
+A local-first governed AI operating system that coordinates:
+- Command Chat
+- Business Workstreams
+- Automation Activity
+- AI Memory / Obsidian Brain
+- Evidence & Audits
+- AI Workers
+- Approvals
+- System Watch
+- Settings
+- Lifecycle Orchestrator
+- Agent Workforce Registry
+- Tool Contract Layer
+- Execution Plane
+- Evidence Ledger
+- Permission Lease + Trust Engine
+- Graph IR
+- Memory/versioning/rollback
+- Live Work Observatory telemetry
+- Deep Research Engine scaffolding
+- SignalForge demand engine scaffolding
+- Standardisation/SOP suite scaffolding
+- AURIS build-reality audit scaffolding
+- Autonomous Codebase Evolution scaffolding
+- Desktop Runtime / Launch Kernel scaffolding
+
+TALOS must feel like:
+
+One execution chat layer for SaaS automation, AI workers, evidence, and approvals.
+
+Not:
+- generic SaaS dashboard
+- generic ChatGPT clone
+- military roleplay cockpit
+- fake black-box autonomy
+- template app with fake metrics
+
+---
+
+# 2. TECHNICAL STACK
+
+Use this canonical stack:
+
+Frontend:
+- Next.js App Router
+- React
+- TypeScript
+- Tailwind CSS
+- shadcn/ui only as raw primitives, not default-looking styling
+- TanStack Query
+- Zustand or equivalent lightweight client state where needed
+- React Flow or equivalent graph visualisation for AI Memory / Workstreams / Agent graphs
+- Monaco editor only where useful for prompt/schema/code inspection
+
+Backend:
+- Fastify API v2
+- TypeScript
+- Zod schema validation
+- Prisma ORM
+- PostgreSQL as authoritative database
+- Redis + BullMQ as canonical job/worker queue
+- OpenTelemetry-style trace IDs and correlation IDs
+- Server-side auth and workspace scoping
+- No client-authority trust
+
+Workers:
+- Node.js/Bun TypeScript workers
+- BullMQ queues:
+  - mission.queue
+  - agent.queue
+  - tool.queue
+  - approval.queue
+  - evidence.queue
+  - research.queue
+  - memory.queue
+  - audit.queue
+  - automation.queue
+  - telemetry.queue
+
+Storage:
+- PostgreSQL for canonical state
+- Redis for queues/cache/ephemeral locks
+- Local filesystem evidence artefact storage in /data/evidence
+- Markdown vault for Obsidian Brain in /brain/vault
+- Optional pgvector or vector extension scaffolding
+- No cloud dependency required
+
+Desktop future:
+- Include scaffolding for Tauri Desktop Runtime, but do not make it block the web/local MVP.
+
+Testing:
+- Vitest for unit/integration
+- Playwright for E2E
+- tsx scripts for seed/verification tasks
+- Test fixtures must never be imported into production routes
+- Every route with mutation must have tests
+- Every authority decision must have tests
+
+Package manager:
+- pnpm workspace
+- Turborepo
+
+---
+
+# 3. REPO STRUCTURE
+
+Create this exact monorepo structure:
+
+talos/
+├─ README.md
+├─ TALOS_SYSTEM_LAW.md
+├─ SOURCE_AUTHORITY_MAP.md
+├─ IMPLEMENTATION_DECISION_REGISTER.md
+├─ UNKNOWN_BLOCKED_REGISTER.md
+├─ package.json
+├─ pnpm-workspace.yaml
+├─ turbo.json
+├─ tsconfig.base.json
+├─ eslint.config.mjs
+├─ .prettierrc
+├─ .env.example
+├─ .gitignore
+├─ docker-compose.yml
+│
+├─ apps/
+│  ├─ command-center/
+│  ├─ api/
+│  ├─ worker/
+│  └─ desktop-runtime/
+│
+├─ packages/
+│  ├─ core/
+│  ├─ schema/
+│  ├─ db/
+│  ├─ orchestrator/
+│  ├─ agents/
+│  ├─ prompts/
+│  ├─ tools/
+│  ├─ evidence/
+│  ├─ memory/
+│  ├─ graph-ir/
+│  ├─ approvals/
+│  ├─ permission-lease-trust-engine/
+│  ├─ gates/
+│  ├─ workflows/
+│  ├─ agentmesh-protocol/
+│  ├─ deep-research-engine/
+│  ├─ signalforge/
+│  ├─ standardisation-suite/
+│  ├─ auris/
+│  ├─ autonomous-codebase-evolution/
+│  ├─ design-system/
+│  ├─ telemetry/
+│  └─ evals/
+│
+├─ services/
+│  ├─ trust-service/
+│  ├─ evidence-service/
+│  ├─ brain-service/
+│  ├─ research-service/
+│  ├─ worker-service/
+│  ├─ telemetry-service/
+│  └─ notification-service/
+│
+├─ db/
+│  ├─ prisma/
+│  ├─ migrations/
+│  ├─ seeds/
+│  └─ sql/
+│
+├─ brain/
+│  ├─ vault/
+│  ├─ indexes/
+│  └─ config/
+│
+├─ data/
+│  ├─ evidence/
+│  ├─ artefacts/
+│  ├─ exports/
+│  └─ logs/
+│
+├─ docs/
+│  ├─ architecture/
+│  ├─ agent-system/
+│  ├─ workflows/
+│  ├─ data-model/
+│  ├─ security/
+│  ├─ approvals/
+│  ├─ operator-manual/
+│  ├─ standardisation/
+│  └─ runbooks/
+│
+├─ tests/
+│  ├─ unit/
+│  ├─ integration/
+│  ├─ e2e/
+│  ├─ security/
+│  └─ fixtures/
+│
+└─ scripts/
+   ├─ seed-demo-workspace.ts
+   ├─ verify-system-law.ts
+   ├─ verify-production-no-fixtures.ts
+   ├─ validate-evidence.ts
+   ├─ run-gates.ts
+   ├─ generate-agent-pack.ts
+   ├─ build-graph-ir.ts
+   └─ export-operator-packet.ts
+
+---
+
+# 4. ROOT FILE CONTRACTS
+
+Create:
+
+README.md:
+- what TALOS is
+- local setup
+- command list
+- architecture overview
+- non-negotiable law
+- development workflow
+- verification commands
+
+SOURCE_AUTHORITY_MAP.md:
+- mark all requirements as:
+  - SOURCE_DIRECT
+  - SOURCE_INFERRED
+  - IMPLEMENTATION_SYNTHESIS
+  - UNKNOWN_BLOCKED
+  - DECISION_LOCK
+
+IMPLEMENTATION_DECISION_REGISTER.md:
+- every architecture choice not directly sourced
+- reason
+- alternatives rejected
+- rollback impact
+
+UNKNOWN_BLOCKED_REGISTER.md:
+- any missing source, missing API key, missing connector, unreadable file, unavailable model, unimplemented subsystem
+- never invent content
+
+.env.example:
+- DATABASE_URL
+- REDIS_URL
+- TALOS_LOCAL_ROOT
+- TALOS_EVIDENCE_DIR
+- TALOS_BRAIN_DIR
+- TALOS_AUTH_SECRET
+- OPENAI_API_KEY
+- ANTHROPIC_API_KEY
+- DEEPSEEK_API_KEY
+- ZAI_GLM_API_KEY
+- MODEL_ROUTING_MODE
+- TELEGRAM_BOT_TOKEN optional
+- SMTP / notification placeholders optional
+
+docker-compose.yml:
+- postgres
+- redis
+- optional pgadmin
+- optional local object store/minio only if simple
+
+---
+
+# 5. CORE DOMAIN MODEL
+
+Create Zod + TypeScript schemas in packages/schema.
+
+Required enums:
+
+LifecycleState:
+- intake
+- researching
+- specifying
+- awaiting_approval
+- designing
+- architecting
+- building
+- reviewing
+- testing
+- securing
+- documenting
+- ready_for_release
+- deploying
+- monitoring
+- iterating
+- completed
+- blocked
+- paused
+- incident
+- cancelled
+
+MissionState:
+- DRAFT
+- SCOPED
+- READY
+- RUNNING
+- AWAITING_EVIDENCE
+- AWAITING_APPROVAL
+- BLOCKED
+- FAILED
+- PARTIAL
+- COMPLETE_VERIFIED
+- CANCELLED
+- ARCHIVED
+
+RiskLevel:
+- none
+- low
+- medium
+- high
+- critical
+
+ApprovalPosture:
+- autonomous_allowed
+- notice_only
+- draft_only
+- scope_based_edit
+- approval_gated
+- exact_phrase_required
+- step_up_required
+- human_only
+- forbidden
+
+AuthorityDecision:
+- ALLOW
+- ALLOW_WITH_NOTICE
+- REQUIRE_APPROVAL
+- REQUIRE_EXACT_PHRASE
+- REQUIRE_STEP_UP_AUTH
+- REQUIRE_HUMAN_ONLY
+- DENY
+- QUARANTINE
+- REVOKE_AND_ESCALATE
+
+EvidenceStatus:
+- verified
+- observed
+- inferred
+- recommended
+- unknown
+- rejected
+- blocked
+
+AgentRunStatus:
+- queued
+- running
+- awaiting_approval
+- blocked
+- failed
+- completed
+- cancelled
+
+Required schemas:
+- workspace.schema.ts
+- user.schema.ts
+- business.schema.ts
+- product.schema.ts
+- project.schema.ts
+- mission.schema.ts
+- workstream.schema.ts
+- task.schema.ts
+- agent.schema.ts
+- agent-run.schema.ts
+- agent-message.schema.ts
+- tool.schema.ts
+- tool-run.schema.ts
+- evidence.schema.ts
+- claim.schema.ts
+- approval.schema.ts
+- permission-lease.schema.ts
+- trust.schema.ts
+- memory.schema.ts
+- graph.schema.ts
+- gate.schema.ts
+- workflow.schema.ts
+- automation-run.schema.ts
+- audit.schema.ts
+- incident.schema.ts
+- cost.schema.ts
+- telemetry.schema.ts
+- sop.schema.ts
+- learning.schema.ts
+- model-routing.schema.ts
+
+Every schema must export:
+- TypeScript type
+- Zod schema
+- create input schema
+- update input schema where relevant
+- public DTO type where relevant
+
+---
+
+# 6. DATABASE MODEL
+
+Use Prisma.
+
+Create tables for:
+
+Identity:
+- workspaces
+- users
+- roles
+- permissions
+- workspace_memberships
+
+Business/product:
+- businesses
+- products
+- projects
+- repositories
+- environments
+- services
+
+Execution:
+- missions
+- workstreams
+- tasks
+- task_dependencies
+- requirements
+- specifications
+- architecture_decisions
+
+Agents:
+- agents
+- agent_roles
+- agent_permissions
+- agent_runs
+- agent_messages
+- agent_handoffs
+- agent_evaluations
+
+Tools:
+- tool_contracts
+- tool_runs
+- tool_permissions
+- tool_errors
+
+Evidence:
+- evidence_items
+- evidence_claims
+- evidence_links
+- artefacts
+- source_refs
+- verification_records
+
+Approvals / authority:
+- approval_requests
+- approval_decisions
+- approval_challenges
+- approval_events
+- permission_leases
+- trust_checks
+- authority_decisions
+
+Memory / brain:
+- memory_items
+- memory_versions
+- memory_scopes
+- memory_refresh_rules
+- memory_promotion_requests
+- rollback_edges
+- brain_notes
+
+Graph:
+- graph_nodes
+- graph_edges
+
+Automation:
+- automation_runs
+- scheduled_automations
+- automation_failures
+
+Gates:
+- gate_checks
+- release_packets
+- deployment_records
+- rollback_plans
+
+Audits:
+- audit_logs
+- audit_findings
+- build_reality_reports
+- business_audits
+- root_cause_analyses
+
+Learning / SOP:
+- learning_signals
+- standard_operating_procedures
+- sop_versions
+- sop_candidates
+- sop_compliance_records
+- sop_exceptions
+- sop_regression_tests
+
+Incidents:
+- incidents
+- postmortems
+- incident_events
+
+Costs:
+- cost_events
+- usage_events
+- model_usage_events
+- token_usage_records
+
+Telemetry:
+- runtime_events
+- notifications
+- system_health_snapshots
+
+Rules:
+- Every mutation table needs workspaceId.
+- Every action needs actorId or actorRef.
+- Every agent/tool/model action needs correlationId.
+- Every completion needs evidence refs.
+- Every critical approval needs unexpired nonce-bound challenge.
+- Every memory mutation creates a version and rollback edge.
+- Every audit log must be append-only in normal application flow.
+
+---
+
+# 7. API DESIGN
+
+Create apps/api using Fastify.
+
+Base path:
+/api/v2
+
+Core requirements:
+- Zod request/response validation
+- auth middleware
+- workspace scope middleware
+- correlation ID middleware
+- idempotency key support for mutations
+- audit logging middleware
+- authority decision middleware for controlled actions
+- error format standardisation
+
+Standard error response:
+{
+  "ok": false,
+  "error": {
+    "code": "...",
+    "message": "...",
+    "details": {},
+    "correlationId": "..."
+  }
+}
+
+Standard success response:
+{
+  "ok": true,
+  "data": {},
+  "correlationId": "..."
+}
+
+Routes:
+
+Health:
+GET /health
+GET /runtime/health
+GET /runtime/ready
+
+Workspace:
+GET /workspaces
+POST /workspaces
+GET /workspaces/:workspaceId
+
+Businesses:
+GET /businesses
+POST /businesses
+GET /businesses/:businessId
+PATCH /businesses/:businessId
+
+Missions:
+GET /missions
+POST /missions
+GET /missions/:missionId
+PATCH /missions/:missionId
+POST /missions/:missionId/start
+POST /missions/:missionId/pause
+POST /missions/:missionId/cancel
+POST /missions/:missionId/resume
+
+Workstreams:
+GET /workstreams
+POST /workstreams
+GET /workstreams/:workstreamId
+PATCH /workstreams/:workstreamId
+POST /workstreams/:workstreamId/transition
+GET /workstreams/:workstreamId/timeline
+
+Tasks:
+GET /tasks
+POST /tasks
+GET /tasks/:taskId
+PATCH /tasks/:taskId
+POST /tasks/:taskId/claim
+POST /tasks/:taskId/complete-candidate
+POST /tasks/:taskId/block
+
+Command Chat:
+POST /command/interpret
+POST /command/message
+POST /command/create-workstream
+GET /command/sessions/:sessionId
+
+Agents:
+GET /agents
+POST /agents
+GET /agents/:agentId
+GET /agents/:agentId/runs
+POST /agents/:agentId/run
+POST /agents/:agentId/evaluate
+
+Tools:
+GET /tools/contracts
+POST /tools/contracts
+GET /tools/runs
+POST /tools/request-run
+POST /tools/runs/:toolRunId/cancel
+
+Evidence:
+GET /evidence
+POST /evidence
+GET /evidence/:evidenceId
+POST /evidence/claims
+POST /evidence/verify-claim
+GET /evidence/trace/:entityType/:entityId
+
+Approvals:
+GET /approvals
+POST /approvals/request
+GET /approvals/:approvalId
+POST /approvals/:approvalId/approve
+POST /approvals/:approvalId/reject
+POST /approvals/:approvalId/revise
+POST /approvals/:approvalId/hold
+POST /approvals/:approvalId/exact-phrase
+
+Permission Lease + Trust:
+POST /leases/request
+POST /leases/:leaseId/validate
+POST /leases/:leaseId/use
+POST /leases/:leaseId/revoke
+GET /leases
+GET /leases/:leaseId
+POST /trust/check
+GET /trust/session/:sessionId
+
+Memory / Brain:
+GET /memory
+POST /memory/propose
+POST /memory/promote
+POST /memory/:memoryId/rollback
+GET /brain/notes
+POST /brain/notes
+GET /brain/graph
+POST /brain/search
+
+Graph:
+GET /graph/nodes
+GET /graph/edges
+POST /graph/query
+GET /graph/trace/:entityType/:entityId
+
+Automation Activity:
+GET /automation/runs
+GET /automation/scheduled
+GET /automation/failures
+POST /automation/:runId/retry
+
+Audits:
+GET /audits
+POST /audits/build-reality
+POST /audits/root-cause
+GET /audits/:auditId
+
+AI Workers:
+GET /workers/live
+GET /workers/history
+GET /workers/:workerId
+
+System Watch:
+GET /system-watch/overview
+GET /system-watch/queues
+GET /system-watch/costs
+GET /system-watch/incidents
+GET /system-watch/security
+GET /system-watch/backups
+
+Settings:
+GET /settings
+PATCH /settings
+GET /settings/model-routing
+PATCH /settings/model-routing
+GET /settings/approval-rules
+PATCH /settings/approval-rules
+
+---
+
+# 8. EXECUTION COORDINATOR
+
+Create packages/orchestrator.
+
+The central class:
+
+ExecutionCoordinator
+
+It must enforce:
+
+Intent
+→ Mission
+→ Task graph
+→ Authority decision
+→ Queue
+→ Agent brain
+→ Model
+→ Tool
+→ Evidence
+→ Review
+→ Completion
+→ Memory proposal
+
+Every model/tool action must pass:
+
+Authentication
+→ Workspace scope
+→ PLTE
+→ Approval
+→ Resource Governor
+→ Duty cycle
+→ Execution
+→ Evidence verification
+
+Create modules:
+- mission-compiler.ts
+- intent-classifier.ts
+- task-graph-builder.ts
+- lifecycle-state-machine.ts
+- risk-classifier.ts
+- authority-gate.ts
+- agent-router.ts
+- tool-dispatcher.ts
+- evidence-requirement-resolver.ts
+- approval-requirement-resolver.ts
+- completion-gate.ts
+- learning-proposal-writer.ts
+- execution-coordinator.ts
+
+Never allow a tool run directly from UI to tool.
+UI must request execution through API.
+API must call coordinator.
+Coordinator must call PLTE and approvals.
+Only then can worker queue receive job.
+
+---
+
+# 9. PERMISSION LEASE + TRUST ENGINE
+
+Create packages/permission-lease-trust-engine and services/trust-service.
+
+Purpose:
+Controlled authority for TALOS.
+
+It must answer:
+- Who is asking?
+- Through which channel?
+- On which device?
+- For what mission?
+- Using which agent?
+- Using which tool/app/API?
+- Against which data?
+- At what risk level?
+- For how long?
+- With what evidence?
+- With what approval?
+- Under what revocation conditions?
+
+Implement:
+
+Core modules:
+- lease-manager.ts
+- lease-validator.ts
+- trust-score-calculator.ts
+- authority-decision-engine.ts
+- approval-integrity.ts
+- exact-phrase-generator.ts
+- exact-phrase-validator.ts
+- anomaly-detector.ts
+- revocation-engine.ts
+- lease-evidence-recorder.ts
+- audit-hash-chain.ts
+
+Lease types:
+- time-limited
+- mission-limited
+- app-limited
+- surface-limited
+- data-class
+- action-class
+- tool
+- secret
+- desktop-control
+- location
+- sensor
+- communication
+- external-agent
+- self-evolution
+
+Authority decisions:
+- ALLOW
+- ALLOW_WITH_NOTICE
+- REQUIRE_APPROVAL
+- REQUIRE_EXACT_PHRASE
+- REQUIRE_STEP_UP_AUTH
+- REQUIRE_HUMAN_ONLY
+- DENY
+- REVOKE_AND_ESCALATE
+
+Rules:
+- No permanent broad access.
+- Lease must expire.
+- Lease must define scope.
+- Lease cannot expand itself.
+- Agent cannot approve its own high-risk authority.
+- Expired/revoked/mismatched/replayed/low-trust/out-of-scope authority fails closed.
+- All grants/uses/denials/revocations are evidence logged.
+- Critical approvals use nonce-bound exact phrase.
+
+Tests required:
+- lease expiry
+- scope mismatch denial
+- old approval replay denial
+- exact phrase mismatch denial
+- high-risk action approval required
+- agent self-approval blocked
+- prompt injection cannot grant permission
+- external content cannot override system law
+
+---
+
+# 10. APPROVAL ENGINE
+
+Create packages/approvals.
+
+Approval classes:
+- not_required
+- notice_only
+- standard_approval
+- exact_phrase_approval
+- step_up_authentication
+- human_only
+- blocked
+
+Approval card fields:
+- requested action
+- business affected
+- requester/worker
+- why approval is needed
+- risk level
+- evidence available
+- what happens if approved
+- what happens if rejected
+- rollback/reversal path
+- deadline
+- approval phrase if required
+- approve/reject/revise/hold actions
+
+Approval examples that must require approval:
+- send outreach emails
+- publish landing page
+- deploy production build
+- change pricing
+- contact lead
+- use paid API budget over threshold
+- modify payment settings
+- promote memory to canonical
+- change system law
+- grant worker permission
+- delete important files
+- merge code
+- deploy
+- create/rotate secrets
+
+Critical approvals:
+- nonce-bound phrase
+- case/character-sensitive
+- time limited
+- mission binding
+- action binding
+- device/channel trust check
+- audit log
+
+No old approval reuse.
+
+---
+
+# 11. EVIDENCE LEDGER
+
+Create packages/evidence and services/evidence-service.
+
+Evidence item types:
+- source_file
+- user_instruction
+- web_source
+- tool_output
+- test_result
+- build_result
+- screenshot
+- diff
+- log
+- approval_record
+- deployment_record
+- audit_result
+- agent_output
+- verification_record
+- claim_support
+- contradiction
+
+Every evidence item:
+- id
+- workspaceId
+- missionId optional
+- taskId optional
+- sourceType
+- sourceRef
+- title
+- summary
+- contentHash
+- capturedAt
+- createdBy
+- status
+- confidence
+- sensitivity
+- filePath optional
+- url optional
+- metadata
+
+Evidence rules:
+- Every claim needs evidence or uncertainty label.
+- Every completion needs evidence refs.
+- Every test/build result creates evidence.
+- Every approval decision creates evidence.
+- Every tool run creates evidence.
+- Every audit result creates evidence.
+- Evidence can be rejected but not silently deleted.
+- Missing evidence blocks completion.
+
+Create:
+- evidence-writer.ts
+- evidence-reader.ts
+- claim-map.ts
+- evidence-validator.ts
+- trace-builder.ts
+- contradiction-detector.ts
+- evidence-redactor.ts
+
+---
+
+# 12. MEMORY / OBSIDIAN BRAIN
+
+Create packages/memory and services/brain-service.
+
+Build an Obsidian-style governed knowledge graph.
+
+Routes:
+- /memory
+- /brain
+- /brain/graph
+- /brain/ask
+- /brain/claims
+- /brain/decisions
+- /brain/sops
+- /brain/prompts
+- /brain/repo-knowledge
+
+Vault structure:
+brain/vault/
+├─ 00-inbox/
+├─ 01-maps-of-content/
+├─ 02-projects/
+├─ 03-agents/
+├─ 04-sops/
+├─ 05-prompts/
+├─ 06-decisions/
+├─ 07-claims/
+├─ 08-evidence-notes/
+├─ 09-patterns/
+├─ 10-research/
+├─ 11-repo-knowledge/
+├─ 12-user-context/
+├─ 13-reasoning-sessions/
+├─ 14-archive/
+└─ 99-system/
+
+Memory authority levels:
+0 scratch
+1 captured
+2 linked
+3 evidence-supported
+4 reviewed
+5 canonical project knowledge
+6 policy/SOP knowledge
+7 system-law adjacent
+8 hard system law
+
+Rules:
+- Agent-created memory starts low authority.
+- No silent canonical memory.
+- Memory promotion requires evidence, scope, confidence, and approval where needed.
+- Every memory update creates a version.
+- Every promoted memory has rollback edge.
+- Semantic links are suggestions, not truth.
+- Contradictions are surfaced, not hidden.
+- Stale knowledge is marked stale, not silently trusted.
+
+Create note frontmatter schema:
+id
+title
+type
+status
+authority_level
+scope
+owner
+source_refs
+evidence_refs
+claim_refs
+graph_node_id
+tags
+aliases
+confidence
+sensitivity
+created_at
+updated_at
+last_verified_at
+refresh_due_at
+supersedes
+superseded_by
+
+---
+
+# 13. GRAPH IR
+
+Create packages/graph-ir.
+
+Graph node types:
+- workspace
+- business
+- product
+- project
+- repo
+- file
+- mission
+- workstream
+- task
+- agent
+- agent_run
+- tool_run
+- evidence
+- claim
+- source
+- approval
+- decision
+- memory
+- SOP
+- prompt
+- incident
+- postmortem
+- learning_signal
+- workflow
+- gate
+- deployment
+- artefact
+
+Graph edges:
+- BELONGS_TO
+- DEPENDS_ON
+- ASSIGNED_TO
+- PRODUCES
+- REVIEWS
+- APPROVES
+- USES_TOOL
+- GENERATES_EVIDENCE
+- EVIDENCE_FOR
+- SUPPORTS
+- CONTRADICTS
+- BLOCKED_BY
+- IMPLEMENTS
+- GENERATED_BY
+- REVIEWED_BY
+- APPROVED_BY
+- PROMOTED_TO
+- DEPRECATED_BY
+- TRIGGERED_SOP
+- LEARNED_FROM
+
+Graph must support:
+- trace task → evidence → approval
+- trace claim → evidence → source
+- trace workstream → agents → tools → outputs
+- trace memory → source/evidence/decision
+- trace deployment → release packet → tests → approval
+
+---
+
+# 14. AGENT WORKFORCE
+
+Create packages/agents.
+
+Agent contract fields:
+- id
+- name
+- layer
+- purpose
+- owns
+- doesNotOwn
+- allowedToolIds
+- forbiddenToolIds
+- approvalPosture
+- maxRiskLevelWithoutApproval
+- promptPath
+- evalRubricPath
+- outputSchemaId
+- escalationAgentId
+- failureModes
+- defaultBrainProfile
+- allowedBrainProfiles
+- memoryScope
+- sopRequirements
+
+Create registry:
+packages/agents/src/registry/agent-registry.v0.json
+
+Required agents:
+Executive:
+- high-chair
+- executive-strategy
+- risk-auditor
+- governance-auditor
+
+Command:
+- command-interpreter
+- mission-compiler
+- task-graph-planner
+
+Product/build:
+- product-manager
+- chief-architect
+- code-planner
+- frontend-engineer
+- backend-engineer
+- database-engineer
+- test-automation
+- code-reviewer
+- release-manager
+
+Research/business:
+- deep-research-director
+- source-researcher
+- signalforge-analyst
+- pain-point-identifier
+- offer-architect
+- gtm-architect
+- sales-copy-agent
+- support-analyst
+
+Design:
+- design-authority
+- ux-architect
+- ui-designer
+- accessibility-auditor
+- visual-qa-auditor
+
+Ops:
+- automation-operator
+- evidence-steward
+- memory-steward
+- sop-standardisation-agent
+- incident-manager
+
+Security:
+- security-engineer
+- permission-auditor
+- secret-guardian
+
+Special:
+- auris-build-reality-auditor
+- autonomous-codebase-evolution-agent
+
+Agent rules:
+- Agents cannot use unregistered tools.
+- Agents cannot exceed permissions.
+- Agents cannot approve their own high-risk actions.
+- Agents cannot mark their own work complete without evidence gate.
+- Agents cannot expose raw hidden chain-of-thought.
+- Agents emit safe thinking summaries only:
+  - current objective
+  - plan summary
+  - known blockers
+  - next intended action
+  - confidence
+  - evidence links
+
+---
+
+# 15. AGENTMESH PROTOCOL
+
+Create packages/agentmesh-protocol.
+
+Internal agents must not chat in verbose human prose when structured messages work.
+
+Implement typed event packets:
+- TASK_ASSIGN
+- TASK_START
+- TASK_STATUS_DELTA
+- TASK_COMPLETE_CANDIDATE
+- REVIEW_REQUEST
+- REVIEW_DECISION
+- HANDOFF_CREATE
+- BLOCKER_RAISE
+- EVIDENCE_PUBLISH
+- EVIDENCE_REQUIRED
+- CLAIM_ASSERT
+- CLAIM_CHALLENGE
+- TOOL_RUN_START
+- TOOL_RUN_RESULT
+- PERMISSION_LEASE_REQUEST
+- CONSENSUS_REQUEST
+- TELEMETRY_UPDATE
+- INCIDENT_CREATE
+
+Message envelope:
+- protocol
+- version
+- messageId
+- correlationId
+- causationId
+- threadId
+- messageType
+- opcode
+- timestamp
+- sender
+- recipients
+- routing
+- priority
+- risk
+- payloadSchema
+- payload
+- refs
+- delivery
+- audit
+
+Rules:
+- Reference, do not repeat.
+- Use evidence://, task://, mission://, graph://, repo:// refs.
+- Large payloads become blob refs.
+- Internal messages cannot grant authority.
+- All state-affecting messages are replayable.
+
+---
+
+# 16. MODEL ROUTING / BRAIN HARNESS
+
+Create packages/prompts and model routing scaffolding.
+
+TALOS can support multiple models, but no model output is authority by itself.
+
+Brain run fields:
+- agentId
+- taskId
+- selectedModel
+- standardBrainForAgent
+- isNonStandardBrain
+- reason
+- riskLevel
+- outputMode
+- reviewRequired
+- evidenceRefs
+- acceptanceDecision
+
+Rules:
+- Non-standard model output is provisional.
+- Weak/cheap model output cannot enter memory, repo, public artefacts, deployments, or accepted truth without review.
+- Coding output requires technical review and tests.
+- Strategic/public/business output requires reasoning review.
+- High-risk architecture/security/permissions/memory changes require dual review and human approval.
+
+Model routing UI:
+Settings → AI Models / LLM Routing
+Execution Chat indicator:
+AI routing: Auto · [N] workers · [N] reviewers · evidence required
+
+---
+
+# 17. TOOL CONTRACT LAYER
+
+Create packages/tools.
+
+ToolContract fields:
+- id
+- name
+- category
+- allowedAgentIds
+- allowedActions
+- forbiddenActions
+- inputSchemaId
+- outputSchemaId
+- riskLevel
+- approvalPosture
+- evidenceRequired
+- auditRequired
+- timeoutMs
+- validationRules
+- rollbackStrategy
+
+Tool categories:
+- repo
+- file_system
+- terminal
+- browser
+- web_search
+- email
+- calendar
+- crm
+- database
+- deployment
+- monitoring
+- payment
+- secrets
+- approval
+- evidence
+- memory
+- graph
+- notification
+- desktop
+- app_control
+
+Implement safe tools:
+- repo.read
+- repo.search
+- file.read
+- file.writeDraft
+- file.diff
+- terminal.safeTest
+- terminal.safeBuild
+- evidence.write
+- approval.request
+- memory.query
+- memory.propose
+- graph.write
+- notification.internal
+- browser.observe
+- browser.navigateDraft
+
+Do not implement destructive shell or deployment as autonomous.
+Stub high-risk tools as approval-gated.
+
+Rules:
+- Every tool call validates input schema.
+- Every tool call writes tool_run.
+- Every tool call writes audit log.
+- Every risky tool call checks PLTE.
+- Every tool result creates evidence or blocked record.
+- Forbidden actions fail closed.
+
+---
+
+# 18. WORKFLOWS
+
+Create packages/workflows.
+
+Workflow registry:
+- idea-to-product
+- repo-to-release
+- cleanroom-agent-rebuild
+- pain-to-offer
+- offer-to-sales-page
+- gtm-campaign
+- support-to-product-feedback
+- incident-to-learning
+- research-to-decision
+- business-workstream
+- self-evolution
+- approval-gated-external-action
+
+Each workflow:
+- id
+- name
+- trigger
+- lifecycle states
+- agents
+- required tools
+- evidence requirements
+- approval rules
+- gates
+- success criteria
+- failure modes
+- recovery actions
+
+---
+
+# 19. COMMAND CHAT
+
+This is the primary human interface.
+
+Create:
+apps/command-center/src/app/execution-chat/page.tsx
+
+Also alias:
+/command
+/chat
+/
+
+Execution Chat role:
+- main command layer
+- primary human-to-TALOS interface
+- all execution begins here
+
+It must handle:
+- Build this
+- Audit this
+- Research this
+- Prepare this
+- Run this business workflow
+- Create a workstream
+- Approve / reject / revise
+- Explain blocker
+- Show evidence
+- Pause / resume / reroute
+
+UX rules:
+- Clean chat-first page.
+- No dashboard density.
+- Show workstream cards, evidence cards, approval cards, routing summaries.
+- Do not show raw agent internals.
+- Do not force user to select agents.
+- Show AI routing subtly.
+- Show approval cards centrally, not only in side rail.
+
+Command Chat backend:
+- POST /api/v2/command/message
+- stores chat message
+- classifies intent
+- creates mission/workstream if needed
+- routes through ExecutionCoordinator
+- streams status updates
+- creates evidence for user instruction
+
+Command Chat system prompt:
+- single user-facing command layer
+- transform natural language into controlled TALOS execution
+- clarify only if necessary
+- create mission
+- route agents/tools/workflows
+- attach evidence requirements
+- determine risk/approval posture
+- execute safe steps
+- hold risky actions
+- verify outputs
+- report state/blocker/next move
+
+---
+
+# 20. COMMAND CENTRE UI NAVIGATION
+
+Build the app with this left nav:
+
+Execution Chat
+
+Business Workstreams
+Automation Activity
+AI Memory
+Evidence & Audits
+AI Workers
+Approvals
+System Watch
+
+Settings
+
+Do not include Help & Docs in primary nav.
+Put internal docs under:
+Settings → System Reference
+
+Page roles:
+
+Execution Chat:
+- command TALOS
+- chat interface
+- creates workstreams/missions
+
+Business Workstreams:
+- Kanbanize-style board
+- columns:
+  - Inbox
+  - Scoping
+  - Ready
+  - In Progress
+  - Waiting on Evidence
+  - Waiting on Approval
+  - Review / Audit
+  - Done
+  - Parked
+- top tabs:
+  - All Businesses
+  - GetSubmitReady
+  - ADHD-OS
+  - TALOS
+  - Future Business / New Venture
+  - Archived
+- card fields:
+  - title
+  - business
+  - priority
+  - status
+  - progress %
+  - AI workers assigned
+  - evidence count
+  - approval state
+  - risk level
+  - due/target date
+  - last activity
+  - next action
+
+Automation Activity:
+- live and historical automation run log
+- tabs:
+  - Live Runs
+  - Scheduled
+  - Completed
+  - Failed / Blocked
+  - Recurring
+  - External Actions
+  - Cost / Token Usage
+- answer:
+  - what automated?
+  - when?
+  - which business?
+  - safe/internal or approval-gated?
+  - did it succeed?
+  - evidence?
+  - cost?
+  - retry needed?
+
+AI Memory:
+- Obsidian-style graph
+- graph + left filter rail + right inspector + evidence strip
+- tabs:
+  - Graph
+  - Inbox
+  - Ask Memory
+  - Projects
+  - Decisions
+  - Claims
+  - Evidence Links
+  - SOPs
+  - Contradictions
+  - Agent Memory
+
+Evidence & Audits:
+- proof, RCA, business audits, TALOS integrity
+- tabs:
+  - Business Audits
+  - Root-Cause Analysis
+  - Internal TALOS Audits
+  - Build-Reality Audits
+  - Evidence Ledger
+  - Risk & Compliance
+  - Performance Reviews
+  - Audit History
+
+AI Workers:
+- workforce visibility
+- tabs:
+  - All Workers
+  - TALOS
+  - GetSubmitReady
+  - ADHD-OS
+  - Idle
+  - Blocked
+  - Completed
+- card fields:
+  - worker name
+  - role
+  - business/project
+  - current task
+  - status
+  - last activity
+  - output produced
+  - evidence generated
+  - current blocker
+  - model used
+  - tool used
+  - approval dependency
+  - performance score
+
+Approvals:
+- human-only approval queue
+- tabs:
+  - All
+  - External Actions
+  - Deployments
+  - Financial
+  - Customer-Facing
+  - Permissions
+  - Legal / Compliance
+  - High Risk
+  - Expired / Rejected
+  - History
+
+System Watch:
+- TALOS health/risk/costs
+- tabs:
+  - Runtime Health
+  - Integrations
+  - Model/API Usage
+  - Queues
+  - Permissions
+  - Security
+  - Costs
+  - Incidents
+  - Backups
+
+Settings:
+- Workspace
+- Businesses
+- AI Models / LLM Routing
+- Workers / Agents
+- Permissions
+- Approval Rules
+- Tool Integrations
+- Memory Settings
+- Evidence Settings
+- Automation Rules
+- Notifications
+- Cost Budgets
+- Security
+- Data / Backups
+- Visual / Interface
+- System Reference
+- Developer / Advanced
+
+---
+
+# 21. DESIGN SYSTEM
+
+Current visual direction:
+- Atera-flat editorial minimalism
+- clean founder/operator SaaS automation cockpit
+- not blacksite/spec-ops as active app styling
+- blacksite assets are identity/history references only
+- Execution Chat dominant
+- right rails read-only
+- approvals visible and central when needed
+
+Design rules:
+- no generic SaaS slop
+- no blue/purple AI gradients
+- no floating AI blobs
+- no fake charts
+- no random glassmorphism
+- no default shadcn look
+- no decorative dashboard cards without product logic
+- no meaningless activity indicators
+- no raw chain-of-thought panels
+
+Use:
+- restrained surfaces
+- clear hierarchy
+- light/dark support
+- excellent empty states
+- loading/error/blocked states
+- accessible contrast
+- keyboard navigation
+- reduced motion
+- semantic status indicators
+- read-only telemetry labels where applicable
+
+Components:
+- AppShell
+- LeftNav
+- TopSessionStrip
+- ExecutionChat
+- ChatMessage
+- WorkstreamCard
+- ApprovalCard
+- EvidenceCard
+- RoutingSummary
+- BusinessBoard
+- WorkstreamColumn
+- AutomationRunTimeline
+- MemoryGraph
+- EvidenceLedgerTable
+- AuditWorkbench
+- WorkerRoster
+- WorkerDetailDrawer
+- ApprovalQueue
+- SystemWatchPanel
+- SettingsSection
+- StatusBadge
+- RiskBadge
+- EvidenceBadge
+- TraceLink
+- EmptyState
+- BlockedState
+- ErrorState
+
+---
+
+# 22. WORKER APP
+
+Create apps/worker.
+
+Queues:
+- mission.queue.ts
+- agent.queue.ts
+- tool.queue.ts
+- evidence.queue.ts
+- approval.queue.ts
+- memory.queue.ts
+- research.queue.ts
+- audit.queue.ts
+- telemetry.queue.ts
+
+Processors:
+- mission.processor.ts
+- agent.processor.ts
+- tool.processor.ts
+- evidence.processor.ts
+- approval.processor.ts
+- memory.processor.ts
+- research.processor.ts
+- audit.processor.ts
+- telemetry.processor.ts
+
+Worker safety:
+- Worker can execute only registered tool contracts.
+- Worker cannot bypass approval state.
+- Worker must persist run logs.
+- Worker must attach evidence refs.
+- Worker must fail closed on schema mismatch.
+- Worker must create recovery task on failure.
+
+---
+
+# 23. STANDARDISATION / SOP SUITE
+
+Create package:
+packages/standardisation-suite
+
+Purpose:
+Convert learning signals into SOPs, training, regression tests, or watchlist items.
+
+Create:
+- sop-registry.service.ts
+- sop-relevance-engine.service.ts
+- learning-signal-detector.service.ts
+- sop-candidate-generator.service.ts
+- sop-review.service.ts
+- sop-compliance.service.ts
+- sop-exception.service.ts
+- sop-training.service.ts
+- sop-regression.service.ts
+
+Runtime enforcement:
+- agent-preflight-sop-gate.ts
+- workflow-sop-gate.ts
+- task-completion-sop-gate.ts
+- sop-exception-gate.ts
+- sop-violation-detector.ts
+
+Rules:
+- Every agent run checks SOP relevance.
+- Gate-enforced SOPs block completion if unmet.
+- SOP exceptions are recorded and risk-classified.
+- Learning signals become SOP/update/training/regression/watchlist/rejection decisions.
+- No SOP silently changes system law.
+
+---
+
+# 24. DEEP RESEARCH ENGINE SCAFFOLD
+
+Create packages/deep-research-engine.
+
+Purpose:
+A governed research department, not just reports.
+
+Core flow:
+Research mission
+→ planner
+→ source strategy
+→ acquisition
+→ source normaliser
+→ evidence extractor
+→ claim builder
+→ reliability scorer
+→ contradiction engine
+→ synthesis
+→ research audit
+→ report
+→ evidence + brain + graph handoff
+
+Create scaffolding:
+- research-mission.schema.ts
+- research-source.schema.ts
+- research-evidence.schema.ts
+- research-claim.schema.ts
+- research-contradiction.schema.ts
+- source-reliability.ts
+- research-planner.ts
+- evidence-extractor.ts
+- claim-builder.ts
+- contradiction-engine.ts
+- report-generator.ts
+- research-auditor.ts
+
+Rules:
+- no fabricated citations
+- retrieved text is not automatically truth
+- every factual claim cited or marked unknown
+- contradictions surfaced
+- public/customer/financial/legal conclusions require review
+
+---
+
+# 25. SIGNALFORGE SCAFFOLD
+
+Create packages/signalforge.
+
+Purpose:
+Demand-evidence compiler and validation orchestration system.
+
+Must distinguish:
+- market pull
+- commercial validation
+
+Validation ladder:
+0 Noise Detected
+1 Interest Observed
+2 Pain Observed
+3 Active Search Observed
+4 Workaround Observed
+5 Spend Signal Observed
+6 Conversion Proof Captured
+7 Repeatable Conversion Captured
+8 Retention Proof Captured
+
+Rules:
+- Online evidence can infer up to Level 5 only.
+- Levels 6-8 require real user action/conversion evidence.
+- Do not say “validated business” unless conversion proof exists.
+- No outreach/send/public action without approval.
+
+Create:
+- demand-signal.schema.ts
+- opportunity-cluster.schema.ts
+- validation-status.schema.ts
+- source-reliability.schema.ts
+- false-positive-assessment.schema.ts
+- demand-contradiction.schema.ts
+- opportunity-score.service.ts
+- validation-experiment-generator.ts
+- crm-handoff-draft.ts
+
+---
+
+# 26. AURIS BUILD-REALITY AUDITOR
+
+Create packages/auris.
+
+Purpose:
+Compare intended TALOS architecture against actual implementation.
+
+Create:
+- source-authority-loader.ts
+- repo-map-generator.ts
+- intended-vs-actual-auditor.ts
+- missing-route-detector.ts
+- missing-schema-detector.ts
+- missing-test-detector.ts
+- fixture-leak-detector.ts
+- completion-claim-auditor.ts
+- remediation-queue-writer.ts
+
+AURIS reports:
+- implementation completeness
+- missing systems
+- fake/stubbed systems
+- production fixture imports
+- routes without backend truth
+- UI cards not backed by DB/API
+- tests missing
+- evidence missing
+- remediation tasks
+
+AURIS must run in:
+- npm script
+- CI
+- System Watch
+- Evidence & Audits page
+
+---
+
+# 27. AUTONOMOUS CODEBASE EVOLUTION SCAFFOLD
+
+Create packages/autonomous-codebase-evolution.
+
+Purpose:
+TALOS may propose, draft, implement, test, and verify its own improvements.
+TALOS may not merge, deploy, weaken gates, expand permissions, or change system law without human sign-off.
+
+Create:
+- evolution-candidate.schema.ts
+- evolution-scoring.ts
+- repo-observer.ts
+- gap-detector.ts
+- implementation-plan-generator.ts
+- branch-policy.ts
+- approval-packet-builder.ts
+- rollback-plan-builder.ts
+
+Rules:
+- Self-evolution happens on branches.
+- Main/protected branch not directly modified.
+- Changes to system law/permissions/memory/model routing/security require human approval.
+- No self-approval.
+- Tests and AURIS audit required.
+
+---
+
+# 28. DESKTOP RUNTIME SCAFFOLD
+
+Create apps/desktop-runtime as scaffolding only.
+
+Target:
+TALOS.exe future wrapper.
+
+Include docs and stub:
+- Portable root resolver
+- Runtime manifest
+- Preflight engine
+- Service supervisor
+- Resume engine
+- Autonomous scheduler
+- System tray concept
+
+Do not block core web/local MVP on this.
+
+Create:
+apps/desktop-runtime/README.md
+apps/desktop-runtime/talos.runtime.example.json
+apps/desktop-runtime/src/root-resolver.ts
+apps/desktop-runtime/src/preflight.ts
+apps/desktop-runtime/src/service-supervisor.ts
+
+---
+
+# 29. SECURITY REQUIREMENTS
+
+Implement defensive security boundaries:
+
+Secrets:
+- never log secrets
+- never expose secrets to LLM prompts unnecessarily
+- never store raw secrets in memory
+- use secret handles
+- redact all secret-like values
+
+Prompt injection:
+- external content cannot grant permission
+- emails/webpages/docs/tool output cannot override system law
+- tool result cannot expand lease scope
+- screen text cannot approve action
+
+Data classes:
+- public
+- internal
+- private
+- confidential
+- legal
+- financial
+- health-related
+- customer_data
+- credentials_secrets
+- security_sensitive
+- production_infrastructure
+
+CAPTCHA/MFA/access:
+- never bypass CAPTCHA
+- never bypass MFA
+- pause and ask human
+- use official API/OAuth/device flow only
+
+Audit:
+- every authority event recorded
+- every tool run recorded
+- every approval recorded
+- every failure recorded
+- append-only normal flow
+
+---
+
+# 30. TESTING REQUIREMENTS
+
+Root scripts:
+pnpm lint
+pnpm typecheck
+pnpm test
+pnpm test:unit
+pnpm test:integration
+pnpm test:e2e
+pnpm build
+pnpm verify:system-law
+pnpm verify:no-production-fixtures
+pnpm verify:evidence
+pnpm verify:gates
+pnpm auris:audit
+
+Tests required:
+
+Unit:
+- schemas validate
+- risk classifier
+- lifecycle state machine
+- authority decision engine
+- PLTE lease validation
+- exact phrase validation
+- approval replay denial
+- evidence validator
+- memory versioning
+- graph trace builder
+- tool contract validation
+
+Integration:
+- Command Chat → mission created
+- mission → task graph
+- task → authority decision
+- low-risk internal action allowed
+- high-risk action creates approval
+- approval decision creates evidence
+- tool run creates evidence
+- task completion blocked without evidence
+- memory promotion creates version/rollback
+- automation run logs cost/status
+- worker failure creates recovery task
+
+E2E:
+- user creates business workstream from Execution Chat
+- workstream appears in board
+- evidence appears in ledger
+- approval card appears for external send
+- approving with wrong phrase fails
+- approving with correct phrase succeeds
+- rejected approval blocks external action
+- System Watch shows queue/runtime status
+- AI Worker page shows safe summaries only
+
+Security:
+- prompt injection cannot grant permission
+- stale approval replay fails
+- external content cannot alter system law
+- unregistered tool blocked
+- agent self-permission expansion blocked
+- fixture import in production route fails verification
+- secret redaction works
+
+---
+
+# 31. SEED DATA
+
+Create safe demo seed:
+- Workspace: Local Operator Workspace
+- Businesses:
+  - TALOS
+  - GetSubmitReady
+  - ADHD-OS
+- Demo agents
+- Demo workstreams
+- Demo evidence
+- Demo approval requests
+- Demo automation runs
+- Demo memory notes
+- Demo incidents
+
+Rules:
+- Demo data only loaded by explicit seed script.
+- Production/dev app should show empty states if no seed.
+- No production route imports static fixture arrays.
+- Demo labels must be obvious.
+
+---
+
+# 32. EMPTY STATES
+
+Every main page must have strong empty states.
+
+Execution Chat:
+- “Describe the outcome. TALOS will route models, agents, tools, evidence, and approvals behind the scenes.”
+
+Business Workstreams:
+- “No active workstreams. Create one from Execution Chat.”
+
+Automation Activity:
+- “No automation runs yet. Safe internal runs will appear here.”
+
+AI Memory:
+- “No governed memory yet. Accepted notes, claims, decisions, and evidence links will appear here.”
+
+Evidence & Audits:
+- “No evidence yet. Evidence is created from research, tool runs, approvals, tests, and audits.”
+
+AI Workers:
+- “No active workers. Workers start when a mission is running.”
+
+Approvals:
+- “No pending approvals. Risky actions will stop here before execution.”
+
+System Watch:
+- “Runtime data unavailable until services are connected.”
+
+Settings:
+- “Configure workspace, models, permissions, approvals, tools, memory, and budgets.”
+
+---
+
+# 33. IMPLEMENTATION PHASES
+
+You are building from scratch. Execute in this order.
+
+G0 — Repository foundation
+- create monorepo
+- root config
+- env example
+- docker compose
+- system law
+- authority docs
+- scripts
+
+Exit:
+- pnpm install works
+- lint/typecheck baseline passes or failures documented
+- no source ambiguity undocumented
+
+G1 — Schemas + DB
+- create schema package
+- create Prisma schema
+- migrations
+- seed script
+- core types
+
+Exit:
+- DB migrates
+- seed runs
+- schemas compile
+- tests pass
+
+G2 — API foundation
+- Fastify app
+- middleware
+- auth stub
+- workspace scope
+- routes
+- audit middleware
+- error format
+
+Exit:
+- health works
+- CRUD routes work
+- API tests pass
+
+G3 — Governance spine
+- ExecutionCoordinator
+- PLTE
+- Approval Engine
+- Evidence Ledger
+- Tool Contracts
+
+Exit:
+- high-risk action creates approval
+- low-risk action allowed with evidence
+- direct tool execution impossible
+- tests pass
+
+G4 — Worker runtime
+- Redis/BullMQ
+- queues
+- processors
+- run logs
+- failure handling
+
+Exit:
+- queued mission executes
+- worker writes status/evidence
+- failed worker creates recovery task
+
+G5 — Command Chat
+- UI page
+- chat backend
+- mission creation
+- workstream card
+- approval card
+- evidence card
+- streaming/status updates if feasible
+
+Exit:
+- user message creates mission/workstream
+- approval/evidence shown
+- no agent management burden
+
+G6 — Human product pages
+- Business Workstreams
+- Automation Activity
+- AI Memory
+- Evidence & Audits
+- AI Workers
+- Approvals
+- System Watch
+- Settings
+
+Exit:
+- all pages backed by API/DB
+- no production fixtures
+- empty/loading/error states
+- navigation works
+
+G7 — Memory/Graph/Audits
+- Obsidian Brain vault
+- graph nodes/edges
+- trace viewer
+- AURIS audit
+- root cause analysis
+
+Exit:
+- claim→evidence trace works
+- task→evidence→approval trace works
+- AURIS report generated
+
+G8 — Research/business scaffolds
+- Deep Research Engine
+- SignalForge
+- GTM/business workstream scaffolds
+- draft-only external actions
+
+Exit:
+- research mission produces evidence/claims
+- SignalForge opportunity object exists
+- external actions are approval-gated
+
+G9 — SOP/learning/self-evolution
+- Standardisation Suite
+- learning signals
+- SOP candidates
+- ACE candidates
+
+Exit:
+- failure can create learning signal
+- learning signal can create SOP candidate
+- self-evolution candidate requires approval
+
+G10 — Hardening and acceptance
+- security tests
+- E2E tests
+- no fixture verification
+- build passes
+- docs updated
+- final report
+
+Exit:
+- lint/typecheck/test/build pass
+- Playwright core flow passes
+- AURIS report acceptable
+- final implementation report generated
+
+---
+
+# 34. ACCEPTANCE CRITERIA
+
+The build is acceptable only when:
+
+System law:
+- TALOS_SYSTEM_LAW.md exists
+- protected rules are enforced by tests
+
+Architecture:
+- monorepo created
+- apps/api, apps/worker, apps/command-center exist
+- core packages exist
+- DB schema exists
+- Redis/BullMQ workers exist
+
+Execution:
+- Execution Chat creates mission/workstream
+- Mission creates task graph
+- Tasks route through coordinator
+- Tool calls require contracts
+- High-risk actions create approvals
+- Low-risk actions create evidence
+- Completion without evidence is blocked
+
+Authority:
+- PLTE leases exist
+- trust checks exist
+- high-risk actions require approval
+- critical actions require exact phrase
+- stale/replayed approval fails
+- agent self-approval blocked
+
+Evidence:
+- evidence ledger works
+- claims can be linked to evidence
+- task completion references evidence
+- approval creates evidence
+- tool run creates evidence
+
+Memory:
+- memory write proposal works
+- promotion requires source/evidence
+- version and rollback edge created
+- raw memory cannot override system law
+
+UI:
+- Execution Chat primary
+- Business Workstreams board works
+- Automation Activity timeline works
+- AI Memory graph works at least with simple nodes/edges
+- Evidence & Audits ledger works
+- AI Workers roster works
+- Approvals queue works
+- System Watch shows runtime/queue/cost/security placeholders from API
+- Settings sections exist
+
+Safety:
+- no secrets logged
+- no production fixture imports
+- no raw destructive tools
+- no external send/publish/deploy without approval
+- no CAPTCHA/MFA bypass
+- no raw chain-of-thought display
+
+Testing:
+- lint passes
+- typecheck passes
+- unit tests pass
+- integration tests pass
+- core E2E passes
+- build passes
+- verification scripts pass or documented blockers are precise
+
+Docs:
+- README updated
+- architecture docs created
+- API docs created
+- runbook created
+- source authority map updated
+- decision register updated
+- unknown/blocked register updated
+
+---
+
+# 35. FINAL REPORT REQUIRED
+
+At the end, output:
+
+# TALOS Build Report
+
+## Verdict
+COMPLETE / PARTIAL / BLOCKED
+
+## What was built
+List apps, packages, services, routes, pages, DB tables, workers.
+
+## Evidence
+List:
+- commands run
+- test results
+- build result
+- migration result
+- screenshots if generated
+- AURIS report path
+- verification script result
+
+## What is working
+Concrete capabilities.
+
+## What is not working
+Honest blockers.
+
+## Security posture
+Secrets, approvals, PLTE, tool contracts.
+
+## Known gaps
+Unknowns, stubs, future integrations.
+
+## How to run
+Exact commands.
+
+## Safe next action
+One concrete next step.
+
+---
+
+# 36. COMMANDS TO RUN
+
+After building, run:
+
+pnpm install
+docker compose up -d
+pnpm db:migrate
+pnpm db:seed
+pnpm lint
+pnpm typecheck
+pnpm test
+pnpm test:integration
+pnpm build
+pnpm verify:system-law
+pnpm verify:no-production-fixtures
+pnpm verify:evidence
+pnpm auris:audit
+
+If any command fails:
+- do not hide it
+- fix if feasible
+- otherwise record exact blocker in UNKNOWN_BLOCKED_REGISTER.md and final report
+
+---
+
+# 37. NON-NEGOTIABLE FINAL RULE
+
+Do not say TALOS is complete unless:
+- tests/build pass
+- core governance flow works
+- evidence trace works
+- approval gate works
+- no production fixture imports
+- no direct ungoverned tool path
+- completion claims are evidence-backed
+
+If only a foundation is built, say:
+
+TALOS foundation built.
+Governed execution partially verified.
+Remaining blockers: [list].
+
+Be honest. TALOS is proof-first.

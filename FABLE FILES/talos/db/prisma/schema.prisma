@@ -1,0 +1,13 @@
+// Target canonical DB (BLOCKED here: no Postgres — see UNKNOWN_BLOCKED_REGISTER B1)
+generator client { provider = "prisma-client-js" }
+datasource db { provider = "postgresql"; url = env("DATABASE_URL") }
+model Workspace { id String @id @default(cuid()); name String; missions Mission[] }
+model Mission { id String @id; workspaceId String; title String; intent String; state String; correlationId String; workspace Workspace @relation(fields:[workspaceId], references:[id]); tasks Task[]; createdAt DateTime @default(now()) }
+model Task { id String @id; missionId String; title String; toolId String; actionClass String; risk String; state String; agentId String; mission Mission @relation(fields:[missionId], references:[id]) }
+model ApprovalRequest { id String @id; workspaceId String; missionId String; taskId String; requestedBy String; action String; risk String; klass String; status String; decidedBy String?; decidedAt DateTime?; deadline DateTime }
+model ApprovalChallenge { id String @id; approvalId String @unique; nonce String; phraseHash String; expiresAt DateTime; used Boolean @default(false) }
+model PermissionLease { id String @id; actor String; toolId String; missionId String; actionClass String; maxRisk String; expiresAt DateTime; revoked Boolean @default(false) }
+model EvidenceItem { id String @id; workspaceId String; missionId String?; taskId String?; sourceType String; title String; contentHash String; casPath String; status String; createdBy String; taint String; capturedAt DateTime @default(now()) }
+model AuditLog { i Int @id @default(autoincrement()); at DateTime @default(now()); type String; data Json; prevHash String; rowHash String } // append-only: revoke UPDATE/DELETE at role level
+model MemoryItem { id String @id; workspaceId String; title String; authorityLevel Int; version Int; rollbackOf String?; sourceRefs Json; evidenceRefs Json }
+model EventLog { id String @id; type String; aggregate String; payload Json; correlationId String; causationId String?; occurredAt DateTime @default(now()) }

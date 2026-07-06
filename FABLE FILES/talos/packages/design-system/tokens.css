@@ -1,0 +1,23 @@
+:root {
+  --floral-white: #faf7ef;
+  --quiet-canvas: #f2efea;
+  --weather-stone: #d8d1c5;
+  --aged-brass: #b49a63;
+  --black-olive: #32372c;
+  --carbon-black: #121314;
+  --display: Georgia, serif;
+  --body: system-ui;
+  --mono: ui-monospace, monospace;
+}
+[data-theme="dark"] {
+  --surface: var(--carbon-black);
+  --ink: var(--floral-white);
+  --muted: var(--weather-stone);
+  --accent: var(--aged-brass);
+}
+[data-theme="light"] {
+  --surface: var(--floral-white);
+  --ink: var(--carbon-black);
+  --muted: var(--black-olive);
+  --accent: var(--aged-brass);
+}
