@@ -11,9 +11,11 @@ cd "$REPO_ROOT"
 
 CLAUDE_MAP=(commands agents skills rules)
 CODEX_MAP=(commands agents skills)
+HERMES_MAP=(agents commands skills)
 
 for type in "${CLAUDE_MAP[@]}"; do mkdir -p ".claude/${type}"; done
 for type in "${CODEX_MAP[@]}"; do mkdir -p ".codex/${type}"; done
+for type in "${HERMES_MAP[@]}"; do mkdir -p ".hermes/${type}"; done
 
 SYNCED=0
 for type in "${CLAUDE_MAP[@]}"; do
@@ -44,6 +46,19 @@ for type in "${CODEX_MAP[@]}"; do
     done
   fi
 done
+for type in "${HERMES_MAP[@]}"; do
+  if [[ -d "entities/${type}" ]]; then
+    for canonical in entities/${type}/*.md; do
+      [[ -e "$canonical" ]] || continue
+      filename="$(basename "$canonical")"
+      target=".hermes/${type}/${filename}"
+      if [[ -e "$target" ]] && [[ "$(readlink -f "$canonical")" == "$(readlink -f "$target")" ]]; then
+        continue
+      fi
+      cp -f "$canonical" "$target"
+      SYNCED=$((SYNCED + 1))
+    done
+  fi
+done
 
-echo "Synced ${SYNCED} adapter file(s) from entities/ to .claude/ and .codex/."
-echo "Note: copies, not symlinks. Re-run after editing any entity in entities/."
+echo "Synced ${SYNCED} adapter file(s) from entities/ to .claude/, .codex/, and .hermes/."
