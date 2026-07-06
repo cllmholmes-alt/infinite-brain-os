@@ -30,6 +30,8 @@ Real operator doctrine (trust and maintain):
   reversibility posture, and the default approve/want/ignore item classes the surfacing policy reads.
   A skeleton as of 2026-06-03: the structure is fixed, the operator-specific values are
   operator-input-required.
+- [[operator-portfolio-and-identity]]: the operator's GitHub identity and portfolio map, confirmed
+  during the 2026-07-05 Hive-Mind integration. Points at the root system-map and repo-registry.
 - your own surface-fit and tooling decisions land in `decisions/` as you make them.
 - [[namespace-buildout-sprint-pattern]]: a real, reusable namespace buildout and migration
   methodology.

@@ -44,6 +44,52 @@ class per namespace as you register more; treat each extension as a contract cha
 - Skip `ai-architecture` for routine planning and review execution; the operator namespace
   is enough.
 
+### ADHD-OS product doctrine and component architecture
+
+- Primary: `adhd-os` (the product's founding claim, posture, and component architecture),
+  entered through its `INDEX.md` and `canon/core-doctrine.md`.
+- Secondary: `repo-registry/` entries for per-component ownership and posture, and
+  `parties/brands/adhd-os.md` for brand identity.
+- Skip the deep read for a mechanical component fix; the canon card plus the relevant
+  repo-registry entry suffice.
+
+### TALOS governance and lifecycle orchestration
+
+- Primary: `talos` (the primary law, the mediation model, and the lifecycle architecture),
+  entered through its `INDEX.md` and `canon/core-doctrine.md`.
+- Secondary: `ai-architecture` when the question is the TALOS-to-brain relationship or
+  governance-model comparison, since that is a cross-system synthesis question.
+- Skip `ai-architecture` for routine TALOS lifecycle execution; the `talos` namespace is
+  enough.
+
+### Game-modding domain doctrine and tool architecture
+
+- Primary: `game-modding` (the domain's founding claim, posture, and tool architecture),
+  entered through its `INDEX.md` and `canon/core-doctrine.md`.
+- Secondary: `repo-registry/` entries for per-component ownership and posture (Crimson Desert
+  Mod Forge, G.A.C.E, and the rest).
+- Skip the deep read for a mechanical tool fix or pipeline run; the canon card plus the
+  relevant repo-registry entry suffice.
+
+### AI media toolchain doctrine and pipeline architecture
+
+- Primary: `ai-media` (the domain's founding claim, tool posture, and pipeline architecture),
+  entered through its `INDEX.md` and `canon/core-doctrine.md`.
+- Secondary: `repo-registry/ai-media-pipeline.md` for per-component ownership and posture, and
+  `tools/comfyui.md` for the shared generation runtime.
+- Skip the deep read for a mechanical tool fix; the canon card plus the relevant
+  repo-registry entry suffice.
+
+### Revenue-intelligence pipeline doctrine, metrics, and human-gate rules
+
+- Primary: `revenue-intelligence` (the pipeline's founding claim, metric definitions, and the
+  human-in-the-loop money gate), entered through its `INDEX.md` and `canon/core-doctrine.md`.
+- Secondary: `personal-operator` when an operator goal or review cadence intersects a revenue
+  decision, and `repo-registry/hrio.md` or `repo-registry/getreviewreadycom.md` for
+  per-component posture.
+- Skip the deep read for a mechanical HRIO code fix; the canon card plus the relevant metric
+  node suffice.
+
 ### Building a new namespace
 
 - Primary: the matching profile scaffold under `knowledge/_examples/` (one of

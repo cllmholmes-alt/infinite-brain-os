@@ -20,6 +20,7 @@ REPO_MD_WALK_PRUNES=(
   "$REPO_ROOT/.obsidian"
   "$REPO_ROOT/.codex"
   "$REPO_ROOT/.claude"
+  "$REPO_ROOT/.kilo"
   "$REPO_ROOT/_system"
   "$REPO_ROOT/sessions"
   "$REPO_ROOT/swarms"
@@ -60,6 +61,7 @@ PLUMBING_PATTERNS=(
   ".claude/hooks/"
   "entities/README.md"
   "sessions/"
+  ".kilo/"
 )
 
 # REQUIRED_KEYS lists fields every node-bearing file must declare.
@@ -129,6 +131,7 @@ extract_frontmatter() {
   local frontmatter_lines=()
 
   while IFS= read -r line || [[ -n "$line" ]]; do
+    line="${line%$'\r'}"
     if [[ $first_line -eq 1 ]]; then
       first_line=0
       if [[ "$line" != "---" ]]; then
@@ -741,12 +744,14 @@ plumbing_patterns = [
     ".claude/hooks/",
     "entities/README.md",
     "sessions/",
+    ".kilo/",
 ]
 repo_walk_prunes = {
     ".git",
     ".obsidian",
     ".codex",
     ".claude",
+    ".kilo",
     "_system",
     "sessions",
     "swarms",
@@ -756,6 +761,10 @@ repo_walk_prunes = {
 graph_roots = ["knowledge", "_system", "entities", "workflows", "intake"]
 
 wikilink_re = re.compile(r"\[\[([^\[\]]+)\]\]")
+# Outbound edge target detection. Matches both unquoted (target: [[x]]) and the repo's
+# quoted convention (target: "[[x]]"), so quoted outbound edges are recognized and do not
+# read as orphan nodes. The edges: key requirement is applied separately by the caller.
+_EDGE_TARGET_RE = re.compile(r'target:\s*"?\[\[')
 relative_link_re = re.compile(r"\]\(([^)]+)\)")
 quoted_slug_re = re.compile(r'"([a-z0-9][a-z0-9-]*)"')
 
@@ -970,7 +979,7 @@ for path, rel in walk_repo_markdown():
                 "rel": rel,
                 "base": base_name,
                 "id": node_id,
-                "has_outbound": fm_has_key(fm_lines, "edges:") and "target: [[" in fm_text,
+                "has_outbound": fm_has_key(fm_lines, "edges:") and bool(_EDGE_TARGET_RE.search(fm_text)),
             }
         )
 
@@ -1085,7 +1094,11 @@ else
         node_id="$(trim_wrapping_quotes "$node_id")"
         KNOWLEDGE_NODE_FILES+=("$file")
         KNOWLEDGE_NODE_IDS["$file"]="$node_id"
-        if frontmatter_has_key "$frontmatter" "edges:" && [[ "$frontmatter" == *"target: [["* ]]; then
+        # Store the regex in a variable so backslash escapes are preserved across all bash
+        # versions (inline =~ RHS strips escapes on bash < 4.4). Matches both unquoted
+        # (target: [[x]]) and quoted (target: "[[x]]") edge targets.
+        _edge_target_re='target:[[:space:]]*\"?\[\['
+        if frontmatter_has_key "$frontmatter" "edges:" && [[ "$frontmatter" =~ $_edge_target_re ]]; then
           KNOWLEDGE_HAS_OUTBOUND["$file"]=1
         else
           KNOWLEDGE_HAS_OUTBOUND["$file"]=0
@@ -1318,6 +1331,7 @@ if command -v rg >/dev/null 2>&1; then
       -g '!docs/**' \
       -g '!.codex/**' \
       -g '!.claude/**' \
+      -g '!.kilo/**' \
       -g '!**/archive/**' \
       -g '!**/support/**' \
       -g '!**/waves/surfaces/dist/**'; then

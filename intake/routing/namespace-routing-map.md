@@ -16,6 +16,11 @@ namespace in `_system/namespaces/INDEX.md`, add a row here so routed intake can 
 |---|---|---|---|
 | AI architecture takes, agent design, retrieval, harness and memory portability, knowledge-graph structure | `ai-architecture` | system stewardship | The doctrine home. Architecture posts, papers, and talks land here. |
 | Operator goals, priorities, review cadence, self-management, sandbox experiments, uncategorized personal items | `personal-operator` | personal | The catch-all. Use when nothing else fits and the item is personal. |
+| ADHD-OS product design, executive-function behavior, cognitive-load reduction, component architecture, Figma design decisions | `adhd-os` | personal | The product brand home. Content from the ADHD-OS repos and the Figma source routes here. |
+| TALOS governance, the primary law, lifecycle orchestration, multi-agent control, agent authority and gates | `talos` | personal | The agentic-system home. Content from the TALOS repo and `TALOS_SYSTEM_LAW.md` routes here. |
+| Game modding, asset creation tooling, deterministic validation, event-sourced pipelines, capability-pack architecture, mod forge workflows, G.A.C.E phase gates | `game-modding` | personal | The game-modding domain home. Content from Crimson Desert Mod Forge, G.A.C.E, Full Game Modding, and NemoClaw routes here. |
+| AI media processing, video upscaling, frame interpolation, ComfyUI pipelines, local-first model deployment, offline AI generation | `ai-media` | personal | The local-first AI media home. Content from the AI Video Upscaler, FluidFrames, and GLM Ultra Coder repos routes here. |
+| Revenue pipeline, lead scoring, Reddit signal-to-revenue, qualification metrics, human-gate governance, HRIO data flow, App Review rescue | `revenue-intelligence` | personal | The data-system home for the HRIO pipeline and GetSubmitReady. Revenue content and metrics route here. |
 
 The scaffolds under `knowledge/_examples/` never receive routed intake. They are unregistered
 shape references for building new namespaces, not destinations.

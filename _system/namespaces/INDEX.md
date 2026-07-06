@@ -29,6 +29,11 @@ Profile slugs: `doctrine`, `tool-contract`, `data-system`, `design-system`,
 |-----------|-------|---------|---------------|-----------|-----------|---------|
 | `ai-architecture` | `operations` | `doctrine` | `full` | `review-on-edit` | `research` | The shipped reference doctrine: stable AI-system architecture covering planning, execution routing, namespace and profile design, retrieval doctrine, swarm governance, runtime boundaries, and agent-authority limits. |
 | `personal-operator` | `personal` | `doctrine` | `thin` | `review-on-edit` | `scratch` | The operator's own namespace: goals, priorities, review cadence, operating notes, and methodology not yet promoted into a more specific namespace. Graduated from the reduced base to the serious base, so it carries the full base folder set. |
+| `adhd-os` | `personal` | `doctrine` | `thin` | `review-on-edit` | `scratch` | The ADHD-OS product brand namespace: a calm, cognitive-load-reducing behavioral executive-function operating system. Doctrine, design intent, and component architecture for the master reference database, alternative design, two websites, and the Expo dashboard app. Canon drafted at operator-pending. |
+| `talos` | `personal` | `doctrine` | `thin` | `review-on-edit` | `scratch` | The TALOS namespace: the Total Agentic Lifecycle Orchestration System, a governed, evidence-first, approval-gated, multi-agent operating system for building and scaling AI businesses. Doctrine, the primary law, lifecycle architecture, and the open TALOS-to-brain relationship. Canon drafted at operator-pending. |
+| `game-modding` | `personal` | `doctrine` | `thin` | `review-on-edit` | `scratch` | The game-modding domain cluster namespace: local-first, deterministic-validation-before-export, event-sourced mod and asset tooling for Crimson Desert Mod Forge, G.A.C.E, Full Game Modding, and NemoClaw. Canon drafted at operator-pending. |
+| `ai-media` | `personal` | `doctrine` | `thin` | `review-on-edit` | `scratch` | The ai-media domain namespace: local-first AI media processing and generation spanning frame-level video upscaling, frame interpolation, and image generation via ComfyUI. Canon drafted at operator-pending. |
+| `revenue-intelligence` | `personal` | `data-system` | `thin` | `review-on-edit` | `scratch` | The revenue-intelligence namespace: converts pain signals into approved, tracked revenue opportunities with a mandatory human gate before money actions. Data-system profile with two metric primitives (lead-score, qualification-rate). Canon drafted at operator-pending. |
 | `emberline-studio` | `examples` | `doctrine` | `thin` | `review-on-edit` | `research` | The worked example domain namespace: a fictional candle studio whose canon, concept, and linked entities show the whole pattern in miniature. Reduced base; study it, then replace it with your own first namespace. |
 
 Canon posture: `full` carries `canon/README.md`, `canon/core-doctrine.md`, and
@@ -52,11 +57,19 @@ namespace; do not route work into them.
 ### personal
 
 - `personal-operator`: operator goals, priorities, review cadence, and sandbox knowledge
-- `emberline-studio`: the worked example namespace for the starter walkthrough
+- `adhd-os`: the ADHD-OS product brand doctrine and component architecture
+- `talos`: the TALOS agentic lifecycle orchestration doctrine
+- `game-modding`: the local-first, deterministic-validation game modding and asset toolchain doctrine
+- `ai-media`: the local-first AI media toolchain doctrine
+- `revenue-intelligence`: the HRIO revenue pipeline and revenue-intelligence domain doctrine
 
 ### operations
 
 - `ai-architecture`: the AI-system architecture and governance doctrine this OS runs on
+
+### examples
+
+- `emberline-studio`: the worked example namespace for the starter walkthrough
 
 ## Registering a new namespace
 

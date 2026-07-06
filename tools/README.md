@@ -62,6 +62,13 @@ names or provider-specific secret-manager prose into every caller.
 
 - [[example-mcp]]
 - [[order-ledger]] (the worked example: the candle studio's order-export API)
+- [[comfyui]] (node-based Stable Diffusion image and video generation runtime)
+- [[scaleway-ios-cloud-mac]] (remote macOS build and sign host for iOS apps)
+- [[lm-studio]] (local LLM runner)
+- [[unity]] (the Unity game engine install)
+- [[sunshine]] (the LizardByte game-stream host)
+- [[github-cli]] (the gh command-line tool)
+- [[bluestacks]] (the BlueStacks Android emulator)
 
 Add one node per tool from `_template.md` and list it here.
 

@@ -10,6 +10,9 @@ Thumbs.db
 # Node (if any local tooling is installed)
 node_modules/
 
+# Kilo tooling state (plans, agent manager, worktrees): local, never repo canon
+.kilo/
+
 # Tool runtime planes: operational substrate, never git canon
 tools/*/runtime/
 outputs/_runtime/

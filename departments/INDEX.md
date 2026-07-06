@@ -21,6 +21,9 @@ department's membership; each department's INDEX.md owns its own assembly.
 |---|---|---|
 | `_template/` | template | the assembly pattern every department starts from |
 | `example-studio-ops/` | example | the worked example department for the starter walkthrough |
+| `devops-platform/` | live | shared cross-cutting platform department: CI/CD, secrets, deployment, environments, observability |
+| `adhd-os-product/` | live | ships the ADHD-OS brand: master reference database, alternative design, websites, and the Expo dashboard app |
+| `agentic-systems/` | live | governs approval-gated, evidence-first agent execution under the TALOS brand; consumes devops-platform and rtk |
 
 Assemble a new department by copying `_template/`, following `departments/README.md` and
 `_system/department-assembly-rules.md`, then add a row here with disposition `live`.
