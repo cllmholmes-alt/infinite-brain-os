@@ -16,7 +16,8 @@ created: "2026-07-05"
 ## Repo Identity
 
 - Repo slug: `getreviewreadycom`
-- Canonical path: `C:\Projects\Getreviewreadycom`
+- Canonical path (Mac): `/Users/callumholmes/Documents/Getreviewreadycom`
+- VPS clone: `/root/documents/get-submit-ready` on `hermes-vps`
 - Remote: `github.com/cllmholmes-alt/Getreviewreadycom.git`
 - Version control: git
 - Stack: Vite web app (`package.json`, `index.html`, `vite.config.ts`)

@@ -16,10 +16,12 @@ created: "2026-07-05"
 ## Repo Identity
 
 - Repo slug: `adhdos-user-dashboard`
-- Canonical path: `C:\Projects\Figmaadhdosuserdashboard`
-- Remote: `git@github.com:cllmholmes-alt/Figmaadhdosuserdashboard.git`
-- Version control: git
-- Stack: Expo (`app.json`), React Native, Vite, Python, Docker
+- Canonical path (Mac): `/Users/callumholmes/Documents/Figmaadhdosuserdashboard`
+- VPS clone: `/root/documents/adhd-os` on `hermes-vps`
+- Remote: `git@github.com:cllmholmes-alt/The-ADHD-OS-Ecosystem.git`
+- Version control: git — **main-only branch policy** (pre-push hook enforced)
+- Stack: React 19 + Vite web app (Meridian design system), Expo/React Native
+  iOS app in `adhd-os-mobile/`, Supabase backend, Cloudflare Pages hosting
 
 ## Primary Job
 
@@ -48,7 +50,21 @@ exploit behavioural data. Core architecture includes a capacity-aware execution 
 - Working posture: `primary` (the mobile app implementation; high ingestion value for the
   namespace)
 
+## Current State (2026-07-08)
+
+- Meridian identity shipped across web + iOS (Fraunces/Satoshi/IBM Plex Mono,
+  Porcelain/Observatory dual-mode, ember accent, phosphor Aurora).
+- Constellation second-brain graph live on web (`BrainMirrorView`) and iOS,
+  on a shared pattern engine; lens context feeds Aurora chat packets.
+- Aurora unified on one live Supabase transport (Edge Function
+  `make-server-f019d189`) with labeled rule-based fallbacks.
+- Web deployed to Cloudflare Pages (`figmaadhdosuserdashboard` project;
+  production domain `adhd-os.co.uk` — purge CDN cache after deploys).
+- All branches folded into `main` locally and on GitHub (single-main state).
+- iOS: local gates green (typecheck/lint/2531 tests); EAS/Expo cloud disabled
+  by policy — wired USB is the device proof path.
+
 ## Open Decisions and Risks
 
-- Confirm deployment target: Expo suggests iOS and Android; the user mentioned iOS apps.
-- Confirm whether the Docker backend is the API server for the app.
+- Physical-device and Watch proof paths remain manual (USB, no OTA/EAS).
+- Cloudflare CDN cache must be purged manually after production deploys.
