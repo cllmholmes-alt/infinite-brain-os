@@ -19,7 +19,7 @@ created: "2026-07-05"
 - Canonical path (Mac): `/Users/callumholmes/Documents/Figmaadhdosuserdashboard`
 - VPS clone: `/root/documents/adhd-os` on `hermes-vps`
 - Remote: `git@github.com:cllmholmes-alt/The-ADHD-OS-Ecosystem.git`
-- Version control: git — **main-only branch policy** (pre-push hook enforced)
+- Version control: git - **main-only branch policy** (pre-push hook enforced)
 - Stack: React 19 + Vite web app (Meridian design system), Expo/React Native
   iOS app in `adhd-os-mobile/`, Supabase backend, Cloudflare Pages hosting
 
@@ -59,10 +59,10 @@ exploit behavioural data. Core architecture includes a capacity-aware execution 
 - Aurora unified on one live Supabase transport (Edge Function
   `make-server-f019d189`) with labeled rule-based fallbacks.
 - Web deployed to Cloudflare Pages (`figmaadhdosuserdashboard` project;
-  production domain `adhd-os.co.uk` — purge CDN cache after deploys).
+  production domain `adhd-os.co.uk` - purge CDN cache after deploys).
 - All branches folded into `main` locally and on GitHub (single-main state).
 - iOS: local gates green (typecheck/lint/2531 tests); EAS/Expo cloud disabled
-  by policy — wired USB is the device proof path.
+  by policy - wired USB is the device proof path.
 
 ## Open Decisions and Risks
 

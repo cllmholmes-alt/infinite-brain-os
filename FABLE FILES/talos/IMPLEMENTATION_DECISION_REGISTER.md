@@ -1,3 +1,15 @@
+---
+id: fable-talos-implementation-decision-register
+type: reference
+namespace: fable-talos
+lifecycle_state: research
+summary: FABLE FILES copy of TALOS IMPLEMENTATION_DECISION_REGISTER. Canonical source is the TALOS main repo.
+confidence: medium
+retrieval_class: background
+export_class: internal
+---
+
+
 # Implementation Decision Register
 
 D1 In-memory stores behind repository interfaces (Postgres unavailable in build env).

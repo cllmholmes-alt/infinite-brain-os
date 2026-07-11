@@ -1,4 +1,4 @@
-# Hermes Agent — IB-OS Adapter
+# Hermes Agent - IB-OS Adapter
 
 This folder registers Infinite Brain OS entities (agents, commands, skills, rules)
 as Hermes-compatible shims. Hermes reads from this directory for skill loading,
@@ -6,9 +6,9 @@ agent definitions, and command invocations within the IB-OS repo.
 
 ## What's Loaded
 
-- `.hermes/agents/` — Agent entity definitions (loaded as Hermes-compatible agent specs)
-- `.hermes/commands/` — Command entity definitions (slash commands for Hermes sessions)
-- `.hermes/skills/` — Skill entity definitions (loaded as Hermes skills when `external_dirs` is configured)
+- `.hermes/agents/` - Agent entity definitions (loaded as Hermes-compatible agent specs)
+- `.hermes/commands/` - Command entity definitions (slash commands for Hermes sessions)
+- `.hermes/skills/` - Skill entity definitions (loaded as Hermes skills when `external_dirs` is configured)
 
 ## How It Works
 
@@ -44,4 +44,4 @@ summary: "..."
 ---
 ```
 
-Never edit files here directly — edit the canonical entity in `entities/{type}/{name}.md`.
+Never edit files here directly - edit the canonical entity in `entities/{type}/{name}.md`.

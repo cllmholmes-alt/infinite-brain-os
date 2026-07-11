@@ -1,4 +1,4 @@
-# TALOS — governed local-first agentic OS (foundation build)
+# TALOS - governed local-first agentic OS (foundation build)
 
 Run: npm i && npm run typecheck && npm test && npm run api
 Verify: npm run verify:system-law && npm run verify:no-production-fixtures && npm run verify:audit-chain

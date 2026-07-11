@@ -1,3 +1,15 @@
+---
+id: fable-talos-unknown-blocked-register
+type: reference
+namespace: fable-talos
+lifecycle_state: research
+summary: FABLE FILES copy of TALOS UNKNOWN_BLOCKED_REGISTER. Canonical source is the TALOS main repo.
+confidence: medium
+retrieval_class: background
+export_class: internal
+---
+
+
 # Unknown / Blocked Register
 
 B1 BLOCKED docker/postgres/redis absent in build container -> prisma migrate, BullMQ,

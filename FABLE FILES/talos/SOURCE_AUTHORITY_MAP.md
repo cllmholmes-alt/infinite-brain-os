@@ -1,3 +1,15 @@
+---
+id: fable-talos-source-authority-map
+type: reference
+namespace: fable-talos
+lifecycle_state: research
+summary: FABLE FILES copy of TALOS SOURCE_AUTHORITY_MAP. Canonical source is the TALOS main repo.
+confidence: medium
+retrieval_class: background
+export_class: internal
+---
+
+
 # Source Authority Map
 
 SOURCE_DIRECT: system law; enums; governance pipeline; approval classes; exact-phrase
