@@ -6,6 +6,23 @@
 
 set -euo pipefail
 
+if ((BASH_VERSINFO[0] < 4)); then
+  COMPATIBLE_BASH_CANDIDATES=()
+  [[ -n "${INFINITE_BRAIN_BASH:-}" ]] && COMPATIBLE_BASH_CANDIDATES+=("$INFINITE_BRAIN_BASH")
+  COMPATIBLE_BASH_CANDIDATES+=(/opt/homebrew/bin/bash /usr/local/bin/bash)
+
+  for COMPATIBLE_BASH in "${COMPATIBLE_BASH_CANDIDATES[@]}"; do
+    [[ -x "$COMPATIBLE_BASH" ]] || continue
+    if "$COMPATIBLE_BASH" -c '((BASH_VERSINFO[0] >= 4))' >/dev/null 2>&1; then
+      exec "$COMPATIBLE_BASH" "${BASH_SOURCE[0]}" "$@"
+    fi
+  done
+
+  printf '%s\n' \
+    'validate.sh requires Bash 4 or newer. Install Homebrew Bash or set INFINITE_BRAIN_BASH to a compatible executable.' >&2
+  exit 2
+fi
+
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 FAIL=0
 CHECKED=0
