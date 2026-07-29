@@ -51,7 +51,19 @@ secret_ref:
 
 ## Scope
 
-This entry covers the full set of LLM provider API keys fronted by rtk. Individual
-provider keys are not tracked as separate secret entries unless a provider-specific
-rotation schedule or scope divergence warrants it. The rtk proxy is the single chokepoint
-for all agentic LLM consumption in this OS.
+This is the **aggregate reference** for LLM provider keys. Individual provider entries now exist
+as separate files in this registry. The rtk proxy was the originally planned chokepoint; in practice,
+keys are distributed across `.env` files and Hermes `auth.json` directly.
+
+### Individual entries
+
+| Provider | Entry | Status |
+|----------|-------|--------|
+| GLM / Z.AI | [glm-zai-api-key.md](glm-zai-api-key.md) | Active (primary model) |
+| DeepSeek | [deepseek-api-key.md](deepseek-api-key.md) | Active |
+| DeepSeek (backup) | [deepseek-backup-api-key.md](deepseek-backup-api-key.md) | Active (failover) |
+| OpenAI | [openai-api-key.md](openai-api-key.md) | Active |
+| OpenAI (service) | [openai-service-account-api-key.md](openai-service-account-api-key.md) | Active |
+| Anthropic | [anthropic-api-key.md](anthropic-api-key.md) | Active |
+| Moonshot / Kimi | [moonshot-kimi-api-key.md](moonshot-kimi-api-key.md) | Active |
+| OpenRouter | [openrouter-api-key.md](openrouter-api-key.md) | Active |

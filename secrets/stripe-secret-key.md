@@ -3,50 +3,47 @@ id: "secret-stripe-secret-key"
 aliases: ["secret-stripe-secret-key", "stripe-secret-key"]
 type: "Secret"
 namespace: "personal-operator"
-lifecycle_state: "scratch"
-summary: "Reference for the Stripe secret key used by the GetSubmitReady.com paid checkout flow. Tracks rotation posture only; the value is never stored in this repo."
-confidence: 0.8
+lifecycle_state: "active"
+summary: "Reference for Stripe secret keys (live + test) used by ADHD-OS, GetSubmitReady, and webhook handling."
+confidence: 0.9
 retrieval_class: "identity"
 export_class: "internal"
-created: "2026-07-06"
+created: "2026-07-29"
 ---
 
-# Stripe Secret Key (GetSubmitReady.com)
+# Stripe Secret Key
 
 ## What this is
 
-The Stripe secret key (`sk_live_*` or `sk_test_*`) that powers the paid checkout flow on
-GetSubmitReady.com. This key authorizes server-side Stripe API calls to create payment
-intents, manage subscriptions, and process webhooks.
+Stripe API secret keys for payment processing across the operator's products. Includes restricted keys
+(scoped to specific APIs) and webhook signing secrets.
 
 ## Secret reference
 
 ```yaml
 secret_ref:
   id: "stripe-secret-key"
-  status: "planned"
+  status: "live"
   backend: "stripe-dashboard"
-  locator: "Stripe Dashboard > Developers > API keys > Secret key (getreviewreadycom)"
-  exposure_mode: "tool-only"
-  allowed_runtimes: ["local-attended", "server"]
-  allowed_tools: ["stripe-cli", "stripe-sdk"]
+  locator: "Stripe Dashboard > Developers > API Keys"
+  exposure_mode: "runtime-env"
+  allowed_runtimes: ["server"]
+  allowed_tools: ["adhd-os-dashboard", "getsubmitready-backend"]
   allowed_workflows: []
   scope_class: "personal-operator"
   rotation_class: "manual"
   last_rotated: "unknown"
 ```
 
-## Required operator action
+## Where the value lives
 
-1. Confirm the Stripe account associated with GetSubmitReady.com is active.
-2. Verify which Stripe key mode is in use (test or live) and that the webhook signing secret
-   matches.
-3. If the key has not been rotated recently, generate a new secret key from the Stripe
-   Dashboard and roll it across all consumers.
-4. Set `status` to `active` and `last_rotated` to today once confirmed and rotated.
+| Surface | Key names | Account |
+|---------|-----------|---------|
+| `Documents/Figmaadhdosuserdashboard/.env` | `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET` | ADHD-OS |
+| `Documents/Getreviewreadycom/.env` | `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `STRIPE_PUBLISHABLE_KEY`, `STRIPE_RESTRICTED_KEY` | GetSubmitReady |
+| macOS Keychain | `uk.co.adhdos.stripe-webhook` | ADHD-OS webhook |
 
 ## Scope
 
-This key is scoped to the GetSubmitReady.com Stripe account and authorizes server-side
-payment operations only. It must never be exposed client-side. The publishable key
-(`pk_*`) is not tracked here because it is public-facing by design.
+Two Stripe accounts (ADHD-OS UK Ltd and GetSubmitReady). The GetSubmitReady `.env` contains a
+restricted key with scoped API permissions. ADHD-OS webhook signing secret is also in Keychain.
