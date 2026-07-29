@@ -13,19 +13,19 @@ created: "2026-07-29"
 
 # Current Fusion release receipt
 
-- Release: v29-caf33820-20260729T190814Z
-- Runtime commit: caf33820e2bccacf2b46c75bd21725ec720f4ebe
-- Evidence commit: 288f59844bfb90ae4490bc1bcac52282f018dfe2
-- Frozen binding: sha256:b1901c16e63009edb021ab170adcea1fb231821b370954a95c6aa0eea11d14b2
-- Manifest files: 6381
-- Deployed at: 2026-07-29T19:08:14Z
-- Packet digest: sha256:8cadc63b472ba8421da80ab45289c573b7c5139e871e3a7257576caac0e574a0
-- Plan digest: sha256:a2992b3eb65e7772705e5ed72cb6aa2d8901f95c8e9575d3e8d43ce3bcaab922
-- Active plan: docs/fusion/FUSION_EVOLUTION_PLAN_V8_50.md
-- Evolution version: V8
+- Release: v27-3bf4d7f9-20260729T181942Z
+- Runtime commit: 3bf4d7f9348e979b40b6a97394ffa4621688fc5c
+- Evidence commit: 8a075b27535b858d4ae9ab80d72b4862301323c0
+- Frozen binding: sha256:90995e109861ce598a0916e0f8f56a48f6552658577f646b8e92380a09e59a37
+- Manifest files: 6378
+- Deployed at: 2026-07-29T18:19:42Z
+- Packet digest: sha256:5c8eee2de28510ffe6f058e3891f378e529e58d9238f5c919de345d504f346ff
+- Plan digest: sha256:ae01734d3ac23ca6f51aabe6a109d5619debc2a3cbb42336c0f2763c1fcd3b17
+- Active plan: docs/fusion/FUSION_EVOLUTION_PLAN_V7_50.md
+- Evolution version: V7
 - Memory receipt schema: 3
 - Memory backup policy: git-tracked-generated-projections
-- Rollback release retained: v28-4ebb8f2c-20260729T185148Z
+- Rollback release retained: v25-6f320cb8-20260729T173119Z
 - Network posture: private-only
 
 ## Gate evidence
@@ -40,7 +40,7 @@ created: "2026-07-29"
 
 ## Source references
 
-- docs/fusion/FUSION_EVOLUTION_PLAN_V8_50.md
+- docs/fusion/FUSION_EVOLUTION_PLAN_V7_50.md
 - FUSION_SYSTEM_LAW.md
 - FUSION_MEMORY_SYSTEM_LAW.md
 - FUSION_INTELLIGENCE_SYSTEM_LAW.md

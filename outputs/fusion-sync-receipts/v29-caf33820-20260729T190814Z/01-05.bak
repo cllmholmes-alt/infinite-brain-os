@@ -22,11 +22,11 @@ edges:
 
 ## Fusion deployment
 
-- Current release: `/srv/fusion/releases/v29-caf33820-20260729T190814Z/`
+- Current release: `/srv/fusion/releases/v27-3bf4d7f9-20260729T181942Z/`
 - Stable pointer: `/srv/fusion/current`
-- Runtime commit: caf33820e2bccacf2b46c75bd21725ec720f4ebe
-- Frozen binding: sha256:b1901c16e63009edb021ab170adcea1fb231821b370954a95c6aa0eea11d14b2
-- Rollback retained: v28-4ebb8f2c-20260729T185148Z
+- Runtime commit: 3bf4d7f9348e979b40b6a97394ffa4621688fc5c
+- Frozen binding: sha256:90995e109861ce598a0916e0f8f56a48f6552658577f646b8e92380a09e59a37
+- Rollback retained: v25-6f320cb8-20260729T173119Z
 - Environment file: `/etc/fusion/fusion-api.env`, secret values never enter this brain
 - Network posture: private-only, loopback service with authenticated SSH-tunnel clients
 
