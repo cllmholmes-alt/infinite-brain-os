@@ -1,0 +1,36 @@
+---
+id: "knowledge-talos-synthesis-fusion-brain-relationship-current"
+aliases: ["knowledge-talos-synthesis-fusion-brain-relationship-current", "fusion-brain-relationship-current"]
+type: "Knowledge"
+namespace: "talos"
+lifecycle_state: "candidate"
+summary: "Candidate relationship contract for Fusion, Infinite Brain, Hermes, and relevant ADHD-OS knowledge."
+confidence: 0.95
+retrieval_class: "domain"
+export_class: "internal"
+verified_at: "2026-07-29"
+verified_by: "operator-pending"
+created: "2026-07-29"
+edges:
+  - target: "[[talos-to-brain-relationship]]"
+    relation: "updates"
+    confidence: 0.95
+---
+
+# Fusion, Infinite Brain, and Hermes relationship candidate
+
+Fusion is the sole operator-facing control boundary. Infinite Brain is the canonical curated
+durable knowledge store. Hermes is a thin Fusion client and receives a generated,
+digest-bound operational cache. Hermes and Infinite Brain cannot approve actions, alter
+Fusion law, or create a parallel run lifecycle.
+
+Relevant ADHD-OS knowledge is limited to constraints that change Fusion operation:
+
+- Cognitive-load constraints require concise, calm, reversible operator interactions. Source: knowledge/adhd-os/canon/core-doctrine.md
+- Operator friction is treated as a system-design constraint rather than a personal failure. Source: knowledge/adhd-os/pillars/cognitive-load-is-structural.md
+
+Packet digest: sha256:4786ad908827d76e83edf50428015691db3ff748fe6b791ab1285bc2df113e0a
+
+Release provenance: `knowledge/talos/support/fusion-release-current.md`
+
+This candidate requires operator review before any promotion to canon.

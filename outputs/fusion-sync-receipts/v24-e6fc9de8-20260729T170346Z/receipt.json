@@ -1,0 +1,160 @@
+{
+  "appliedAt": "2026-07-29T17:03:46Z",
+  "backups": [
+    {
+      "backup": "01-01.bak",
+      "priorDigest": "sha256:df897125af2a1f2d3672c55aeeda95384eeea8adb69c38dd93fd67fa8a1b2e03",
+      "target": "brain:knowledge/talos/support/fusion-release-current.md"
+    },
+    {
+      "backup": "01-02.bak",
+      "priorDigest": "sha256:ab4fa1622e201860dbd9119e38cd743b5665ac1408a018f84734385f53a86abd",
+      "target": "brain:knowledge/talos/synthesis/fusion-brain-relationship-current.md"
+    },
+    {
+      "backup": "01-03.bak",
+      "priorDigest": "sha256:864a3a67c96c0ba6c62dd62142410e36007328cb699e923dfc9edc7332b9ead7",
+      "target": "brain:repo-registry/fusion-runtime.md"
+    },
+    {
+      "backup": "01-04.bak",
+      "priorDigest": "sha256:b1fab9149c243cc9cabc3a32dc90384e681947470cc66f0f4b113b22787fa651",
+      "target": "brain:repo-registry/hermes-agent.md"
+    },
+    {
+      "backup": "01-05.bak",
+      "priorDigest": "sha256:9da3fa308a9168c82b0b3f43909e1e869a6da95fcb978aa5a63e3434285902a3",
+      "target": "brain:repo-registry/netcup-vps.md"
+    },
+    {
+      "backup": "01-06.bak",
+      "priorDigest": "sha256:01367aff9c7fe7407d88ae9a3c4bd670671d90a00cc92150088c93555d6ddcfc",
+      "target": "hermes:SOUL.md"
+    },
+    {
+      "backup": "01-07.bak",
+      "priorDigest": "sha256:cbdfe49c876fe6d050fb1a628e4441d78e9aed10f90c12cee05321d0bdf6bed9",
+      "target": "hermes:memories/MEMORY.md"
+    }
+  ],
+  "changed": [
+    {
+      "installedDigest": "sha256:9861f16eee47b3f39c78852e0d04205abe82438561e00ed5f957dc96a3979008",
+      "previousDigest": "sha256:df897125af2a1f2d3672c55aeeda95384eeea8adb69c38dd93fd67fa8a1b2e03",
+      "target": "brain:knowledge/talos/support/fusion-release-current.md"
+    },
+    {
+      "installedDigest": "sha256:36dc7b64be433764a6691e829d5d332d699c37e4e046b752c7d3b4da72129898",
+      "previousDigest": "sha256:ab4fa1622e201860dbd9119e38cd743b5665ac1408a018f84734385f53a86abd",
+      "target": "brain:knowledge/talos/synthesis/fusion-brain-relationship-current.md"
+    },
+    {
+      "installedDigest": "sha256:c7e4019c5d5f96231dc9cdf7aae5b40077c88146ef336d47b9c62ae80f816e34",
+      "previousDigest": "sha256:864a3a67c96c0ba6c62dd62142410e36007328cb699e923dfc9edc7332b9ead7",
+      "target": "brain:repo-registry/fusion-runtime.md"
+    },
+    {
+      "installedDigest": "sha256:2de3a243649875b043b6ebca95a51c0db67d3ed653b57f8a29c472067ab463d2",
+      "previousDigest": "sha256:b1fab9149c243cc9cabc3a32dc90384e681947470cc66f0f4b113b22787fa651",
+      "target": "brain:repo-registry/hermes-agent.md"
+    },
+    {
+      "installedDigest": "sha256:d0863dab126d422570d4ae78b6ee4d1e5d1aa78b2cb7d9c06fd6a4c2a682af7b",
+      "previousDigest": "sha256:9da3fa308a9168c82b0b3f43909e1e869a6da95fcb978aa5a63e3434285902a3",
+      "target": "brain:repo-registry/netcup-vps.md"
+    },
+    {
+      "installedDigest": "sha256:f5a84b93ed1f1db0e8243a64e6d0ab6362a3160afc1ae815c5ede6fa8194bfc2",
+      "previousDigest": "sha256:01367aff9c7fe7407d88ae9a3c4bd670671d90a00cc92150088c93555d6ddcfc",
+      "target": "hermes:SOUL.md"
+    },
+    {
+      "installedDigest": "sha256:57c3d270a1a0f68338db6cf3b0e909c0a90f691a5c5ae9ff077ce26918371ced",
+      "previousDigest": "sha256:cbdfe49c876fe6d050fb1a628e4441d78e9aed10f90c12cee05321d0bdf6bed9",
+      "target": "hermes:memories/MEMORY.md"
+    }
+  ],
+  "packetDigest": "sha256:4786ad908827d76e83edf50428015691db3ff748fe6b791ab1285bc2df113e0a",
+  "releaseId": "v24-e6fc9de8-20260729T170346Z",
+  "schemaVersion": 2,
+  "transactions": [
+    {
+      "appliedAt": "2026-07-29T17:03:46Z",
+      "backups": [
+        {
+          "backup": "01-01.bak",
+          "priorDigest": "sha256:df897125af2a1f2d3672c55aeeda95384eeea8adb69c38dd93fd67fa8a1b2e03",
+          "target": "brain:knowledge/talos/support/fusion-release-current.md"
+        },
+        {
+          "backup": "01-02.bak",
+          "priorDigest": "sha256:ab4fa1622e201860dbd9119e38cd743b5665ac1408a018f84734385f53a86abd",
+          "target": "brain:knowledge/talos/synthesis/fusion-brain-relationship-current.md"
+        },
+        {
+          "backup": "01-03.bak",
+          "priorDigest": "sha256:864a3a67c96c0ba6c62dd62142410e36007328cb699e923dfc9edc7332b9ead7",
+          "target": "brain:repo-registry/fusion-runtime.md"
+        },
+        {
+          "backup": "01-04.bak",
+          "priorDigest": "sha256:b1fab9149c243cc9cabc3a32dc90384e681947470cc66f0f4b113b22787fa651",
+          "target": "brain:repo-registry/hermes-agent.md"
+        },
+        {
+          "backup": "01-05.bak",
+          "priorDigest": "sha256:9da3fa308a9168c82b0b3f43909e1e869a6da95fcb978aa5a63e3434285902a3",
+          "target": "brain:repo-registry/netcup-vps.md"
+        },
+        {
+          "backup": "01-06.bak",
+          "priorDigest": "sha256:01367aff9c7fe7407d88ae9a3c4bd670671d90a00cc92150088c93555d6ddcfc",
+          "target": "hermes:SOUL.md"
+        },
+        {
+          "backup": "01-07.bak",
+          "priorDigest": "sha256:cbdfe49c876fe6d050fb1a628e4441d78e9aed10f90c12cee05321d0bdf6bed9",
+          "target": "hermes:memories/MEMORY.md"
+        }
+      ],
+      "changed": [
+        {
+          "installedDigest": "sha256:9861f16eee47b3f39c78852e0d04205abe82438561e00ed5f957dc96a3979008",
+          "previousDigest": "sha256:df897125af2a1f2d3672c55aeeda95384eeea8adb69c38dd93fd67fa8a1b2e03",
+          "target": "brain:knowledge/talos/support/fusion-release-current.md"
+        },
+        {
+          "installedDigest": "sha256:36dc7b64be433764a6691e829d5d332d699c37e4e046b752c7d3b4da72129898",
+          "previousDigest": "sha256:ab4fa1622e201860dbd9119e38cd743b5665ac1408a018f84734385f53a86abd",
+          "target": "brain:knowledge/talos/synthesis/fusion-brain-relationship-current.md"
+        },
+        {
+          "installedDigest": "sha256:c7e4019c5d5f96231dc9cdf7aae5b40077c88146ef336d47b9c62ae80f816e34",
+          "previousDigest": "sha256:864a3a67c96c0ba6c62dd62142410e36007328cb699e923dfc9edc7332b9ead7",
+          "target": "brain:repo-registry/fusion-runtime.md"
+        },
+        {
+          "installedDigest": "sha256:2de3a243649875b043b6ebca95a51c0db67d3ed653b57f8a29c472067ab463d2",
+          "previousDigest": "sha256:b1fab9149c243cc9cabc3a32dc90384e681947470cc66f0f4b113b22787fa651",
+          "target": "brain:repo-registry/hermes-agent.md"
+        },
+        {
+          "installedDigest": "sha256:d0863dab126d422570d4ae78b6ee4d1e5d1aa78b2cb7d9c06fd6a4c2a682af7b",
+          "previousDigest": "sha256:9da3fa308a9168c82b0b3f43909e1e869a6da95fcb978aa5a63e3434285902a3",
+          "target": "brain:repo-registry/netcup-vps.md"
+        },
+        {
+          "installedDigest": "sha256:f5a84b93ed1f1db0e8243a64e6d0ab6362a3160afc1ae815c5ede6fa8194bfc2",
+          "previousDigest": "sha256:01367aff9c7fe7407d88ae9a3c4bd670671d90a00cc92150088c93555d6ddcfc",
+          "target": "hermes:SOUL.md"
+        },
+        {
+          "installedDigest": "sha256:57c3d270a1a0f68338db6cf3b0e909c0a90f691a5c5ae9ff077ce26918371ced",
+          "previousDigest": "sha256:cbdfe49c876fe6d050fb1a628e4441d78e9aed10f90c12cee05321d0bdf6bed9",
+          "target": "hermes:memories/MEMORY.md"
+        }
+      ],
+      "packetDigest": "sha256:4786ad908827d76e83edf50428015691db3ff748fe6b791ab1285bc2df113e0a"
+    }
+  ]
+}

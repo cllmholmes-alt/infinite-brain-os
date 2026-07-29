@@ -1,0 +1,20 @@
+{
+  "appliedAt": "2026-07-29T16:48:20Z",
+  "backups": [
+    {
+      "backup": "01.bak",
+      "priorDigest": "sha256:46882c9dba8c6303658673a45856518840b9a451271104e06a7505d94ff13164",
+      "target": "brain:knowledge/talos/synthesis/fusion-brain-relationship-current.md"
+    }
+  ],
+  "changed": [
+    {
+      "installedDigest": "sha256:ab4fa1622e201860dbd9119e38cd743b5665ac1408a018f84734385f53a86abd",
+      "previousDigest": "sha256:46882c9dba8c6303658673a45856518840b9a451271104e06a7505d94ff13164",
+      "target": "brain:knowledge/talos/synthesis/fusion-brain-relationship-current.md"
+    }
+  ],
+  "packetDigest": "sha256:d78c09f845ced6567264c6758dfb6ec81ad1fb0f4d6fc0313b1297b744dd6ca3",
+  "releaseId": "v23-bfb13630-20260729T164820Z",
+  "schemaVersion": 1
+}
