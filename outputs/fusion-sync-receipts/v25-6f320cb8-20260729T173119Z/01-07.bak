@@ -1,0 +1,36 @@
+# Fusion operational memory cache
+
+Authority: generated cache only. Infinite Brain is canonical durable knowledge. Fusion law,
+permissions, approvals, and current runtime evidence outrank this file.
+
+- Packet digest: sha256:4786ad908827d76e83edf50428015691db3ff748fe6b791ab1285bc2df113e0a
+- Generated at: 2026-07-29T17:03:46Z
+- Refresh rule: refresh on every verified Fusion release and relevant promoted brain change
+- Release: v24-e6fc9de8-20260729T170346Z
+- Runtime commit: e6fc9de834ab8ac8f2b4cace31683936b01c8db4
+- Evidence commit: 71752941942f0792949c62e6545b684ea72a71d9
+- Binding: sha256:90d4ff5eba0138af43aaf2659723d9d884883b22737d5b64aabf5a77ad9ca5ee
+- Rollback: v23-bfb13630-20260729T164820Z
+- Network posture: private-only
+- Public edge: blocked pending protected review and explicit operator promotion
+
+## Operating relationships
+
+- Fusion is the sole normal operator-facing identity and execution authority.
+- Infinite Brain stores curated durable Fusion, Hermes, and relevant ADHD-OS knowledge.
+- Hermes is a thin client and this file is not an approval, policy, or canon surface.
+
+## Relevant ADHD-OS constraints
+
+- Cognitive-load constraints require concise, calm, reversible operator interactions.
+- Operator friction is treated as a system-design constraint rather than a personal failure.
+
+## Current gate state
+
+- releaseVerify: PASS
+- deepHealth: PASS
+- path: PASS
+- functional: PASS
+- postgres: PASS
+- redis: PASS
+- hermes: PASS

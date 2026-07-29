@@ -16,7 +16,6 @@ node_modules/
 # Tool runtime planes: operational substrate, never git canon
 tools/*/runtime/
 outputs/_runtime/
-outputs/fusion-sync-receipts/**/*.bak
 
 # Python
 __pycache__/

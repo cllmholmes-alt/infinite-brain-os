@@ -12,9 +12,9 @@ verified_at: "2026-07-29"
 verified_by: "operator-pending"
 created: "2026-07-29"
 edges:
-  - target: "[[talos-to-brain-relationship]]"
-    relation: "updates"
-    confidence: 0.95
+  - target: "[[fusion-release-current]]"
+    relation: "derived_from"
+    confidence: 1
 ---
 
 # Fusion, Infinite Brain, and Hermes relationship candidate
@@ -29,8 +29,6 @@ Relevant ADHD-OS knowledge is limited to constraints that change Fusion operatio
 - Cognitive-load constraints require concise, calm, reversible operator interactions. Source: knowledge/adhd-os/canon/core-doctrine.md
 - Operator friction is treated as a system-design constraint rather than a personal failure. Source: knowledge/adhd-os/pillars/cognitive-load-is-structural.md
 
-Packet digest: sha256:5c8eee2de28510ffe6f058e3891f378e529e58d9238f5c919de345d504f346ff
-
-Release provenance: `knowledge/talos/support/fusion-release-current.md`
+Packet digest: sha256:77432cf2936a19a1f803c31499da1cf0207430f4968cf1ced156bb09442824b3
 
 This candidate requires operator review before any promotion to canon.

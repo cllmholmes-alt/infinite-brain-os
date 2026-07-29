@@ -25,7 +25,7 @@ profile is a thin client to the canonical Fusion runtime. It does not manage Fus
 approve protected actions, or own durable truth.
 
 Hermes built-in memory is a generated cache sourced from Infinite Brain and current Fusion
-release evidence. The cache must carry and verify packet digest sha256:5c8eee2de28510ffe6f058e3891f378e529e58d9238f5c919de345d504f346ff.
+release evidence. The cache must carry and verify packet digest sha256:d78c09f845ced6567264c6758dfb6ec81ad1fb0f4d6fc0313b1297b744dd6ca3.
 
 ## Current posture
 
@@ -35,5 +35,3 @@ release evidence. The cache must carry and verify packet digest sha256:5c8eee2de
 - Knowledge authority: Infinite Brain
 - Runtime authority: Fusion
 - Cache refresh: every verified Fusion release and every promoted relevant brain change
-- Memory receipt schema: 3
-- Backup policy: git-tracked-generated-projections

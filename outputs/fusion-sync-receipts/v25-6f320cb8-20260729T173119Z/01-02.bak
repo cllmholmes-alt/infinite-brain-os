@@ -29,7 +29,7 @@ Relevant ADHD-OS knowledge is limited to constraints that change Fusion operatio
 - Cognitive-load constraints require concise, calm, reversible operator interactions. Source: knowledge/adhd-os/canon/core-doctrine.md
 - Operator friction is treated as a system-design constraint rather than a personal failure. Source: knowledge/adhd-os/pillars/cognitive-load-is-structural.md
 
-Packet digest: sha256:5c8eee2de28510ffe6f058e3891f378e529e58d9238f5c919de345d504f346ff
+Packet digest: sha256:4786ad908827d76e83edf50428015691db3ff748fe6b791ab1285bc2df113e0a
 
 Release provenance: `knowledge/talos/support/fusion-release-current.md`
 
