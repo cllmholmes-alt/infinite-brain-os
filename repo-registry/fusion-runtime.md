@@ -31,13 +31,13 @@ edges:
 
 ## Current verified release
 
-- Release: v24-e6fc9de8-20260729T170346Z
-- Runtime commit: e6fc9de834ab8ac8f2b4cace31683936b01c8db4
-- Evidence commit: 71752941942f0792949c62e6545b684ea72a71d9
-- Frozen binding: sha256:90d4ff5eba0138af43aaf2659723d9d884883b22737d5b64aabf5a77ad9ca5ee
-- Files: 6374
-- Rollback: v23-bfb13630-20260729T164820Z
-- Packet: sha256:4786ad908827d76e83edf50428015691db3ff748fe6b791ab1285bc2df113e0a
+- Release: v25-6f320cb8-20260729T173119Z
+- Runtime commit: 6f320cb8f0c8faf503ac4d26d6f81162973f44d2
+- Evidence commit: 786c49614cf6bcdaeedf459f10959533aac397c2
+- Frozen binding: sha256:b2f58b6f4b7c1baf08191921f2147b43da22abee257a6b9bb0767f699856483c
+- Files: 6375
+- Rollback: v24-e6fc9de8-20260729T170346Z
+- Packet: sha256:97bdf19c6f23c17296da75b80030c8afef9ed6e2d5b212aa898f948065d8062a
 
 ## Runtime contract
 
