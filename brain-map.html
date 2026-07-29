@@ -2,715 +2,2115 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Brain Map - Operator Portfolio Topology</title>
 <style>
-  :root {
-    --bone: #f5f4ed;
-    --ink: #1a1a1a;
-    --ink-soft: #4a4a4a;
-    --ink-faint: #8a8a8a;
-    --hairline: #d8d6cd;
-    --ember: #c4582b;
-    --ember-soft: #e8a878;
-    --green: #4a7c59;
-    --blue: #3b6ea5;
-    --purple: #7b6ea0;
-    --gold: #c4a04a;
-    --teal: #4a9c9c;
-    --rose: #b86b8a;
-    --slate: #5a6a7a;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    background: var(--bone);
-    color: var(--ink);
-    font-family: -apple-system, 'Segoe UI', system-ui, sans-serif;
-    overflow: hidden;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
+/* ================================================================
+   MERIDIAN DESIGN SYSTEM
+   ================================================================ */
+:root {
+  --bone: #f5f4ed;
+  --bone-soft: #ebe9e0;
+  --ink: #1a1a1a;
+  --ink-soft: #4a4a4a;
+  --ink-faint: #8a8a8a;
+  --hairline: #d8d6cd;
+  --ember: #c4582b;
+  --ember-soft: #e8a878;
+  --green: #4a7c59;
+  --blue: #3b6ea5;
+  --purple: #7b6ea0;
+  --gold: #c4a04a;
+  --teal: #4a9c9c;
+  --rose: #b86b8a;
+  --slate: #5a6a7a;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
+  --r: 10px;
+  --r-lg: 14px;
+  --t: 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
 
-  /* Top bar */
-  .topbar {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 10px 20px;
-    background: var(--bone);
-    border-bottom: 1px solid var(--hairline);
-    flex-shrink: 0;
-    z-index: 100;
-  }
-  .topbar h1 {
-    font-size: 15px;
-    font-weight: 600;
-    letter-spacing: -0.3px;
-    white-space: nowrap;
-  }
-  .topbar .stats {
-    font-size: 11px;
-    color: var(--ink-faint);
-    display: flex;
-    gap: 12px;
-  }
-  .topbar .stats span { white-space: nowrap; }
-  .topbar .filter-bar {
-    display: flex;
-    gap: 6px;
-    margin-left: auto;
-    flex-wrap: wrap;
-  }
-  .filter-btn {
-    padding: 4px 10px;
-    border: 1px solid var(--hairline);
-    border-radius: 6px;
-    background: transparent;
-    font-size: 11px;
-    cursor: pointer;
-    color: var(--ink-soft);
-    transition: all 0.15s;
-  }
-  .filter-btn:hover { border-color: var(--ink-faint); }
-  .filter-btn.active {
-    background: var(--ink);
-    color: var(--bone);
-    border-color: var(--ink);
-  }
+body.dark {
+  --bone: #0d0d0f;
+  --bone-soft: #141416;
+  --ink: #e4e1d9;
+  --ink-soft: #aaa8a0;
+  --ink-faint: #5c5a54;
+  --hairline: #26262a;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.5);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.6);
+}
 
-  /* Canvas */
-  #canvas-container {
-    flex: 1;
-    position: relative;
-    overflow: hidden;
-    background:
-      radial-gradient(circle at 1px 1px, rgba(0,0,0,0.04) 1px, transparent 1px);
-    background-size: 24px 24px;
-  }
-  #canvas {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    cursor: grab;
-  }
-  #canvas.dragging { cursor: grabbing; }
-  #canvas svg {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    pointer-events: none;
-  }
-  .edge {
-    stroke: var(--ink-faint);
-    stroke-width: 1;
-    fill: none;
-    opacity: 0.3;
-    transition: opacity 0.2s, stroke 0.2s;
-  }
-  .edge.highlighted {
-    opacity: 0.8;
-    stroke: var(--ember);
-    stroke-width: 2;
-  }
-  .edge-arrow { fill: var(--ink-faint); opacity: 0.3; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-  /* Nodes */
-  .node {
-    position: absolute;
-    border-radius: 10px;
-    padding: 8px 12px;
-    cursor: pointer;
-    font-size: 12px;
-    font-weight: 500;
-    white-space: nowrap;
-    transition: box-shadow 0.15s, transform 0.1s;
-    user-select: none;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    z-index: 10;
-  }
-  .node:hover {
-    transform: translateY(-1px);
-    z-index: 50;
-  }
-  .node .node-icon {
-    font-size: 14px;
-    line-height: 1;
-  }
-  .node .node-label {
-    font-size: 12px;
-  }
-  .node .node-meta {
-    font-size: 10px;
-    font-weight: 400;
-    color: var(--ink-faint);
-    margin-left: 4px;
-  }
+body {
+  background: var(--bone);
+  color: var(--ink);
+  font-family: -apple-system, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
+  overflow: hidden;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+  transition: background var(--t), color var(--t);
+}
 
-  /* Cluster containers */
-  .cluster-bg {
-    position: absolute;
-    border-radius: 14px;
-    border: 2px dashed;
-    opacity: 0.08;
-    pointer-events: none;
-    z-index: 1;
-  }
-  .cluster-label {
-    position: absolute;
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--ink-faint);
-    pointer-events: none;
-    z-index: 2;
-  }
+/* ================================================================
+   TOPBAR
+   ================================================================ */
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  background: var(--bone);
+  border-bottom: 1px solid var(--hairline);
+  flex-shrink: 0;
+  z-index: 100;
+  transition: background var(--t), border-color var(--t);
+}
 
-  /* Status indicators */
-  .status-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-  .status-green { background: var(--green); box-shadow: 0 0 6px rgba(74,124,89,0.4); }
-  .status-amber { background: var(--gold); }
-  .status-red { background: var(--ember); }
-  .status-gray { background: var(--ink-faint); }
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.brand-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--r);
+  background: linear-gradient(135deg, var(--ember), var(--ember-soft));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  box-shadow: var(--shadow-sm);
+}
+.brand-title {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.4px;
+  white-space: nowrap;
+}
+.brand-sub {
+  font-size: 10px;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-top: -1px;
+}
 
-  /* Detail panel */
-  #detail-panel {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 320px;
-    max-height: calc(100vh - 120px);
-    overflow-y: auto;
-    background: rgba(245,244,237,0.97);
-    backdrop-filter: blur(8px);
-    border: 1px solid var(--hairline);
-    border-radius: 12px;
-    padding: 16px;
-    font-size: 13px;
-    display: none;
-    z-index: 200;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-  }
-  #detail-panel.visible { display: block; }
-  #detail-panel h3 {
-    font-size: 15px;
-    margin-bottom: 4px;
-  }
-  #detail-panel .detail-type {
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--ink-faint);
-    margin-bottom: 12px;
-  }
-  #detail-panel .detail-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 4px 0;
-    border-bottom: 1px solid var(--hairline);
-    font-size: 12px;
-  }
-  #detail-panel .detail-row:last-child { border-bottom: none; }
-  #detail-panel .detail-label { color: var(--ink-faint); }
-  #detail-panel .detail-value { font-weight: 500; text-align: right; }
-  #detail-panel .close-btn {
-    position: absolute;
-    top: 10px; right: 12px;
-    cursor: pointer;
-    font-size: 18px;
-    color: var(--ink-faint);
-    line-height: 1;
-  }
-  #detail-panel .close-btn:hover { color: var(--ink); }
+.stats {
+  display: flex;
+  gap: 10px;
+  font-size: 11px;
+  color: var(--ink-faint);
+  margin-left: 8px;
+}
+.stats .stat { white-space: nowrap; }
+.stats .stat strong { color: var(--ink-soft); font-weight: 600; }
+.stats .health {
+  color: var(--green);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.stats .health::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(74,124,89,0.4); }
+  50% { opacity: 0.7; box-shadow: 0 0 0 4px rgba(74,124,89,0); }
+}
 
-  /* Zoom controls */
-  .zoom-controls {
-    position: absolute;
-    bottom: 16px;
-    left: 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    z-index: 100;
-  }
-  .zoom-btn {
-    width: 32px;
-    height: 32px;
-    border: 1px solid var(--hairline);
-    border-radius: 8px;
-    background: rgba(245,244,237,0.9);
-    cursor: pointer;
-    font-size: 16px;
-    color: var(--ink);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .zoom-btn:hover { border-color: var(--ink-faint); }
+.search-wrapper {
+  position: relative;
+  margin-left: auto;
+  width: 220px;
+  transition: width var(--t);
+}
+.search-wrapper:focus-within { width: 280px; }
+.search-icon {
+  position: absolute;
+  left: 9px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px;
+  color: var(--ink-faint);
+  pointer-events: none;
+}
+.search-input {
+  width: 100%;
+  padding: 6px 12px 6px 28px;
+  border: 1px solid var(--hairline);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--bone) 60%, transparent);
+  font-size: 12px;
+  color: var(--ink);
+  outline: none;
+  transition: border-color var(--t), box-shadow var(--t);
+}
+.search-input::placeholder { color: var(--ink-faint); }
+.search-input:focus {
+  border-color: var(--ember);
+  box-shadow: 0 0 0 3px rgba(196, 88, 43, 0.1);
+}
+.search-kbd {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 9px;
+  color: var(--ink-faint);
+  border: 1px solid var(--hairline);
+  border-radius: 4px;
+  padding: 1px 4px;
+  pointer-events: none;
+}
 
-  /* Legend */
-  .legend {
-    position: absolute;
-    bottom: 16px;
-    right: 16px;
-    background: rgba(245,244,237,0.9);
-    border: 1px solid var(--hairline);
-    border-radius: 10px;
-    padding: 10px 14px;
-    font-size: 11px;
-    z-index: 100;
-  }
-  .legend-title {
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--ink-faint);
-    margin-bottom: 6px;
-    font-size: 10px;
-  }
-  .legend-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 2px 0;
-  }
+.filter-bar {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.filter-btn {
+  padding: 4px 10px;
+  border: 1px solid var(--hairline);
+  border-radius: 7px;
+  background: transparent;
+  font-size: 11px;
+  cursor: pointer;
+  color: var(--ink-soft);
+  transition: all var(--t);
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.filter-btn:hover { border-color: var(--ink-faint); background: color-mix(in srgb, var(--bone-soft) 50%, transparent); }
+.filter-btn.active {
+  background: var(--ink);
+  color: var(--bone);
+  border-color: var(--ink);
+}
+.filter-btn .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.tool-btn {
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--hairline);
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--ink-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--t);
+  flex-shrink: 0;
+}
+.tool-btn:hover { border-color: var(--ink-faint); background: var(--bone-soft); color: var(--ink); }
+.tool-btn.active { background: var(--ember); color: white; border-color: var(--ember); }
+
+/* ================================================================
+   CANVAS
+   ================================================================ */
+#canvas-container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+#canvas {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  cursor: grab;
+  display: block;
+}
+#canvas.grabbing { cursor: grabbing; }
+#canvas.dragging-node { cursor: pointer; }
+
+/* ================================================================
+   DETAIL PANEL
+   ================================================================ */
+#detail-panel {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 340px;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  background: color-mix(in srgb, var(--bone) 85%, transparent);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid color-mix(in srgb, var(--hairline) 80%, transparent);
+  border-radius: var(--r-lg);
+  padding: 0;
+  z-index: 200;
+  box-shadow: var(--shadow-lg);
+  transform: translateX(360px);
+  opacity: 0;
+  transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.2, 1), opacity 0.25s ease;
+  pointer-events: none;
+}
+#detail-panel.visible {
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+.detail-header {
+  padding: 16px 18px 12px;
+  border-bottom: 1px solid var(--hairline);
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.detail-icon {
+  font-size: 24px;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.detail-titles { flex: 1; min-width: 0; }
+.detail-name {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+.detail-cluster {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--ink-faint);
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.detail-cluster .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+.detail-close {
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 18px;
+  color: var(--ink-faint);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all var(--t);
+}
+.detail-close:hover { color: var(--ink); background: var(--bone-soft); }
+
+.detail-body { padding: 14px 18px 18px; }
+.detail-section-title {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--ink-faint);
+  margin-bottom: 8px;
+  margin-top: 14px;
+}
+.detail-section-title:first-child { margin-top: 0; }
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 5px 0;
+  font-size: 12px;
+  line-height: 1.4;
+}
+.detail-label {
+  color: var(--ink-faint);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.detail-value {
+  font-weight: 500;
+  text-align: right;
+  word-break: break-word;
+}
+
+.connection-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px;
+  margin: 2px -8px;
+  font-size: 12px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: background var(--t);
+}
+.connection-link:hover { background: var(--bone-soft); }
+.connection-link .arrow {
+  color: var(--ink-faint);
+  font-size: 10px;
+  flex-shrink: 0;
+}
+.connection-link .label-text {
+  color: var(--ink-soft);
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.connection-link .target-text {
+  font-weight: 600;
+  color: var(--ink);
+}
+.connection-link .edge-type {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--ink-faint);
+  flex-shrink: 0;
+}
+
+.detail-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.badge-green { background: rgba(74,124,89,0.12); color: var(--green); }
+.badge-amber { background: rgba(196,160,74,0.15); color: var(--gold); }
+.badge-red { background: rgba(196,88,43,0.12); color: var(--ember); }
+.badge-gray { background: rgba(138,138,138,0.12); color: var(--ink-faint); }
+.badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* ================================================================
+   MINIMAP
+   ================================================================ */
+#minimap-wrapper {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  width: 180px;
+  height: 120px;
+  background: color-mix(in srgb, var(--bone) 80%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r);
+  overflow: hidden;
+  z-index: 90;
+  box-shadow: var(--shadow-sm);
+  cursor: crosshair;
+  transition: opacity var(--t);
+}
+#minimap { display: block; width: 100%; height: 100%; }
+.minimap-label {
+  position: absolute;
+  top: 4px;
+  left: 8px;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--ink-faint);
+  pointer-events: none;
+}
+
+/* ================================================================
+   ZOOM CONTROLS + STATS
+   ================================================================ */
+.controls-left {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 90;
+}
+.controls-row {
+  display: flex;
+  gap: 4px;
+}
+.zoom-btn {
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--hairline);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--bone) 85%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  cursor: pointer;
+  font-size: 15px;
+  color: var(--ink-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--t);
+  box-shadow: var(--shadow-sm);
+  font-family: inherit;
+}
+.zoom-btn:hover { border-color: var(--ink-faint); color: var(--ink); }
+.zoom-btn.wide { width: auto; padding: 0 10px; font-size: 11px; gap: 4px; }
+
+.stats-overlay {
+  font-size: 10px;
+  color: var(--ink-faint);
+  padding: 6px 10px;
+  background: color-mix(in srgb, var(--bone) 80%, transparent);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--hairline);
+  border-radius: 8px;
+  display: flex;
+  gap: 10px;
+  box-shadow: var(--shadow-sm);
+  font-variant-numeric: tabular-nums;
+}
+.stats-overlay span strong { color: var(--ink-soft); font-weight: 600; }
+
+/* ================================================================
+   LEGEND
+   ================================================================ */
+.legend {
+  position: absolute;
+  top: 76px;
+  right: 12px;
+  background: color-mix(in srgb, var(--bone) 85%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r);
+  padding: 10px 14px;
+  font-size: 11px;
+  z-index: 90;
+  box-shadow: var(--shadow-sm);
+  transition: opacity var(--t);
+}
+.legend.hidden { opacity: 0; pointer-events: none; }
+.legend-title {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--ink-faint);
+  margin-bottom: 6px;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 0;
+  font-size: 11px;
+  color: var(--ink-soft);
+}
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ================================================================
+   KEYBOARD HINTS
+   ================================================================ */
+.kbd-hints {
+  position: absolute;
+  top: 76px;
+  left: 12px;
+  font-size: 10px;
+  color: var(--ink-faint);
+  z-index: 90;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  max-width: 300px;
+  transition: opacity var(--t);
+}
+.kbd-hints.hidden { opacity: 0; pointer-events: none; }
+.kbd-hint {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+.kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border: 1px solid var(--hairline);
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--bone) 70%, transparent);
+  backdrop-filter: blur(8px);
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+/* ================================================================
+   LOADING SCREEN
+   ================================================================ */
+.loading {
+  position: fixed;
+  inset: 0;
+  background: var(--bone);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 16px;
+  transition: opacity 0.6s ease;
+}
+.loading.hidden { opacity: 0; pointer-events: none; }
+.loading-brain {
+  font-size: 48px;
+  animation: loading-pulse 1.2s ease-in-out infinite;
+}
+.loading-text {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+@keyframes loading-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.15); opacity: 1; }
+}
+
+/* ================================================================
+   SCROLLBAR
+   ================================================================ */
+#detail-panel::-webkit-scrollbar { width: 6px; }
+#detail-panel::-webkit-scrollbar-track { background: transparent; }
+#detail-panel::-webkit-scrollbar-thumb {
+  background: var(--hairline);
+  border-radius: 3px;
+}
+#detail-panel::-webkit-scrollbar-thumb:hover { background: var(--ink-faint); }
+
+/* ================================================================
+   RESPONSIVE
+   ================================================================ */
+@media (max-width: 768px) {
+  .stats { display: none; }
+  .filter-bar { display: none; }
+  .search-wrapper { width: 140px; }
+  .search-wrapper:focus-within { width: 180px; }
+  #detail-panel { width: calc(100vw - 24px); }
+  #minimap-wrapper { width: 120px; height: 80px; }
+  .kbd-hints { display: none; }
+  .legend { font-size: 10px; padding: 8px 10px; }
+}
 </style>
 </head>
 <body>
 
-<div class="topbar">
-  <h1>Brain Map</h1>
-  <div class="stats">
-    <span>4 repos tracked</span>
-    <span>7 clusters</span>
-    <span>31 systems</span>
-    <span id="health-badge" style="color: var(--green); font-weight: 600;">ALL HEALTHY</span>
-  </div>
-  <div class="filter-bar">
-    <button class="filter-btn active" onclick="filterCluster('all', this)">All</button>
-    <button class="filter-btn" onclick="filterCluster('infra', this)">Infrastructure</button>
-    <button class="filter-btn" onclick="filterCluster('agentic', this)">Agentic</button>
-    <button class="filter-btn" onclick="filterCluster('adhd', this)">ADHD-OS</button>
-    <button class="filter-btn" onclick="filterCluster('platform', this)">Platform</button>
-    <button class="filter-btn" onclick="filterCluster('revenue', this)">Revenue</button>
-  </div>
+<!-- Loading Screen -->
+<div class="loading" id="loading">
+  <div class="loading-brain">&#x1F9E0;</div>
+  <div class="loading-text">Initializing Brain Map</div>
 </div>
 
+<!-- Topbar -->
+<div class="topbar">
+  <div class="brand">
+    <div class="brand-icon">&#x1F9E0;</div>
+    <div>
+      <div class="brand-title">Brain Map</div>
+      <div class="brand-sub">Operator Topology</div>
+    </div>
+  </div>
+
+  <div class="stats">
+    <span class="stat"><strong id="stat-nodes">24</strong> nodes</span>
+    <span class="stat"><strong id="stat-edges">35</strong> rods</span>
+    <span class="stat"><strong>7</strong> clusters</span>
+    <span class="health">ALL HEALTHY</span>
+  </div>
+
+  <div class="search-wrapper">
+    <span class="search-icon">&#x1F50E;</span>
+    <input type="text" class="search-input" id="search" placeholder="Search systems..." autocomplete="off">
+    <span class="search-kbd">&#x2318;K</span>
+  </div>
+
+  <div class="filter-bar" id="filter-bar"></div>
+
+  <button class="tool-btn" id="dark-toggle" title="Toggle dark mode">&#x263E;</button>
+</div>
+
+<!-- Canvas -->
 <div id="canvas-container">
-  <div id="canvas">
-    <svg id="edge-layer"></svg>
-    <!-- Nodes rendered by JS -->
-  </div>
+  <canvas id="canvas"></canvas>
 
-  <div id="detail-panel">
-    <span class="close-btn" onclick="closeDetail()">&times;</span>
-    <h3 id="detail-name"></h3>
-    <div class="detail-type" id="detail-type"></div>
-    <div id="detail-body"></div>
-  </div>
-
-  <div class="zoom-controls">
-    <button class="zoom-btn" onclick="adjustZoom(1.2)">&#43;</button>
-    <button class="zoom-btn" onclick="adjustZoom(0.83)">&minus;</button>
-    <button class="zoom-btn" onclick="resetView()" style="font-size: 12px;">&#x21bb;</button>
-  </div>
-
-  <div class="legend">
+  <!-- Legend -->
+  <div class="legend" id="legend">
     <div class="legend-title">Status</div>
-    <div class="legend-item"><div class="status-dot status-green"></div>Live / verified</div>
-    <div class="legend-item"><div class="status-dot status-amber"></div>WIP / local only</div>
-    <div class="legend-item"><div class="status-dot status-gray"></div>Registered / dormant</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>Live / verified</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--gold)"></div>WIP / local only</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--ember)"></div>Blocked / critical</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--ink-faint)"></div>Registered / dormant</div>
+  </div>
+
+  <!-- Keyboard Hints -->
+  <div class="kbd-hints" id="kbd-hints">
+    <div class="kbd-hint"><span class="kbd">Scroll</span> zoom</div>
+    <div class="kbd-hint"><span class="kbd">Drag</span> move</div>
+    <div class="kbd-hint"><span class="kbd">Dbl-click</span> pin</div>
+    <div class="kbd-hint"><span class="kbd">Tab</span> cycle</div>
+    <div class="kbd-hint"><span class="kbd">R</span> reset</div>
+    <div class="kbd-hint"><span class="kbd">H</span> reheat</div>
+  </div>
+
+  <!-- Detail Panel -->
+  <div id="detail-panel">
+    <div class="detail-header">
+      <span class="detail-icon" id="d-icon"></span>
+      <div class="detail-titles">
+        <div class="detail-name" id="d-name"></div>
+        <div class="detail-cluster" id="d-cluster"></div>
+      </div>
+      <button class="detail-close" onclick="closeDetail()">&times;</button>
+    </div>
+    <div class="detail-body" id="d-body"></div>
+  </div>
+
+  <!-- Minimap -->
+  <div id="minimap-wrapper">
+    <div class="minimap-label">Overview</div>
+    <canvas id="minimap"></canvas>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls-left">
+    <div class="stats-overlay">
+      <span><strong id="ovl-zoom">100</strong>%</span>
+      <span><strong id="ovl-fps">60</strong> fps</span>
+    </div>
+    <div class="controls-row">
+      <button class="zoom-btn" onclick="adjustZoom(1.25)" title="Zoom in">&#43;</button>
+      <button class="zoom-btn" onclick="adjustZoom(0.8)" title="Zoom out">&minus;</button>
+      <button class="zoom-btn wide" onclick="resetView()" title="Reset view">&#x21BB;</button>
+      <button class="zoom-btn wide" onclick="reheat()" title="Reheat physics">&#x2668;</button>
+      <button class="zoom-btn wide" onclick="toggleHints()" title="Toggle hints">&#x2328;</button>
+    </div>
   </div>
 </div>
 
 <script>
-// ============================================================
-// DATA MODEL - entire operator portfolio
-// ============================================================
+"use strict";
+
+// ================================================================
+// CONFIG
+// ================================================================
+const PHYSICS = {
+  REPULSION: 9000,
+  SPRING_K: 0.035,
+  SPRING_LENGTH: 130,
+  CLUSTER_K: 0.006,
+  GRAVITY: 0.0025,
+  DAMPING: 0.82,
+  MAX_VEL: 15,
+  CENTER_X: 750,
+  CENTER_Y: 350,
+};
+
+const STATUS_COLORS = {
+  green: '#4a7c59',
+  amber: '#c4a04a',
+  red: '#c4582b',
+  gray: '#8a8a8a',
+};
+
+const STATUS_PULSE = {
+  green: 0.0012,
+  amber: 0.002,
+  red: 0.004,
+  gray: 0,
+};
+
+const STATUS_LABEL = {
+  green: 'Live',
+  amber: 'WIP',
+  red: 'Blocked',
+  gray: 'Dormant',
+};
+
+const EDGE_STYLE = {
+  solid:  { width: 1.5, dash: [],      particles: 4, speed: 0.0055, label: 'solid' },
+  dashed: { width: 1.2, dash: [5, 4],  particles: 3, speed: 0.004,  label: 'dashed' },
+  dotted: { width: 1.0, dash: [1, 4],  particles: 2, speed: 0.003,  label: 'dotted' },
+};
+
+// ================================================================
+// DATA MODEL
+// ================================================================
 
 const clusters = {
-  infra: { label: 'Infrastructure', color: '#3b6ea5', x: 60, y: 40, w: 520, h: 360 },
-  agentic: { label: 'Agentic Systems', color: '#7b6ea0', x: 620, y: 40, w: 480, h: 320 },
-  adhd: { label: 'ADHD-OS Brand', color: '#c4582b', x: 60, y: 420, w: 480, h: 320 },
-  platform: { label: 'Platform Tools', color: '#4a9c9c', x: 1140, y: 40, w: 360, h: 280 },
-  revenue: { label: 'Revenue & Business', color: '#4a7c59', x: 560, y: 380, w: 420, h: 200 },
-  media: { label: 'AI Media', color: '#c4a04a', x: 1140, y: 360, w: 360, h: 180 },
-  mods: { label: 'Game Modding', color: '#b86b8a', x: 1140, y: 580, w: 360, h: 160 },
+  infra:    { label: 'Infrastructure',   color: '#3b6ea5', icon: '\u{1F5A5}' },
+  agentic:  { label: 'Agentic Systems',  color: '#7b6ea0', icon: '\u{1F3AF}' },
+  adhd:     { label: 'ADHD-OS Brand',    color: '#c4582b', icon: '\u{1F3A8}' },
+  platform: { label: 'Platform Tools',   color: '#4a9c9c', icon: '\u{1F50D}' },
+  revenue:  { label: 'Revenue',          color: '#4a7c59', icon: '\u{1F4B0}' },
+  media:    { label: 'AI Media',         color: '#c4a04a', icon: '\u{1F3AC}' },
+  mods:     { label: 'Game Modding',     color: '#b86b8a', icon: '\u{1F3AE}' },
 };
 
 const nodes = [
   // === INFRASTRUCTURE ===
-  { id: 'vps', label: 'Netcup VPS', icon: '\u{1F5A5}', cluster: 'infra',
-    x: 80, y: 70, status: 'green',
-    details: { type: 'Production host', os: 'Debian 13', specs: '16 CPU / 31 GB', ip: '37.221.192.116',
-      uptime: 'Stable since Jul 29 03:06 UTC', restarts: '0', disk: '102 GB used / 502 GB free (17%)',
-      services: 'fusion-api (active), nginx (active), aurora-api (Docker, healthy)' }},
-  { id: 'fusion', label: 'Fusion API', icon: '\u{26A1}', cluster: 'infra',
-    x: 280, y: 70, status: 'green',
-    details: { type: 'OpenAI-compatible inference proxy', release: 'v15', binding: 'sha256:4043cbb...',
-      routes: '22 route groups, 100+ endpoints', health: 'status=ok, phase=12',
-      endpoint: 'adhd-os.co.uk/api/fusion', commit: 'd6b84124', tests: '807 pass / 16 skip / 0 fail' }},
-  { id: 'aurora', label: 'Aurora API', icon: '\u{1F310}', cluster: 'infra',
-    x: 460, y: 70, status: 'green',
-    details: { type: 'Inference gateway (Docker)', container: 'aurora-api Up 13 days (healthy)',
-      ip: '172.17.0.4:3000', health: '/health/live = ok',
-      endpoint: 'adhd-os.co.uk/api/aurora' }},
-  { id: 'hermes', label: 'Hermes Agent', icon: '\u{1F9E0}', cluster: 'infra',
-    x: 180, y: 200, status: 'green',
-    details: { type: 'Desktop AI agent (Nous Research)', version: 'v0.19.0',
-      config: 'v33', model: 'glm-5.2 (zai)', skills: '32 installed',
-      gateway: 'Telegram @TalosAgenticHermes_bot',
-      providers: 'fusion (adhd-os.co.uk), GLM, DeepSeek' }},
-  { id: 'nginx', label: 'Nginx', icon: '\u{1F6E1}', cluster: 'infra',
-    x: 370, y: 200, status: 'green',
-    details: { type: 'Reverse proxy + TLS termination', config: 'test successful',
-      routes: '/api/fusion -> :4000, /api/aurora -> :3001' }},
+  { id: 'vps', label: 'Netcup VPS', icon: '\u{1F5A5}', cluster: 'infra', x: 120, y: 100, status: 'green',
+    tags: ['server', 'hosting', 'debian', 'linux', 'production', '37.221.192.116'],
+    details: {
+      Type: 'Production host', OS: 'Debian 13', Specs: '16 CPU / 31 GB',
+      IP: '37.221.192.116', Uptime: 'Stable since Jul 29', Restarts: '0',
+      Disk: '102 GB used / 502 GB (17%)',
+      Services: 'fusion-api, nginx, aurora-api (Docker)',
+    }},
+  { id: 'fusion', label: 'Fusion API', icon: '\u{26A1}', cluster: 'infra', x: 310, y: 100, status: 'green',
+    tags: ['api', 'proxy', 'openai', 'inference', 'endpoint'],
+    details: {
+      Type: 'OpenAI-compatible inference proxy', Release: 'v15',
+      Routes: '22 groups, 100+ endpoints', Health: 'status=ok, phase=12',
+      Endpoint: 'adhd-os.co.uk/api/fusion', Commit: 'd6b84124',
+      Tests: '807 pass / 16 skip / 0 fail',
+    }},
+  { id: 'aurora', label: 'Aurora API', icon: '\u{1F310}', cluster: 'infra', x: 490, y: 100, status: 'green',
+    tags: ['docker', 'inference', 'gateway', 'aurora'],
+    details: {
+      Type: 'Inference gateway (Docker)', Container: 'aurora-api Up (healthy)',
+      IP: '172.17.0.4:3000', Health: '/health/live = ok',
+      Endpoint: 'adhd-os.co.uk/api/aurora',
+    }},
+  { id: 'hermes', label: 'Hermes Agent', icon: '\u{1F9E0}', cluster: 'infra', x: 210, y: 240, status: 'green',
+    tags: ['agent', 'desktop', 'nous', 'ai', 'assistant', 'telegram'],
+    details: {
+      Type: 'Desktop AI agent (Nous Research)', Version: 'v0.19.0',
+      Config: 'v33', Model: 'glm-5.2 (zai)', Skills: '32 installed',
+      Gateway: 'Telegram @TalosAgenticHermes_bot',
+      Providers: 'fusion, GLM, DeepSeek',
+    }},
+  { id: 'nginx', label: 'Nginx', icon: '\u{1F6E1}', cluster: 'infra', x: 400, y: 240, status: 'green',
+    tags: ['proxy', 'tls', 'reverse', 'routing'],
+    details: {
+      Type: 'Reverse proxy + TLS', Config: 'test successful',
+      Routes: '/api/fusion -> :4000, /api/aurora -> :3001',
+    }},
 
   // === AGENTIC SYSTEMS ===
-  { id: 'talos', label: 'TALOS', icon: '\u{1F3AF}', cluster: 'agentic',
-    x: 700, y: 80, status: 'green',
-    details: { type: 'Multi-agent governed OS', repo: 'fusion-harness (this repo)',
-      workspaces: '5 apps + 56 packages', apiPort: '4100 (dev) / 4000 (prod)',
-      uiPort: '3000 (Command Centre, Next.js 15)', capabilities: '19 proven / 0 partial / 1 blocked' }},
-  { id: 'company-os', label: 'Company-OS', icon: '\u{1F3E2}', cluster: 'agentic',
-    x: 900, y: 80, status: 'gray',
-    details: { type: 'AI software-development company OS', repo: 'Company-OS', state: 'clean, at origin' }},
-  { id: 'ib', label: 'Infinite Brain', icon: '\u{1F4DA}', cluster: 'agentic',
-    x: 700, y: 200, status: 'green',
-    details: { type: 'Hive-Mind Memory Vault', repo: 'infinite-brain-os',
-      knowledge: '259 knowledge files', entities: '64 entity files', secrets: '30 credential entries',
-      repos: '31 registered systems', departments: '5', sessions: 'active/closed/reviews' }},
-  { id: 'rtk', label: 'RTK', icon: '\u{1F501}', cluster: 'agentic',
-    x: 900, y: 200, status: 'gray',
-    details: { type: 'LLM token proxy (60-90% savings)', repo: 'rtk', state: 'clean, at origin' }},
-  { id: 'graphify', label: 'Graphify', icon: '\u{1F578}', cluster: 'agentic',
-    x: 800, y: 290, status: 'green',
-    details: { type: 'Codebase knowledge graph', nodes: 'AST-based', query: 'graphify query / path / explain',
-      output: 'graphify-out/graph.json' }},
+  { id: 'talos', label: 'TALOS', icon: '\u{1F3AF}', cluster: 'agentic', x: 720, y: 100, status: 'green',
+    tags: ['multi-agent', 'os', 'governed', 'fusion-harness', 'command'],
+    details: {
+      Type: 'Multi-agent governed OS', Repo: 'fusion-harness',
+      Workspaces: '5 apps + 56 packages', API: '4100 dev / 4000 prod',
+      UI: '3000 Command Centre (Next.js 15)',
+      Capabilities: '19 proven / 0 partial / 1 blocked',
+    }},
+  { id: 'company-os', label: 'Company-OS', icon: '\u{1F3E2}', cluster: 'agentic', x: 930, y: 100, status: 'gray',
+    tags: ['company', 'software', 'development', 'ai'],
+    details: {
+      Type: 'AI software-dev company OS', Repo: 'Company-OS', State: 'clean, at origin',
+    }},
+  { id: 'ib', label: 'Infinite Brain', icon: '\u{1F4DA}', cluster: 'agentic', x: 720, y: 230, status: 'green',
+    tags: ['memory', 'vault', 'hive-mind', 'knowledge', 'entities', 'secrets'],
+    details: {
+      Type: 'Hive-Mind Memory Vault', Repo: 'infinite-brain-os',
+      Knowledge: '259 files', Entities: '64 files', Secrets: '30 entries',
+      Repos: '31 registered systems', Departments: '5',
+    }},
+  { id: 'rtk', label: 'RTK', icon: '\u{1F501}', cluster: 'agentic', x: 930, y: 230, status: 'gray',
+    tags: ['token', 'proxy', 'savings', 'llm'],
+    details: {
+      Type: 'LLM token proxy (60-90% savings)', Repo: 'rtk', State: 'clean, at origin',
+    }},
+  { id: 'graphify', label: 'Graphify', icon: '\u{1F578}', cluster: 'agentic', x: 820, y: 340, status: 'green',
+    tags: ['ast', 'graph', 'codebase', 'knowledge', 'query'],
+    details: {
+      Type: 'Codebase knowledge graph', Nodes: 'AST-based',
+      Query: 'graphify query / path / explain', Output: 'graphify-out/graph.json',
+    }},
 
   // === ADHD-OS BRAND ===
-  { id: 'adhd-web', label: 'ADHD-OS Website', icon: '\u{1F3A8}', cluster: 'adhd',
-    x: 80, y: 450, status: 'amber',
-    details: { type: 'Artsyled Vite website', repo: 'local (no git)', state: 'WIP' }},
-  { id: 'adhd-dash', label: 'ADHD-OS Mobile', icon: '\u{1F4F1}', cluster: 'adhd',
-    x: 250, y: 450, status: 'amber',
-    details: { type: 'Expo React Native mobile app', repo: 'local', build: 'iOS build 9 PREPARE_FOR_SUBMISSION',
-      pricing: 'GBP 14 / 34 / 79 / 1200' }},
-  { id: 'adhd-mdb', label: 'Master Ref DB', icon: '\u{1F4CA}', cluster: 'adhd',
-    x: 420, y: 450, status: 'amber',
-    details: { type: 'Content backbone database', repo: 'local (no git)', state: 'WIP' }},
-  { id: 'design-sys', label: 'Design System', icon: '\u{1F3A1}', cluster: 'adhd',
-    x: 180, y: 560, status: 'green',
-    details: { type: 'Meridian/Constellation system', radius: '10px standard, 14px max',
-      accent: 'Ember (#c4582b) - one dominant action per surface',
-      shadows: 'layered-paper shadow-solid-sm/md/lg' }},
-  { id: 'adhd-dpia', label: 'DPIA', icon: '\u{1F4DC}', cluster: 'adhd',
-    x: 360, y: 560, status: 'red',
-    details: { type: 'Data Protection Impact Assessment', state: 'UNSIGNED - blocking for App Store' }},
+  { id: 'adhd-web', label: 'ADHD-OS Web', icon: '\u{1F3A8}', cluster: 'adhd', x: 120, y: 470, status: 'amber',
+    tags: ['website', 'vite', 'artsyled', 'adhd'],
+    details: {
+      Type: 'Artsyled Vite website', Repo: 'local (no git)', State: 'WIP',
+    }},
+  { id: 'adhd-dash', label: 'ADHD-OS Mobile', icon: '\u{1F4F1}', cluster: 'adhd', x: 300, y: 470, status: 'amber',
+    tags: ['mobile', 'expo', 'react-native', 'ios', 'app-store'],
+    details: {
+      Type: 'Expo React Native app', Build: 'iOS build 9 PREPARE_FOR_SUBMISSION',
+      Pricing: 'GBP 14 / 34 / 79 / 1200',
+    }},
+  { id: 'adhd-mdb', label: 'Master Ref DB', icon: '\u{1F4CA}', cluster: 'adhd', x: 480, y: 470, status: 'amber',
+    tags: ['database', 'content', 'backbone', 'reference'],
+    details: {
+      Type: 'Content backbone database', Repo: 'local (no git)', State: 'WIP',
+    }},
+  { id: 'design-sys', label: 'Design System', icon: '\u{1F3A1}', cluster: 'adhd', x: 210, y: 580, status: 'green',
+    tags: ['meridian', 'constellation', 'design', 'tokens', 'ember'],
+    details: {
+      Type: 'Meridian / Constellation system', Radius: '10px standard, 14px max',
+      Accent: 'Ember (#c4582b)', Shadows: 'layered-paper sm/md/lg',
+    }},
+  { id: 'adhd-dpia', label: 'DPIA', icon: '\u{1F4DC}', cluster: 'adhd', x: 390, y: 580, status: 'red',
+    tags: ['dpia', 'data-protection', 'legal', 'compliance', 'blocking'],
+    details: {
+      Type: 'Data Protection Impact Assessment', State: 'UNSIGNED - blocking App Store',
+    }},
 
   // === PLATFORM TOOLS ===
-  { id: 'searxng', label: 'SearXNG', icon: '\u{1F50D}', cluster: 'platform',
-    x: 1180, y: 80, status: 'green',
-    details: { type: 'Privacy search engine', host: 'VPS Docker', usedBy: 'Hermes web_search' }},
-  { id: 'ollama', label: 'Ollama', icon: '\u{1F416}', cluster: 'platform',
-    x: 1340, y: 80, status: 'green',
-    details: { type: 'Local LLM runtime', host: 'VPS Docker', usedBy: 'Hermes fallback inference' }},
-  { id: 'comfyui', label: 'ComfyUI', icon: '\u{1F5BC}', cluster: 'platform',
-    x: 1180, y: 180, status: 'gray',
-    details: { type: 'Image generation runtime', state: 'registered, not always running' }},
-  { id: 'elevenlabs', label: 'ElevenLabs', icon: '\u{1F3A4}', cluster: 'platform',
-    x: 1340, y: 180, status: 'green',
-    details: { type: 'Voice cloning / TTS', voice: 'Archie (aMdQCEO9kwP77QH1DiFy)',
-      usedBy: 'Hermes, TALOS, Aurora TTS' }},
+  { id: 'searxng', label: 'SearXNG', icon: '\u{1F50D}', cluster: 'platform', x: 1180, y: 100, status: 'green',
+    tags: ['search', 'privacy', 'metasearch'],
+    details: { Type: 'Privacy search engine', Host: 'VPS Docker', UsedBy: 'Hermes web_search' }},
+  { id: 'ollama', label: 'Ollama', icon: '\u{1F416}', cluster: 'platform', x: 1340, y: 100, status: 'green',
+    tags: ['llm', 'local', 'runtime', 'fallback'],
+    details: { Type: 'Local LLM runtime', Host: 'VPS Docker', UsedBy: 'Hermes fallback' }},
+  { id: 'comfyui', label: 'ComfyUI', icon: '\u{1F5BC}', cluster: 'platform', x: 1180, y: 200, status: 'gray',
+    tags: ['image', 'generation', 'diffusion', 'stable'],
+    details: { Type: 'Image generation runtime', State: 'registered, not always running' }},
+  { id: 'elevenlabs', label: 'ElevenLabs', icon: '\u{1F3A4}', cluster: 'platform', x: 1340, y: 200, status: 'green',
+    tags: ['voice', 'tts', 'cloning', 'archie'],
+    details: { Type: 'Voice cloning / TTS', Voice: 'Archie (aMdQCEO9...)', UsedBy: 'Hermes, TALOS, Aurora' }},
 
   // === REVENUE ===
-  { id: 'hrio', label: 'Hermes Revenue OS', icon: '\u{1F4B0}', cluster: 'revenue',
-    x: 620, y: 430, status: 'gray',
-    details: { type: 'Reddit lead pipeline', repo: 'local', state: 'registered' }},
-  { id: 'grr', label: 'GetReviewReady', icon: '\u{1F50F}', cluster: 'revenue',
-    x: 820, y: 430, status: 'gray',
-    details: { type: 'App Review rescue service', repo: 'getreviewreadycom', state: 'clean' }},
-  { id: 'fiverr', label: 'Fiverr', icon: '\u{1F4BC}', cluster: 'revenue',
-    x: 730, y: 510, status: 'amber',
-    details: { type: 'Freelance marketplace', profile: 'archerprojects', gigs: '7 active',
-      rating: '11/12 professional', server: '191.101.80.184' }},
+  { id: 'hrio', label: 'Revenue OS', icon: '\u{1F4B0}', cluster: 'revenue', x: 620, y: 430, status: 'gray',
+    tags: ['revenue', 'reddit', 'leads', 'pipeline'],
+    details: { Type: 'Reddit lead pipeline', Repo: 'local', State: 'registered' }},
+  { id: 'grr', label: 'GetReviewReady', icon: '\u{1F50F}', cluster: 'revenue', x: 820, y: 430, status: 'gray',
+    tags: ['app-review', 'rescue', 'service'],
+    details: { Type: 'App Review rescue service', Repo: 'getreviewreadycom', State: 'clean' }},
+  { id: 'fiverr', label: 'Fiverr', icon: '\u{1F4BC}', cluster: 'revenue', x: 730, y: 520, status: 'amber',
+    tags: ['freelance', 'marketplace', 'archerprojects', 'gigs'],
+    details: {
+      Type: 'Freelance marketplace', Profile: 'archerprojects', Gigs: '7 active',
+      Rating: '11/12 professional', Server: '191.101.80.184',
+    }},
 
   // === AI MEDIA ===
-  { id: 'aivid', label: 'AI Video Upscaler', icon: '\u{1F3AC}', cluster: 'media',
-    x: 1180, y: 400, status: 'gray',
-    details: { type: 'Frame-level video enhancement', org: 'OCNAI', state: 'upstream clone' }},
-  { id: 'glm-ui', label: 'GLM 5 Coder UI', icon: '\u{1F4BB}', cluster: 'media',
-    x: 1340, y: 400, status: 'amber',
-    details: { type: 'Model-tied web UI', state: 'local, no git' }},
+  { id: 'aivid', label: 'AI Video Upscaler', icon: '\u{1F3AC}', cluster: 'media', x: 1180, y: 400, status: 'gray',
+    tags: ['video', 'upscaler', 'frame', 'enhancement'],
+    details: { Type: 'Frame-level video enhancement', Org: 'OCNAI', State: 'upstream clone' }},
+  { id: 'glm-ui', label: 'GLM 5 Coder UI', icon: '\u{1F4BB}', cluster: 'media', x: 1340, y: 400, status: 'amber',
+    tags: ['glm', 'coder', 'web-ui', 'model'],
+    details: { Type: 'Model-tied web UI', State: 'local, no git' }},
 
   // === GAME MODDING ===
-  { id: 'cdmf', label: 'Crimson Desert Forge', icon: '\u{1F3AE}', cluster: 'mods',
-    x: 1200, y: 620, status: 'amber',
-    details: { type: 'Vite mod workspace', repo: 'crimson-desert-mod-forge', state: 'clean' }},
-  { id: 'gace', label: 'G.A.C.E', icon: '\u{1F527}', cluster: 'mods',
-    x: 1380, y: 620, status: 'amber',
-    details: { type: 'Game Asset Creation Engine', state: 'local-first, event-sourced' }},
+  { id: 'cdmf', label: 'Crimson Desert Forge', icon: '\u{1F3AE}', cluster: 'mods', x: 1200, y: 600, status: 'amber',
+    tags: ['game', 'mod', 'vite', 'crimson-desert'],
+    details: { Type: 'Vite mod workspace', Repo: 'crimson-desert-mod-forge', State: 'clean' }},
+  { id: 'gace', label: 'G.A.C.E', icon: '\u{1F527}', cluster: 'mods', x: 1380, y: 600, status: 'amber',
+    tags: ['game', 'asset', 'creation', 'engine', 'event-sourced'],
+    details: { Type: 'Game Asset Creation Engine', State: 'local-first, event-sourced' }},
 ];
 
-// Edges (connections/rods between nodes)
 const edges = [
   // Infrastructure
-  { from: 'vps', to: 'fusion', label: 'hosts', type: 'solid' },
-  { from: 'vps', to: 'aurora', label: 'hosts (Docker)', type: 'solid' },
-  { from: 'vps', to: 'searxng', label: 'hosts (Docker)', type: 'solid' },
-  { from: 'vps', to: 'ollama', label: 'hosts (Docker)', type: 'solid' },
-  { from: 'nginx', to: 'fusion', label: 'proxy :4000', type: 'solid' },
-  { from: 'nginx', to: 'aurora', label: 'proxy :3001', type: 'solid' },
-  { from: 'fusion', to: 'aurora', label: 'routes inference', type: 'solid' },
-  { from: 'hermes', to: 'vps', label: 'manages via SSH', type: 'dashed' },
-  { from: 'hermes', to: 'fusion', label: 'operates', type: 'dashed' },
-  { from: 'hermes', to: 'ib', label: 'reads from', type: 'dashed' },
-  { from: 'hermes', to: 'searxng', label: 'web search', type: 'dotted' },
-  { from: 'hermes', to: 'ollama', label: 'fallback', type: 'dotted' },
-  { from: 'hermes', to: 'elevenlabs', label: 'TTS (Archie)', type: 'dotted' },
+  { from: 'vps',    to: 'fusion',    label: 'hosts',        type: 'solid' },
+  { from: 'vps',    to: 'aurora',    label: 'Docker',       type: 'solid' },
+  { from: 'vps',    to: 'searxng',   label: 'Docker',       type: 'solid' },
+  { from: 'vps',    to: 'ollama',    label: 'Docker',       type: 'solid' },
+  { from: 'nginx',  to: 'fusion',    label: 'proxy',        type: 'solid' },
+  { from: 'nginx',  to: 'aurora',    label: 'proxy',        type: 'solid' },
+  { from: 'nginx',  to: 'searxng',   label: 'proxy',        type: 'dashed' },
+  { from: 'fusion', to: 'aurora',    label: 'routes infer', type: 'solid' },
+  { from: 'hermes', to: 'vps',       label: 'SSH',          type: 'dashed' },
+  { from: 'hermes', to: 'fusion',    label: 'operates',     type: 'dashed' },
+  { from: 'hermes', to: 'talos',     label: 'operates',     type: 'dashed' },
+  { from: 'hermes', to: 'ib',        label: 'reads',        type: 'dashed' },
+  { from: 'hermes', to: 'searxng',   label: 'search',       type: 'dotted' },
+  { from: 'hermes', to: 'ollama',    label: 'fallback',     type: 'dotted' },
+  { from: 'hermes', to: 'elevenlabs',label: 'TTS Archie',   type: 'dotted' },
 
   // Agentic
-  { from: 'fusion', to: 'talos', label: 'part of', type: 'solid' },
-  { from: 'talos', to: 'graphify', label: 'AST graph', type: 'dotted' },
-  { from: 'talos', to: 'ib', label: 'doctrine overlap', type: 'dashed' },
-  { from: 'rtk', to: 'talos', label: 'token proxy', type: 'dashed' },
-  { from: 'rtk', to: 'company-os', label: 'token proxy', type: 'dashed' },
-  { from: 'ib', to: 'talos', label: 'governs', type: 'dashed' },
+  { from: 'fusion',     to: 'talos',      label: 'part of',     type: 'solid' },
+  { from: 'talos',      to: 'graphify',   label: 'AST graph',   type: 'dotted' },
+  { from: 'talos',      to: 'ib',         label: 'doctrine',    type: 'dashed' },
+  { from: 'rtk',        to: 'talos',      label: 'token proxy', type: 'dashed' },
+  { from: 'rtk',        to: 'company-os', label: 'token proxy', type: 'dashed' },
+  { from: 'ib',         to: 'talos',      label: 'governs',     type: 'dashed' },
+  { from: 'ib',         to: 'adhd-mdb',   label: 'feeds',       type: 'dotted' },
+  { from: 'searxng',    to: 'talos',      label: 'search',      type: 'dotted' },
+  { from: 'elevenlabs', to: 'talos',      label: 'voice',       type: 'dotted' },
 
   // ADHD-OS
-  { from: 'adhd-mdb', to: 'adhd-web', label: 'feeds', type: 'solid' },
-  { from: 'adhd-mdb', to: 'adhd-dash', label: 'feeds', type: 'solid' },
-  { from: 'design-sys', to: 'adhd-web', label: 'design tokens', type: 'dashed' },
-  { from: 'design-sys', to: 'adhd-dash', label: 'design tokens', type: 'dashed' },
-  { from: 'design-sys', to: 'talos', label: 'Meridian system', type: 'dashed' },
-  { from: 'adhd-dpia', to: 'adhd-dash', label: 'blocks launch', type: 'solid' },
+  { from: 'adhd-mdb',  to: 'adhd-web',  label: 'feeds',    type: 'solid' },
+  { from: 'adhd-mdb',  to: 'adhd-dash', label: 'feeds',    type: 'solid' },
+  { from: 'design-sys',to: 'adhd-web',  label: 'tokens',   type: 'dashed' },
+  { from: 'design-sys',to: 'adhd-dash', label: 'tokens',   type: 'dashed' },
+  { from: 'design-sys',to: 'talos',     label: 'Meridian', type: 'dashed' },
+  { from: 'adhd-dpia', to: 'adhd-dash', label: 'blocks',   type: 'solid' },
+  { from: 'fusion',    to: 'adhd-web',  label: 'API',      type: 'dashed' },
+  { from: 'aurora',    to: 'adhd-dash', label: 'inference',type: 'dashed' },
+  { from: 'talos',     to: 'adhd-dpia', label: 'compliance', type: 'dotted' },
 
   // Revenue
-  { from: 'hrio', to: 'grr', label: 'lead flow', type: 'dashed' },
-  { from: 'grr', to: 'fiverr', label: 'service overlap', type: 'dotted' },
+  { from: 'hrio',   to: 'grr',    label: 'lead flow', type: 'dashed' },
+  { from: 'grr',    to: 'fiverr', label: 'overlap',   type: 'dotted' },
+  { from: 'fiverr', to: 'hrio',   label: 'income',    type: 'dotted' },
 ];
 
-// ============================================================
-// RENDERING
-// ============================================================
-const canvas = document.getElementById('canvas');
-const edgeLayer = document.getElementById('edge-layer');
-let zoom = 1;
-let panX = 0, panY = 0;
-let isDragging = false;
-let dragStart = null;
-let activeFilter = 'all';
-
+// ================================================================
+// STATE
+// ================================================================
 const nodeMap = {};
 nodes.forEach(n => nodeMap[n.id] = n);
 
-function renderClusters() {
+let zoom = 1, panX = 0, panY = 0;
+let panVelX = 0, panVelY = 0;
+let hoveredNode = null, selectedNode = null;
+let draggedNode = null;
+let isPanning = false;
+let lastPanX = 0, lastPanY = 0;
+let activeFilter = 'all';
+let searchQuery = '';
+let darkMode = false;
+let physicsTemp = 1.0;
+let time = 0;
+let fps = 60;
+let frameCount = 0;
+let lastFpsTime = 0;
+let hintsVisible = true;
+let introAlpha = 0;
+
+// Compute node degrees
+nodes.forEach(n => {
+  n.degree = edges.filter(e => e.from === n.id || e.to === n.id).length;
+  n.radius = 14 + n.degree * 1.2;
+  n.mass = 1 + n.degree * 0.3;
+  n.vx = 0;
+  n.vy = 0;
+  n.pinned = false;
+});
+
+// Init edge particles
+edges.forEach(e => {
+  const style = EDGE_STYLE[e.type];
+  e.particles = [];
+  for (let i = 0; i < style.particles; i++) {
+    e.particles.push({ t: i / style.particles + Math.random() * 0.1 });
+  }
+});
+
+// ================================================================
+// CANVAS SETUP
+// ================================================================
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const minimap = document.getElementById('minimap');
+const mctx = minimap.getContext('2d');
+const dpr = Math.max(1, window.devicePixelRatio || 1);
+let cw = 0, ch = 0;
+
+function resizeCanvas() {
+  const container = document.getElementById('canvas-container');
+  cw = container.clientWidth;
+  ch = container.clientHeight;
+  canvas.width = cw * dpr;
+  canvas.height = ch * dpr;
+  canvas.style.width = cw + 'px';
+  canvas.style.height = ch + 'px';
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  const mw = minimap.parentElement.clientWidth;
+  const mh = minimap.parentElement.clientHeight;
+  minimap.width = mw * dpr;
+  minimap.height = mh * dpr;
+  minimap.style.width = mw + 'px';
+  minimap.style.height = mh + 'px';
+  mctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+
+// ================================================================
+// HELPERS
+// ================================================================
+
+function hexAlpha(hex, alpha) {
+  const a = Math.round(Math.max(0, Math.min(1, alpha)) * 255).toString(16).padStart(2, '0');
+  return hex + a;
+}
+
+function lightenHex(hex, amount) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  const nr = Math.min(255, Math.floor(r + (255 - r) * amount));
+  const ng = Math.min(255, Math.floor(g + (255 - g) * amount));
+  const nb = Math.min(255, Math.floor(b + (255 - b) * amount));
+  return '#' + nr.toString(16).padStart(2,'0') + ng.toString(16).padStart(2,'0') + nb.toString(16).padStart(2,'0');
+}
+
+function getControlPoint(x1, y1, x2, y2) {
+  const midX = (x1 + x2) / 2;
+  const midY = (y1 + y2) / 2;
+  const dx = x2 - x1;
+  const dy = y2 - y1;
+  const dist = Math.max(1, Math.sqrt(dx * dx + dy * dy));
+  const curve = Math.min(dist * 0.12, 35);
+  return { cx: midX + (dy / dist) * curve, cy: midY - (dx / dist) * curve };
+}
+
+function bezierPoint(x1, y1, cx, cy, x2, y2, t) {
+  const mt = 1 - t;
+  return {
+    x: mt * mt * x1 + 2 * mt * t * cx + t * t * x2,
+    y: mt * mt * y1 + 2 * mt * t * cy + t * t * y2,
+  };
+}
+
+function fuzzyMatch(text, query) {
+  text = text.toLowerCase();
+  query = query.toLowerCase();
+  if (text.includes(query)) return true;
+  let qi = 0;
+  for (let ti = 0; ti < text.length && qi < query.length; ti++) {
+    if (text[ti] === query[qi]) qi++;
+  }
+  return qi === query.length;
+}
+
+function isNodeVisible(n) {
+  if (activeFilter !== 'all' && n.cluster !== activeFilter) return false;
+  if (searchQuery) {
+    return fuzzyMatch(n.label, searchQuery) ||
+      (n.tags || []).some(t => fuzzyMatch(t, searchQuery)) ||
+      Object.values(n.details || {}).some(v => fuzzyMatch(String(v), searchQuery));
+  }
+  return true;
+}
+
+function isEdgeVisible(e) {
+  if (activeFilter !== 'all') {
+    const from = nodeMap[e.from], to = nodeMap[e.to];
+    if (from.cluster !== activeFilter && to.cluster !== activeFilter) return false;
+  }
+  return true;
+}
+
+function getNodeAt(sx, sy) {
+  const wx = (sx - panX) / zoom;
+  const wy = (sy - panY) / zoom;
+  for (let i = nodes.length - 1; i >= 0; i--) {
+    const n = nodes[i];
+    if (!isNodeVisible(n)) continue;
+    const dx = wx - n.x;
+    const dy = wy - n.y;
+    if (dx * dx + dy * dy <= (n.radius + 4) * (n.radius + 4)) return n;
+  }
+  return null;
+}
+
+function getWorldBounds() {
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  nodes.forEach(n => {
+    minX = Math.min(minX, n.x);
+    minY = Math.min(minY, n.y);
+    maxX = Math.max(maxX, n.x);
+    maxY = Math.max(maxY, n.y);
+  });
+  return { minX: minX - 60, minY: minY - 60, maxX: maxX + 60, maxY: maxY + 60 };
+}
+
+// Convex hull (Andrew's monotone chain)
+function convexHull(pts) {
+  const points = pts.slice().sort((a, b) => a.x - b.x || a.y - b.y);
+  if (points.length <= 1) return points;
+  const cross = (o, a, b) => (a.x - o.x) * (b.y - o.y) - (a.y - o.y) * (b.x - o.x);
+  const lower = [];
+  for (const p of points) {
+    while (lower.length >= 2 && cross(lower[lower.length - 2], lower[lower.length - 1], p) <= 0) lower.pop();
+    lower.push(p);
+  }
+  const upper = [];
+  for (let i = points.length - 1; i >= 0; i--) {
+    const p = points[i];
+    while (upper.length >= 2 && cross(upper[upper.length - 2], upper[upper.length - 1], p) <= 0) upper.pop();
+    upper.push(p);
+  }
+  lower.pop();
+  upper.pop();
+  return lower.concat(upper);
+}
+
+function expandHull(hull, padding) {
+  if (hull.length === 0) return hull;
+  const cx = hull.reduce((s, p) => s + p.x, 0) / hull.length;
+  const cy = hull.reduce((s, p) => s + p.y, 0) / hull.length;
+  return hull.map(p => {
+    const dx = p.x - cx, dy = p.y - cy;
+    const dist = Math.max(1, Math.sqrt(dx * dx + dy * dy));
+    return { x: p.x + (dx / dist) * padding, y: p.y + (dy / dist) * padding };
+  });
+}
+
+function getClusterHull(key) {
+  const members = nodes.filter(n => n.cluster === key);
+  if (members.length === 0) return null;
+  if (members.length <= 2) {
+    const cx = members.reduce((s, n) => s + n.x, 0) / members.length;
+    const cy = members.reduce((s, n) => s + n.y, 0) / members.length;
+    const r = members.length === 1 ? 50 : Math.max(50, Math.sqrt(
+      Math.pow(members[0].x - members[1].x, 2) + Math.pow(members[0].y - members[1].y, 2)
+    ) / 2 + 40);
+    const pts = [];
+    for (let i = 0; i < 20; i++) {
+      const a = (i / 20) * Math.PI * 2;
+      pts.push({ x: cx + Math.cos(a) * r, y: cy + Math.sin(a) * r });
+    }
+    return pts;
+  }
+  return expandHull(convexHull(members.map(n => ({ x: n.x, y: n.y }))), 45);
+}
+
+// ================================================================
+// PHYSICS
+// ================================================================
+
+function physicsStep() {
+  // Reset forces
+  nodes.forEach(n => { n.fx = 0; n.fy = 0; });
+
+  // Repulsion
+  for (let i = 0; i < nodes.length; i++) {
+    for (let j = i + 1; j < nodes.length; j++) {
+      const dx = nodes[j].x - nodes[i].x;
+      const dy = nodes[j].y - nodes[i].y;
+      const distSq = Math.max(100, dx * dx + dy * dy);
+      const dist = Math.sqrt(distSq);
+      const force = PHYSICS.REPULSION / distSq;
+      const fx = (dx / dist) * force;
+      const fy = (dy / dist) * force;
+      nodes[i].fx -= fx; nodes[i].fy -= fy;
+      nodes[j].fx += fx; nodes[j].fy += fy;
+    }
+  }
+
+  // Springs
+  edges.forEach(e => {
+    const a = nodeMap[e.from], b = nodeMap[e.to];
+    if (!a || !b) return;
+    const dx = b.x - a.x, dy = b.y - a.y;
+    const dist = Math.max(1, Math.sqrt(dx * dx + dy * dy));
+    const force = PHYSICS.SPRING_K * (dist - PHYSICS.SPRING_LENGTH);
+    const fx = (dx / dist) * force;
+    const fy = (dy / dist) * force;
+    a.fx += fx; a.fy += fy;
+    b.fx -= fx; b.fy -= fy;
+  });
+
+  // Cluster centering
+  Object.keys(clusters).forEach(key => {
+    const members = nodes.filter(n => n.cluster === key);
+    if (members.length === 0) return;
+    const cx = members.reduce((s, n) => s + n.x, 0) / members.length;
+    const cy = members.reduce((s, n) => s + n.y, 0) / members.length;
+    members.forEach(n => {
+      n.fx += (cx - n.x) * PHYSICS.CLUSTER_K;
+      n.fy += (cy - n.y) * PHYSICS.CLUSTER_K;
+    });
+  });
+
+  // Gravity
+  nodes.forEach(n => {
+    n.fx += (PHYSICS.CENTER_X - n.x) * PHYSICS.GRAVITY;
+    n.fy += (PHYSICS.CENTER_Y - n.y) * PHYSICS.GRAVITY;
+  });
+
+  // Apply
+  const temp = Math.max(0.02, physicsTemp);
+  nodes.forEach(n => {
+    if (n.pinned || n === draggedNode) { n.vx = 0; n.vy = 0; return; }
+    n.vx = (n.vx + n.fx * temp / n.mass) * PHYSICS.DAMPING;
+    n.vy = (n.vy + n.fy * temp / n.mass) * PHYSICS.DAMPING;
+    const speed = Math.sqrt(n.vx * n.vx + n.vy * n.vy);
+    if (speed > PHYSICS.MAX_VEL) {
+      n.vx = (n.vx / speed) * PHYSICS.MAX_VEL;
+      n.vy = (n.vy / speed) * PHYSICS.MAX_VEL;
+    }
+    n.x += n.vx;
+    n.y += n.vy;
+  });
+
+  // Collision
+  for (let i = 0; i < nodes.length; i++) {
+    for (let j = i + 1; j < nodes.length; j++) {
+      const dx = nodes[j].x - nodes[i].x;
+      const dy = nodes[j].y - nodes[i].y;
+      const dist = Math.max(0.1, Math.sqrt(dx * dx + dy * dy));
+      const minDist = nodes[i].radius + nodes[j].radius + 10;
+      if (dist < minDist) {
+        const push = (minDist - dist) / 2;
+        const fx = (dx / dist) * push;
+        const fy = (dy / dist) * push;
+        if (!nodes[i].pinned && nodes[i] !== draggedNode) { nodes[i].x -= fx; nodes[i].y -= fy; }
+        if (!nodes[j].pinned && nodes[j] !== draggedNode) { nodes[j].x += fx; nodes[j].y += fy; }
+      }
+    }
+  }
+
+  physicsTemp *= 0.998;
+}
+
+// ================================================================
+// RENDER
+// ================================================================
+
+function render() {
+  ctx.clearRect(0, 0, cw, ch);
+
+  // Background
+  ctx.fillStyle = darkMode ? '#0d0d0f' : '#f5f4ed';
+  ctx.fillRect(0, 0, cw, ch);
+
+  // Apply world transform
+  ctx.save();
+  ctx.translate(panX, panY);
+  ctx.scale(zoom, zoom);
+
+  // Grid
+  drawGrid();
+
+  // Cluster regions
+  drawClusters();
+
+  // Edges
+  drawEdges();
+
+  // Particles
+  drawParticles();
+
+  // Nodes
+  drawNodes();
+
+  // Edge labels (hover)
+  drawEdgeLabels();
+
+  ctx.restore();
+
+  // Vignette
+  const vignette = ctx.createRadialGradient(cw / 2, ch / 2, ch / 3, cw / 2, ch / 2, ch);
+  vignette.addColorStop(0, 'rgba(0,0,0,0)');
+  vignette.addColorStop(1, darkMode ? 'rgba(0,0,0,0.35)' : 'rgba(0,0,0,0.05)');
+  ctx.fillStyle = vignette;
+  ctx.fillRect(0, 0, cw, ch);
+
+  // Intro overlay
+  if (introAlpha > 0) {
+    ctx.fillStyle = 'rgba(245,244,237,' + introAlpha + ')';
+    ctx.fillRect(0, 0, cw, ch);
+  }
+}
+
+function drawGrid() {
+  const grid = 40;
+  const visMinX = (-panX - 60) / zoom;
+  const visMinY = (-panY - 60) / zoom;
+  const visMaxX = (cw - panX + 60) / zoom;
+  const visMaxY = (ch - panY + 60) / zoom;
+  const startX = Math.floor(visMinX / grid) * grid;
+  const endX = Math.ceil(visMaxX / grid) * grid;
+  const startY = Math.floor(visMinY / grid) * grid;
+  const endY = Math.ceil(visMaxY / grid) * grid;
+
+  ctx.strokeStyle = darkMode ? 'rgba(255,255,255,0.025)' : 'rgba(0,0,0,0.03)';
+  ctx.lineWidth = Math.max(0.5, 1 / zoom);
+  ctx.beginPath();
+  for (let x = startX; x <= endX; x += grid) { ctx.moveTo(x, startY); ctx.lineTo(x, endY); }
+  for (let y = startY; y <= endY; y += grid) { ctx.moveTo(startX, y); ctx.lineTo(endX, y); }
+  ctx.stroke();
+}
+
+function drawClusters() {
   Object.entries(clusters).forEach(([key, c]) => {
     if (activeFilter !== 'all' && activeFilter !== key) return;
+    const hull = getClusterHull(key);
+    if (!hull || hull.length < 3) return;
 
-    const bg = document.createElement('div');
-    bg.className = 'cluster-bg';
-    bg.style.left = (c.x * zoom + panX) + 'px';
-    bg.style.top = (c.y * zoom + panY) + 'px';
-    bg.style.width = (c.w * zoom) + 'px';
-    bg.style.height = (c.h * zoom) + 'px';
-    bg.style.borderColor = c.color;
-    canvas.appendChild(bg);
+    // Smooth hull
+    ctx.beginPath();
+    const mids = [];
+    for (let i = 0; i < hull.length; i++) {
+      const next = hull[(i + 1) % hull.length];
+      mids.push({ x: (hull[i].x + next.x) / 2, y: (hull[i].y + next.y) / 2 });
+    }
+    ctx.moveTo(mids[0].x, mids[0].y);
+    for (let i = 0; i < hull.length; i++) {
+      const vertex = hull[(i + 1) % hull.length];
+      const mid = mids[(i + 1) % hull.length];
+      ctx.quadraticCurveTo(vertex.x, vertex.y, mid.x, mid.y);
+    }
+    ctx.closePath();
 
-    const lbl = document.createElement('div');
-    lbl.className = 'cluster-label';
-    lbl.textContent = c.label;
-    lbl.style.left = (c.x * zoom + panX + 12) + 'px';
-    lbl.style.top = (c.y * zoom + panY + 8) + 'px';
-    lbl.style.color = c.color;
-    canvas.appendChild(lbl);
+    ctx.fillStyle = hexAlpha(c.color, darkMode ? 0.06 : 0.04);
+    ctx.fill();
+    ctx.strokeStyle = hexAlpha(c.color, darkMode ? 0.18 : 0.12);
+    ctx.lineWidth = 1.2 / zoom;
+    ctx.setLineDash([5 / zoom, 4 / zoom]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Label at top of hull
+    const minY = Math.min(...hull.map(p => p.y));
+    const cx = hull.reduce((s, p) => s + p.x, 0) / hull.length;
+    const fontSize = Math.max(8, 10 / zoom);
+    ctx.font = '700 ' + fontSize + 'px -apple-system, system-ui, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'bottom';
+    ctx.fillStyle = hexAlpha(c.color, darkMode ? 0.5 : 0.4);
+    ctx.fillText(c.label.toUpperCase(), cx, minY - 4 / zoom);
   });
 }
 
-function renderNodes() {
+function drawEdges() {
+  edges.forEach(e => {
+    if (!isEdgeVisible(e)) return;
+    const from = nodeMap[e.from], to = nodeMap[e.to];
+    if (!from || !to) return;
+
+    const { cx, cy } = getControlPoint(from.x, from.y, to.x, to.y);
+    const isHighlighted = hoveredNode && (e.from === hoveredNode.id || e.to === hoveredNode.id);
+    const isDimmed = (hoveredNode && !isHighlighted) || (selectedNode && !isHighlighted && e.from !== selectedNode.id && e.to !== selectedNode.id);
+
+    let alpha = 0.22;
+    let width = EDGE_STYLE[e.type].width;
+    if (isHighlighted) { alpha = 0.65; width += 0.8; }
+    if (isDimmed) alpha = 0.06;
+
+    const grad = ctx.createLinearGradient(from.x, from.y, to.x, to.y);
+    grad.addColorStop(0, hexAlpha(clusters[from.cluster].color, alpha));
+    grad.addColorStop(1, hexAlpha(clusters[to.cluster].color, alpha));
+    ctx.strokeStyle = grad;
+    ctx.lineWidth = width / Math.max(0.5, zoom * 0.8);
+    ctx.lineCap = 'round';
+
+    const dash = EDGE_STYLE[e.type].dash;
+    if (dash.length > 0) {
+      ctx.setLineDash(dash.map(d => d / Math.max(0.5, zoom)));
+    }
+
+    ctx.beginPath();
+    ctx.moveTo(from.x, from.y);
+    ctx.quadraticCurveTo(cx, cy, to.x, to.y);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  });
+}
+
+function drawParticles() {
+  edges.forEach(e => {
+    if (!isEdgeVisible(e)) return;
+    const from = nodeMap[e.from], to = nodeMap[e.to];
+    if (!from || !to) return;
+
+    const { cx, cy } = getControlPoint(from.x, from.y, to.x, to.y);
+    const style = EDGE_STYLE[e.type];
+    const isHighlighted = hoveredNode && (e.from === hoveredNode.id || e.to === hoveredNode.id);
+    const isDimmed = hoveredNode && !isHighlighted;
+    const speedMult = isHighlighted ? 2.5 : 1;
+
+    e.particles.forEach(p => {
+      p.t += style.speed * speedMult;
+      if (p.t > 1) p.t -= 1;
+
+      const pos = bezierPoint(from.x, from.y, cx, cy, to.x, to.y, p.t);
+      const alpha = (0.5 + Math.sin(p.t * Math.PI) * 0.5) * (isDimmed ? 0.15 : 1);
+      const size = (isHighlighted ? 3 : 2.2) / Math.max(0.5, zoom * 0.7);
+
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle = lightenHex(clusters[from.cluster].color, 0.3);
+      ctx.beginPath();
+      ctx.arc(pos.x, pos.y, size, 0, Math.PI * 2);
+      ctx.fill();
+    });
+  });
+  ctx.globalAlpha = 1;
+}
+
+function drawNodes() {
   nodes.forEach(n => {
-    if (activeFilter !== 'all' && activeFilter !== n.cluster) return;
+    const visible = isNodeVisible(n);
+    const isHovered = n === hoveredNode;
+    const isSelected = n === selectedNode;
+    const r = n.radius * (isHovered ? 1.25 : 1);
+    const color = clusters[n.cluster].color;
+    const statusColor = STATUS_COLORS[n.status];
 
-    const el = document.createElement('div');
-    el.className = 'node';
-    el.dataset.id = n.id;
-    el.style.left = (n.x * zoom + panX) + 'px';
-    el.style.top = (n.y * zoom + panY) + 'px';
-    el.style.background = clusters[n.cluster].color + '15';
-    el.style.border = '1px solid ' + clusters[n.cluster].color + '40';
+    // Search highlight ring
+    if (searchQuery && visible) {
+      ctx.strokeStyle = hexAlpha('#c4582b', 0.5 + Math.sin(time * 0.005) * 0.3);
+      ctx.lineWidth = 2.5 / zoom;
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, r + 6 / zoom, 0, Math.PI * 2);
+      ctx.stroke();
+    }
 
-    el.innerHTML = `
-      <span class="node-icon">${n.icon}</span>
-      <span class="node-label">${n.label}</span>
-    `;
+    // Glow
+    if (visible) {
+      ctx.shadowBlur = isHovered ? 25 : 12;
+      ctx.shadowColor = statusColor;
+    }
 
-    el.onclick = (e) => { e.stopPropagation(); showDetail(n.id); };
-    el.onmouseenter = () => highlightEdges(n.id);
-    el.onmouseleave = () => clearHighlights();
-    canvas.appendChild(el);
+    // Status pulse ring
+    const pulseSpeed = STATUS_PULSE[n.status];
+    const pulse = pulseSpeed > 0 ? (Math.sin(time * pulseSpeed) + 1) / 2 : 0.4;
+
+    ctx.globalAlpha = visible ? (hoveredNode && !isHovered ? 0.2 : 1) : 0.12;
+    ctx.strokeStyle = statusColor;
+    ctx.lineWidth = 2.5 / zoom;
+    ctx.globalAlpha *= (0.4 + pulse * 0.4);
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, r + 3 + pulse * 4, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.globalAlpha = visible ? (hoveredNode && !isHovered ? 0.2 : 1) : 0.12;
+
+    // Fill
+    const grad = ctx.createRadialGradient(n.x - r * 0.3, n.y - r * 0.3, 0, n.x, n.y, r);
+    grad.addColorStop(0, lightenHex(color, 0.35));
+    grad.addColorStop(1, color);
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.shadowBlur = 0;
+
+    // Pinned indicator
+    if (n.pinned) {
+      ctx.strokeStyle = '#c4582b';
+      ctx.lineWidth = 2 / zoom;
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, r + 8 / zoom, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+
+    // Selected indicator
+    if (isSelected) {
+      ctx.strokeStyle = hexAlpha('#c4582b', 0.4 + Math.sin(time * 0.004) * 0.2);
+      ctx.lineWidth = 3 / zoom;
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, r + 6 / zoom, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+
+    // Icon
+    const iconSize = r * 0.85;
+    ctx.font = iconSize + 'px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(n.icon, n.x, n.y);
+
+    ctx.globalAlpha = 1;
   });
 }
 
-function renderEdges() {
-  edgeLayer.innerHTML = '';
-  const ns = 'http://www.w3.org/2000/svg';
-  edgeLayer.setAttribute('width', canvas.clientWidth);
-  edgeLayer.setAttribute('height', canvas.clientHeight);
-
-  // Add arrow marker definition
-  const defs = document.createElementNS(ns, 'defs');
-  defs.innerHTML = `
-    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
-      <polygon points="0 0, 8 3, 0 6" class="edge-arrow" />
-    </marker>
-  `;
-  edgeLayer.appendChild(defs);
+function drawEdgeLabels() {
+  if (!hoveredNode) return;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
 
   edges.forEach(e => {
-    const fromNode = nodeMap[e.from];
-    const toNode = nodeMap[e.to];
-    if (!fromNode || !toNode) return;
-    if (activeFilter !== 'all') {
-      if (fromNode.cluster !== activeFilter && toNode.cluster !== activeFilter) return;
-    }
+    if (!isEdgeVisible(e)) return;
+    if (e.from !== hoveredNode.id && e.to !== hoveredNode.id) return;
+    const from = nodeMap[e.from], to = nodeMap[e.to];
+    const { cx, cy } = getControlPoint(from.x, from.y, to.x, to.y);
+    const mid = bezierPoint(from.x, from.y, cx, cy, to.x, to.y, 0.5);
 
-    const x1 = fromNode.x * zoom + panX + 70;
-    const y1 = fromNode.y * zoom + panY + 18;
-    const x2 = toNode.x * zoom + panX + 70;
-    const y2 = toNode.y * zoom + panY + 18;
+    const fontSize = Math.max(8, 10 / zoom);
+    ctx.font = '500 ' + fontSize + 'px -apple-system, system-ui, sans-serif';
 
-    const path = document.createElementNS(ns, 'path');
-    const midX = (x1 + x2) / 2;
-    const midY = (y1 + y2) / 2;
-    const dx = x2 - x1;
-    const dy = y2 - y1;
-    const dist = Math.sqrt(dx * dx + dy * dy);
-    const curve = Math.min(dist * 0.15, 40);
+    // Background
+    const metrics = ctx.measureText(e.label);
+    const padX = 5 / zoom, padY = 3 / zoom;
+    const bw = metrics.width + padX * 2;
+    const bh = fontSize + padY * 2;
+    ctx.fillStyle = darkMode ? 'rgba(20,20,22,0.9)' : 'rgba(245,244,237,0.9)';
+    ctx.beginPath();
+    const br = 4 / zoom;
+    const bx = mid.x - bw / 2, by = mid.y - bh / 2;
+    ctx.moveTo(bx + br, by);
+    ctx.arcTo(bx + bw, by, bx + bw, by + bh, br);
+    ctx.arcTo(bx + bw, by + bh, bx, by + bh, br);
+    ctx.arcTo(bx, by + bh, bx, by, br);
+    ctx.arcTo(bx, by, bx + bw, by, br);
+    ctx.fill();
 
-    // Bezier curve
-    const cx = midX + (dy / dist) * curve;
-    const cy = midY - (dx / dist) * curve;
-
-    path.setAttribute('d', `M ${x1} ${y1} Q ${cx} ${cy} ${x2} ${y2}`);
-    path.classList.add('edge');
-    path.dataset.from = e.from;
-    path.dataset.to = e.to;
-
-    if (e.type === 'dashed') path.setAttribute('stroke-dasharray', '4 3');
-    if (e.type === 'dotted') path.setAttribute('stroke-dasharray', '1 3');
-
-    edgeLayer.appendChild(path);
+    ctx.fillStyle = darkMode ? '#aaa8a0' : '#4a4a4a';
+    ctx.fillText(e.label, mid.x, mid.y);
   });
 }
 
-function highlightEdges(nodeId) {
-  document.querySelectorAll('.edge').forEach(p => {
-    if (p.dataset.from === nodeId || p.dataset.to === nodeId) {
-      p.classList.add('highlighted');
-    }
+// ================================================================
+// MINIMAP
+// ================================================================
+
+function renderMinimap() {
+  const mw = minimap.parentElement.clientWidth;
+  const mh = minimap.parentElement.clientHeight;
+  mctx.clearRect(0, 0, mw, mh);
+
+  const bounds = getWorldBounds();
+  const w = bounds.maxX - bounds.minX;
+  const h = bounds.maxY - bounds.minY;
+  const scale = Math.min(mw / w, mh / h) * 0.88;
+  const offX = (mw - w * scale) / 2;
+  const offY = (mh - h * scale) / 2;
+
+  // Edges
+  mctx.strokeStyle = darkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)';
+  mctx.lineWidth = 0.5;
+  edges.forEach(e => {
+    const f = nodeMap[e.from], t = nodeMap[e.to];
+    mctx.beginPath();
+    mctx.moveTo((f.x - bounds.minX) * scale + offX, (f.y - bounds.minY) * scale + offY);
+    mctx.lineTo((t.x - bounds.minX) * scale + offX, (t.y - bounds.minY) * scale + offY);
+    mctx.stroke();
   });
+
+  // Nodes
+  nodes.forEach(n => {
+    const x = (n.x - bounds.minX) * scale + offX;
+    const y = (n.y - bounds.minY) * scale + offY;
+    mctx.fillStyle = STATUS_COLORS[n.status];
+    mctx.beginPath();
+    mctx.arc(x, y, n === hoveredNode || n === selectedNode ? 3 : 2, 0, Math.PI * 2);
+    mctx.fill();
+  });
+
+  // Viewport rect
+  const vx = (-panX / zoom - bounds.minX) * scale + offX;
+  const vy = (-panY / zoom - bounds.minY) * scale + offY;
+  const vw = (cw / zoom) * scale;
+  const vh = (ch / zoom) * scale;
+  mctx.strokeStyle = '#c4582b';
+  mctx.lineWidth = 1;
+  mctx.strokeRect(vx, vy, vw, vh);
+  mctx.fillStyle = 'rgba(196,88,43,0.06)';
+  mctx.fillRect(vx, vy, vw, vh);
 }
 
-function clearHighlights() {
-  document.querySelectorAll('.edge').forEach(p => p.classList.remove('highlighted'));
-}
+// ================================================================
+// INTERACTION
+// ================================================================
 
-function showDetail(nodeId) {
-  const n = nodeMap[nodeId];
+canvas.addEventListener('mousedown', (e) => {
+  const rect = canvas.getBoundingClientRect();
+  const sx = e.clientX - rect.left;
+  const sy = e.clientY - rect.top;
+  const node = getNodeAt(sx, sy);
+
+  if (node) {
+    draggedNode = node;
+    canvas.classList.add('dragging-node');
+    physicsTemp = Math.max(physicsTemp, 0.5);
+  } else {
+    isPanning = true;
+    lastPanX = e.clientX;
+    lastPanY = e.clientY;
+    panVelX = 0;
+    panVelY = 0;
+    canvas.classList.add('grabbing');
+  }
+});
+
+window.addEventListener('mousemove', (e) => {
+  const rect = canvas.getBoundingClientRect();
+  const sx = e.clientX - rect.left;
+  const sy = e.clientY - rect.top;
+
+  if (draggedNode) {
+    const wx = (sx - panX) / zoom;
+    const wy = (sy - panY) / zoom;
+    draggedNode.x = wx;
+    draggedNode.y = wy;
+    draggedNode.vx = 0;
+    draggedNode.vy = 0;
+    physicsTemp = Math.max(physicsTemp, 0.3);
+  } else if (isPanning) {
+    panX += e.clientX - lastPanX;
+    panY += e.clientY - lastPanY;
+    panVelX = e.clientX - lastPanX;
+    panVelY = e.clientY - lastPanY;
+    lastPanX = e.clientX;
+    lastPanY = e.clientY;
+  } else {
+    const node = getNodeAt(sx, sy);
+    if (node !== hoveredNode) {
+      hoveredNode = node;
+      canvas.style.cursor = node ? 'pointer' : 'grab';
+    }
+  }
+});
+
+window.addEventListener('mouseup', () => {
+  if (draggedNode) {
+    draggedNode = null;
+    canvas.classList.remove('dragging-node');
+  }
+  if (isPanning) {
+    isPanning = false;
+    canvas.classList.remove('grabbing');
+  }
+});
+
+canvas.addEventListener('click', (e) => {
+  if (panVelX !== 0 || panVelY !== 0) return; // was dragging
+  const rect = canvas.getBoundingClientRect();
+  const node = getNodeAt(e.clientX - rect.left, e.clientY - rect.top);
+  if (node) {
+    selectNode(node.id);
+  } else {
+    closeDetail();
+  }
+});
+
+canvas.addEventListener('dblclick', (e) => {
+  const rect = canvas.getBoundingClientRect();
+  const node = getNodeAt(e.clientX - rect.left, e.clientY - rect.top);
+  if (node) {
+    node.pinned = !node.pinned;
+    if (node.pinned) physicsTemp = Math.max(physicsTemp, 0.3);
+  }
+});
+
+canvas.addEventListener('wheel', (e) => {
+  e.preventDefault();
+  const rect = canvas.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
+  const oldZoom = zoom;
+  const delta = e.deltaY < 0 ? 1.12 : 0.89;
+  zoom = Math.max(0.25, Math.min(4, zoom * delta));
+  panX = mx - (mx - panX) * (zoom / oldZoom);
+  panY = my - (my - panY) * (zoom / oldZoom);
+}, { passive: false });
+
+// Touch
+let touchData = null;
+
+canvas.addEventListener('touchstart', (e) => {
+  e.preventDefault();
+  const rect = canvas.getBoundingClientRect();
+  if (e.touches.length === 1) {
+    const t = e.touches[0];
+    const node = getNodeAt(t.clientX - rect.left, t.clientY - rect.top);
+    if (node) {
+      draggedNode = node;
+    } else {
+      touchData = { type: 'pan', x: t.clientX, y: t.clientY };
+      lastPanX = t.clientX;
+      lastPanY = t.clientY;
+    }
+  } else if (e.touches.length === 2) {
+    const dx = e.touches[0].clientX - e.touches[1].clientX;
+    const dy = e.touches[0].clientY - e.touches[1].clientY;
+    touchData = {
+      type: 'pinch',
+      dist: Math.sqrt(dx * dx + dy * dy),
+      cx: (e.touches[0].clientX + e.touches[1].clientX) / 2,
+      cy: (e.touches[0].clientY + e.touches[1].clientY) / 2,
+    };
+  }
+}, { passive: false });
+
+canvas.addEventListener('touchmove', (e) => {
+  e.preventDefault();
+  if (!touchData && !draggedNode) return;
+  const rect = canvas.getBoundingClientRect();
+
+  if (draggedNode && e.touches.length === 1) {
+    const t = e.touches[0];
+    draggedNode.x = (t.clientX - rect.left - panX) / zoom;
+    draggedNode.y = (t.clientY - rect.top - panY) / zoom;
+    draggedNode.vx = 0;
+    draggedNode.vy = 0;
+  } else if (touchData && touchData.type === 'pan' && e.touches.length === 1) {
+    const t = e.touches[0];
+    panX += t.clientX - touchData.x;
+    panY += t.clientY - touchData.y;
+    touchData.x = t.clientX;
+    touchData.y = t.clientY;
+  } else if (touchData && touchData.type === 'pinch' && e.touches.length === 2) {
+    const dx = e.touches[0].clientX - e.touches[1].clientX;
+    const dy = e.touches[0].clientY - e.touches[1].clientY;
+    const newDist = Math.sqrt(dx * dx + dy * dy);
+    const scale = newDist / Math.max(1, touchData.dist);
+    const oldZoom = zoom;
+    zoom = Math.max(0.25, Math.min(4, zoom * scale));
+    const cx = touchData.cx - rect.left;
+    const cy = touchData.cy - rect.top;
+    panX = cx - (cx - panX) * (zoom / oldZoom);
+    panY = cy - (cy - panY) * (zoom / oldZoom);
+    touchData.dist = newDist;
+  }
+}, { passive: false });
+
+canvas.addEventListener('touchend', (e) => {
+  if (draggedNode && e.touches.length === 0) {
+    // Check for tap (select)
+    if (touchData === null && panVelX === 0) {
+      // Was a drag, not a tap
+    }
+    draggedNode = null;
+  }
+  touchData = null;
+});
+
+// Minimap navigation
+minimap.addEventListener('click', (e) => {
+  const rect = minimap.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
+  const bounds = getWorldBounds();
+  const mw = rect.width, mh = rect.height;
+  const w = bounds.maxX - bounds.minX;
+  const h = bounds.maxY - bounds.minY;
+  const scale = Math.min(mw / w, mh / h) * 0.88;
+  const offX = (mw - w * scale) / 2;
+  const offY = (mh - h * scale) / 2;
+  const wx = (mx - offX) / scale + bounds.minX;
+  const wy = (my - offY) / scale + bounds.minY;
+  panX = cw / 2 - wx * zoom;
+  panY = ch / 2 - wy * zoom;
+});
+
+// Keyboard
+let tabIndex = 0;
+window.addEventListener('keydown', (e) => {
+  const isInput = document.activeElement === document.getElementById('search');
+  if (isInput) {
+    if (e.key === 'Escape') { document.getElementById('search').blur(); }
+    if (e.key === 'Enter') {
+      const visible = nodes.filter(isNodeVisible);
+      if (visible.length > 0) { selectNode(visible[0].id); centerOn(visible[0], 1.6); }
+    }
+    return;
+  }
+
+  switch (e.key) {
+    case 'ArrowUp':    panY += 40; break;
+    case 'ArrowDown':  panY -= 40; break;
+    case 'ArrowLeft':  panX += 40; break;
+    case 'ArrowRight': panX -= 40; break;
+    case '+': case '=': adjustZoom(1.2); break;
+    case '-': case '_': adjustZoom(0.83); break;
+    case 'Escape': closeDetail(); document.getElementById('search').value = ''; searchQuery = ''; break;
+    case 'r': case 'R': resetView(); break;
+    case 'h': case 'H': reheat(); break;
+    case 'Tab':
+      e.preventDefault();
+      const vis = nodes.filter(isNodeVisible);
+      if (vis.length === 0) return;
+      tabIndex = (tabIndex + (e.shiftKey ? -1 : 1) + vis.length) % vis.length;
+      selectNode(vis[tabIndex].id);
+      centerOn(vis[tabIndex], Math.max(zoom, 1.4));
+      break;
+    case 'k': case 'K':
+      if (e.metaKey || e.ctrlKey) { e.preventDefault(); document.getElementById('search').focus(); }
+      break;
+  }
+});
+
+// ================================================================
+// UI FUNCTIONS
+// ================================================================
+
+function selectNode(id) {
+  const n = nodeMap[id];
   if (!n) return;
+  selectedNode = n;
+
   const panel = document.getElementById('detail-panel');
-  document.getElementById('detail-name').textContent = n.label;
-  document.getElementById('detail-type').textContent = clusters[n.cluster].label;
+  document.getElementById('d-icon').textContent = n.icon;
+  document.getElementById('d-name').textContent = n.label;
+
+  const c = clusters[n.cluster];
+  document.getElementById('d-cluster').innerHTML =
+    '<span class="dot" style="background:' + c.color + '"></span>' + c.label;
 
   let html = '';
-  const d = n.details || {};
-  for (const [k, v] of Object.entries(d)) {
-    html += `<div class="detail-row"><span class="detail-label">${k}</span><span class="detail-value">${v}</span></div>`;
+
+  // Status badge
+  const sc = STATUS_COLORS[n.status];
+  html += '<div class="detail-badge badge-' + n.status + '"><span class="badge-dot"></span>' +
+    STATUS_LABEL[n.status] + '</div>';
+
+  // Details
+  html += '<div class="detail-section-title">Properties</div>';
+  for (const [k, v] of Object.entries(n.details || {})) {
+    html += '<div class="detail-row"><span class="detail-label">' + k +
+      '</span><span class="detail-value">' + v + '</span></div>';
   }
-  // Add connections
-  const out = edges.filter(e => e.from === nodeId).map(e => `${e.label} -> ${nodeMap[e.to].label}`);
-  const inc = edges.filter(e => e.to === nodeId).map(e => `${nodeMap[e.from].label} -> ${e.label}`);
-  if (out.length || inc.length) {
-    html += '<div style="margin-top: 10px; font-size: 11px; color: var(--ink-faint); font-weight: 600; text-transform: uppercase;">Connections</div>';
-    [...out, ...inc].forEach(c => {
-      html += `<div style="font-size: 11px; padding: 2px 0; color: var(--ink-soft);">${c}</div>`;
+
+  // Tags
+  if (n.tags && n.tags.length > 0) {
+    html += '<div class="detail-section-title">Tags</div><div style="display:flex;flex-wrap:wrap;gap:4px;">';
+    n.tags.forEach(t => {
+      html += '<span style="font-size:10px;padding:2px 7px;border-radius:5px;background:var(--bone-soft);color:var(--ink-faint);">' + t + '</span>';
+    });
+    html += '</div>';
+  }
+
+  // Connections
+  const outgoing = edges.filter(e => e.from === id);
+  const incoming = edges.filter(e => e.to === id);
+
+  if (outgoing.length > 0) {
+    html += '<div class="detail-section-title">Drives (' + outgoing.length + ')</div>';
+    outgoing.forEach(e => {
+      const target = nodeMap[e.to];
+      if (!target) return;
+      html += '<div class="connection-link" onclick="selectNode(\'' + e.to + '\')">' +
+        '<span class="arrow">\u2192</span>' +
+        '<span class="label-text">' + e.label + '</span>' +
+        '<span class="target-text">' + target.label + '</span>' +
+        '<span class="edge-type">' + e.type + '</span>' +
+        '</div>';
     });
   }
-  document.getElementById('detail-body').innerHTML = html;
+
+  if (incoming.length > 0) {
+    html += '<div class="detail-section-title">Fed by (' + incoming.length + ')</div>';
+    incoming.forEach(e => {
+      const source = nodeMap[e.from];
+      if (!source) return;
+      html += '<div class="connection-link" onclick="selectNode(\'' + e.from + '\')">' +
+        '<span class="arrow">\u2190</span>' +
+        '<span class="target-text">' + source.label + '</span>' +
+        '<span class="label-text">' + e.label + '</span>' +
+        '<span class="edge-type">' + e.type + '</span>' +
+        '</div>';
+    });
+  }
+
+  document.getElementById('d-body').innerHTML = html;
   panel.classList.add('visible');
 }
 
 function closeDetail() {
   document.getElementById('detail-panel').classList.remove('visible');
-}
-
-function clearCanvas() {
-  canvas.querySelectorAll('.node, .cluster-bg, .cluster-label').forEach(el => el.remove());
-}
-
-function render() {
-  clearCanvas();
-  renderClusters();
-  renderNodes();
-  renderEdges();
-}
-
-function filterCluster(cluster, btn) {
-  activeFilter = cluster;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  render();
+  selectedNode = null;
 }
 
 function adjustZoom(delta) {
-  zoom = Math.max(0.4, Math.min(2.5, zoom * delta));
-  render();
+  const mx = cw / 2, my = ch / 2;
+  const oldZoom = zoom;
+  zoom = Math.max(0.25, Math.min(4, zoom * delta));
+  panX = mx - (mx - panX) * (zoom / oldZoom);
+  panY = my - (my - panY) * (zoom / oldZoom);
 }
 
 function resetView() {
-  zoom = 1;
-  panX = 0;
-  panY = 0;
-  render();
+  const bounds = getWorldBounds();
+  const cx = (bounds.minX + bounds.maxX) / 2;
+  const cy = (bounds.minY + bounds.maxY) / 2;
+  const w = bounds.maxX - bounds.minX;
+  const h = bounds.maxY - bounds.minY;
+  zoom = Math.min(cw / w, ch / h) * 0.85;
+  zoom = Math.max(0.4, Math.min(2, zoom));
+  panX = cw / 2 - cx * zoom;
+  panY = ch / 2 - cy * zoom;
+  panVelX = 0;
+  panVelY = 0;
 }
 
-// Pan support
-canvas.addEventListener('mousedown', (e) => {
-  if (e.target === canvas || e.target === edgeLayer) {
-    isDragging = true;
-    dragStart = { x: e.clientX - panX, y: e.clientY - panY };
-    canvas.classList.add('dragging');
+function centerOn(node, targetZoom) {
+  targetZoom = targetZoom || Math.max(zoom, 1.5);
+  const targetPanX = cw / 2 - node.x * targetZoom;
+  const targetPanY = ch / 2 - node.y * targetZoom;
+  animateCamera(targetPanX, targetPanY, targetZoom);
+}
+
+function animateCamera(tx, ty, tz) {
+  const sx = panX, sy = panY, sz = zoom;
+  const start = performance.now();
+  const dur = 500;
+  function step() {
+    const t = Math.min(1, (performance.now() - start) / dur);
+    const e = 1 - Math.pow(1 - t, 3);
+    panX = sx + (tx - sx) * e;
+    panY = sy + (ty - sy) * e;
+    zoom = sz + (tz - sz) * e;
+    if (t < 1) requestAnimationFrame(step);
   }
+  step();
+}
+
+function reheat() {
+  physicsTemp = 1.5;
+  nodes.forEach(n => {
+    if (!n.pinned) {
+      n.vx += (Math.random() - 0.5) * 8;
+      n.vy += (Math.random() - 0.5) * 8;
+    }
+  });
+}
+
+function toggleHints() {
+  hintsVisible = !hintsVisible;
+  document.getElementById('kbd-hints').classList.toggle('hidden', !hintsVisible);
+  document.getElementById('legend').classList.toggle('hidden', !hintsVisible);
+}
+
+// Dark mode
+document.getElementById('dark-toggle').addEventListener('click', () => {
+  darkMode = !darkMode;
+  document.body.classList.toggle('dark', darkMode);
+  document.getElementById('dark-toggle').textContent = darkMode ? '\u2600' : '\u263E';
 });
 
-document.addEventListener('mousemove', (e) => {
-  if (isDragging) {
-    panX = e.clientX - dragStart.x;
-    panY = e.clientY - dragStart.y;
-    render();
+// Search
+document.getElementById('search').addEventListener('input', (e) => {
+  searchQuery = e.target.value.trim();
+});
+
+// Filters
+function buildFilters() {
+  const bar = document.getElementById('filter-bar');
+  let html = '<button class="filter-btn active" data-cluster="all">All</button>';
+  Object.entries(clusters).forEach(([key, c]) => {
+    html += '<button class="filter-btn" data-cluster="' + key + '">' +
+      '<span class="dot" style="background:' + c.color + '"></span>' + c.label + '</button>';
+  });
+  bar.innerHTML = html;
+  bar.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeFilter = btn.dataset.cluster;
+      bar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      if (activeFilter !== 'all') {
+        const vis = nodes.filter(n => n.cluster === activeFilter);
+        if (vis.length > 0) {
+          const cx = vis.reduce((s, n) => s + n.x, 0) / vis.length;
+          const cy = vis.reduce((s, n) => s + n.y, 0) / vis.length;
+          panX = cw / 2 - cx * zoom;
+          panY = ch / 2 - cy * zoom;
+        }
+      }
+    });
+  });
+}
+
+// ================================================================
+// ANIMATION LOOP
+// ================================================================
+
+function frame(timestamp) {
+  time = timestamp;
+
+  // FPS
+  frameCount++;
+  if (timestamp - lastFpsTime > 500) {
+    fps = Math.round(frameCount * 1000 / (timestamp - lastFpsTime));
+    frameCount = 0;
+    lastFpsTime = timestamp;
   }
-});
 
-document.addEventListener('mouseup', () => {
-  isDragging = false;
-  canvas.classList.remove('dragging');
-});
+  // Physics
+  physicsStep();
 
-// Click canvas to close detail
-canvas.addEventListener('click', (e) => {
-  if (e.target === canvas || e.target === edgeLayer) closeDetail();
-});
+  // Momentum pan
+  if (!isPanning && !draggedNode) {
+    panX += panVelX;
+    panY += panVelY;
+    panVelX *= 0.92;
+    panVelY *= 0.92;
+    if (Math.abs(panVelX) < 0.1) panVelX = 0;
+    if (Math.abs(panVelY) < 0.1) panVelY = 0;
+  }
 
-// Initial render
-render();
+  // Intro fade
+  if (introAlpha > 0) {
+    introAlpha -= 0.02;
+    if (introAlpha < 0) introAlpha = 0;
+  }
+
+  // Render
+  render();
+  renderMinimap();
+
+  // Update overlay stats
+  document.getElementById('ovl-zoom').textContent = Math.round(zoom * 100);
+  document.getElementById('ovl-fps').textContent = fps;
+
+  requestAnimationFrame(frame);
+}
+
+// ================================================================
+// INIT
+// ================================================================
+
+function init() {
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+  buildFilters();
+
+  // Big bang: start from center
+  nodes.forEach(n => {
+    n._origX = n.x;
+    n._origY = n.y;
+    n.x = 750 + (Math.random() - 0.5) * 80;
+    n.y = 350 + (Math.random() - 0.5) * 80;
+    n.vx = (Math.random() - 0.5) * 25;
+    n.vy = (Math.random() - 0.5) * 25;
+  });
+
+  physicsTemp = 2.5;
+  introAlpha = 0;
+
+  // Center view
+  setTimeout(() => {
+    resetView();
+  }, 100);
+
+  // Hide loading
+  setTimeout(() => {
+    document.getElementById('loading').classList.add('hidden');
+  }, 800);
+
+  // Fade in intro overlay
+  introAlpha = 1;
+
+  // Start loop
+  requestAnimationFrame(frame);
+
+  // Update stats
+  document.getElementById('stat-nodes').textContent = nodes.length;
+  document.getElementById('stat-edges').textContent = edges.length;
+}
+
+init();
 </script>
 </body>
 </html>
