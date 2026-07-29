@@ -45,6 +45,6 @@ secret_ref:
 
 ## ⚠️ Security flag
 
-**HIGHEST SENSITIVITY.** This is a full admin credential set — email, password, and MFA backup code
+**HIGHEST SENSITIVITY.** This is a full admin credential set - email, password, and MFA backup code
 in plaintext. If this .env is ever committed or leaked, the entire Google Workspace domain is
 compromised. Recommend: move to macOS Keychain or a secrets manager, remove from plaintext .env.

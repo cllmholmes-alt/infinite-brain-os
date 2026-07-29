@@ -45,5 +45,5 @@ secret_ref:
 
 ## Scope
 
-Three distinct Supabase projects. The service role keys grant full database access — treat as highest
+Three distinct Supabase projects. The service role keys grant full database access - treat as highest
 sensitivity. DDL requires the Management API (sbp_ token), not PostgREST.

@@ -46,4 +46,4 @@ secret_ref:
 ## Scope
 
 Shared across three distinct consumer systems. Rotation must update all three. The ChatDev key
-variant may be a separate key from the main one — verify during next rotation.
+variant may be a separate key from the main one - verify during next rotation.

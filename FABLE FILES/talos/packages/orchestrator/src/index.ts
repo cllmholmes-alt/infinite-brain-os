@@ -93,7 +93,7 @@ export class ExecutionCoordinator {
     return mission;
   }
 
-  /** Full governed pipeline for one task. UI/API may ONLY call this — never tools. */
+  /** Full governed pipeline for one task. UI/API may ONLY call this - never tools. */
   async runTask(ctx: Ctx, taskId: string): Promise<Task> {
     const task = this.tasks.get(taskId);
     if (!task) throw new Error("task_not_found");

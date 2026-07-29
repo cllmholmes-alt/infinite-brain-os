@@ -15,14 +15,14 @@ created: "2026-07-05"
 
 ## Repo Identity
 
-- Repo slug: `talos`
-- Canonical path (Mac): `/Users/callumholmes/Documents/TALOS---Total-Agentic-Lifecycle-Orchestration-System`
-- VPS clone: `/root/documents/talos` on `hermes-vps` (systemd `talos-dev.service`, API :4000, Command Centre :3000)
-- Remote: `github.com/cllmholmes-alt/TALOS---Total-Agentic-Lifecycle-Orchestration-System.git`
-- Cross-system operating map: `docs/ECOSYSTEM_OPERATIONS.md` in the TALOS repo
+- Repo slug: `talos` (fusion-harness monorepo)
+- Canonical path (Mac): `/Users/callumholmes/Documents/fusion-harness`
+- VPS deployment: `/srv/fusion/current/` on `hermes-vps` (systemd `fusion-api.service`, API :4000, Command Centre :3000)
+- Remote: `github.com/cllmholmes-alt/fusion-harness.git`
+- Cross-system operating map: `docs/ECOSYSTEM_OPERATIONS.md` in the repo
 - Version control: git
-- Stack: Node (`package.json`), Docker (`Dockerfile`, `docker-compose.yml`), command-center
-  app under `apps/command-center/`
+- Stack: Node (`package.json`), pnpm monorepo, Docker (`Dockerfile`, `docker-compose.yml`), command-center
+  app under `apps/command-center/`, Fusion API under `apps/api/`
 
 ## Primary Job
 

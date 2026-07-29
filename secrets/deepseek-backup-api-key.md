@@ -43,4 +43,4 @@ secret_ref:
 
 ## Scope
 
-Failover only. Not referenced by Fusion or TALOS profiles — Hermes-only.
+Failover only. Not referenced by Fusion or TALOS profiles - Hermes-only.

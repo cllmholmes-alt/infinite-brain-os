@@ -1,4 +1,4 @@
-# TALOS FROM SCRATCH — ONE-SHOT FULL-SPEC BUILD PROMPT
+# TALOS FROM SCRATCH - ONE-SHOT FULL-SPEC BUILD PROMPT
 ## Total Agentic Lifecycle Orchestration System
 ## Governed Local AI Operating System for Business, Software, Agents, Evidence, Approvals, Memory, and Automation
 
@@ -2216,7 +2216,7 @@ Settings:
 
 You are building from scratch. Execute in this order.
 
-G0 — Repository foundation
+G0 - Repository foundation
 - create monorepo
 - root config
 - env example
@@ -2230,7 +2230,7 @@ Exit:
 - lint/typecheck baseline passes or failures documented
 - no source ambiguity undocumented
 
-G1 — Schemas + DB
+G1 - Schemas + DB
 - create schema package
 - create Prisma schema
 - migrations
@@ -2243,7 +2243,7 @@ Exit:
 - schemas compile
 - tests pass
 
-G2 — API foundation
+G2 - API foundation
 - Fastify app
 - middleware
 - auth stub
@@ -2257,7 +2257,7 @@ Exit:
 - CRUD routes work
 - API tests pass
 
-G3 — Governance spine
+G3 - Governance spine
 - ExecutionCoordinator
 - PLTE
 - Approval Engine
@@ -2270,7 +2270,7 @@ Exit:
 - direct tool execution impossible
 - tests pass
 
-G4 — Worker runtime
+G4 - Worker runtime
 - Redis/BullMQ
 - queues
 - processors
@@ -2282,7 +2282,7 @@ Exit:
 - worker writes status/evidence
 - failed worker creates recovery task
 
-G5 — Command Chat
+G5 - Command Chat
 - UI page
 - chat backend
 - mission creation
@@ -2296,7 +2296,7 @@ Exit:
 - approval/evidence shown
 - no agent management burden
 
-G6 — Human product pages
+G6 - Human product pages
 - Business Workstreams
 - Automation Activity
 - AI Memory
@@ -2312,7 +2312,7 @@ Exit:
 - empty/loading/error states
 - navigation works
 
-G7 — Memory/Graph/Audits
+G7 - Memory/Graph/Audits
 - Obsidian Brain vault
 - graph nodes/edges
 - trace viewer
@@ -2324,7 +2324,7 @@ Exit:
 - task→evidence→approval trace works
 - AURIS report generated
 
-G8 — Research/business scaffolds
+G8 - Research/business scaffolds
 - Deep Research Engine
 - SignalForge
 - GTM/business workstream scaffolds
@@ -2335,7 +2335,7 @@ Exit:
 - SignalForge opportunity object exists
 - external actions are approval-gated
 
-G9 — SOP/learning/self-evolution
+G9 - SOP/learning/self-evolution
 - Standardisation Suite
 - learning signals
 - SOP candidates
@@ -2346,7 +2346,7 @@ Exit:
 - learning signal can create SOP candidate
 - self-evolution candidate requires approval
 
-G10 — Hardening and acceptance
+G10 - Hardening and acceptance
 - security tests
 - E2E tests
 - no fixture verification

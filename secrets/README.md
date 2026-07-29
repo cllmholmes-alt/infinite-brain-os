@@ -128,7 +128,7 @@ speculatively.
 
 ## ⚠️ Security Flags
 
-1. **`google-workspace-credentials`** — HIGHEST RISK. Admin email + password + MFA backup code in plaintext `.env`. Recommend migration to Keychain.
-2. **`github-cllmholmes-alt-personal-access-token`** — COMPROMISED. A PAT was found embedded in a Windows git remote URL. Should be revoked and rotated.
-3. **Duplicate `.env` files** — `Figmaadhdosuserdashboard/.env` and `.env.local` are duplicates; consolidation reduces exposure surface.
-4. **Stale snapshot** — `~/.hermes/state-snapshots/20260716-190309-pre-update/.env` is a stale copy of live credentials. Recommend deletion.
+1. **`google-workspace-credentials`** - HIGHEST RISK. Admin email + password + MFA backup code in plaintext `.env`. Recommend migration to Keychain.
+2. **`github-cllmholmes-alt-personal-access-token`** - COMPROMISED. A PAT was found embedded in a Windows git remote URL. Should be revoked and rotated.
+3. **Duplicate `.env` files** - `Figmaadhdosuserdashboard/.env` and `.env.local` are duplicates; consolidation reduces exposure surface.
+4. **Stale snapshot** - `~/.hermes/state-snapshots/20260716-190309-pre-update/.env` is a stale copy of live credentials. Recommend deletion.

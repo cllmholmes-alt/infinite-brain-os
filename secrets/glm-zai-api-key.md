@@ -4,7 +4,7 @@ aliases: ["secret-glm-zai-api-key", "glm-zai-api-key", "glm-api-key"]
 type: "Secret"
 namespace: "personal-operator"
 lifecycle_state: "active"
-summary: "Reference for the GLM (ZhipuAI / Z.AI) API key — primary LLM for Hermes, TALOS, and Fusion."
+summary: "Reference for the GLM (ZhipuAI / Z.AI) API key - primary LLM for Hermes, TALOS, and Fusion."
 confidence: 0.9
 retrieval_class: "identity"
 export_class: "internal"

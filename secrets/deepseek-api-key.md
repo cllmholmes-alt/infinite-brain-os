@@ -4,7 +4,7 @@ aliases: ["secret-deepseek-api-key", "deepseek-api-key"]
 type: "Secret"
 namespace: "personal-operator"
 lifecycle_state: "active"
-summary: "Reference for the DeepSeek API key — secondary LLM for Hermes, TALOS, and Fusion."
+summary: "Reference for the DeepSeek API key - secondary LLM for Hermes, TALOS, and Fusion."
 confidence: 0.9
 retrieval_class: "identity"
 export_class: "internal"

@@ -79,6 +79,13 @@ flowchart TD
     UNITY["Unity<br/>(game engine)"]
   end
 
+  subgraph infra["Infrastructure and agentic platform"]
+    VPS["Netcup VPS<br/>(Debian 13, 16CPU/31GB)"]
+    HERMES["Hermes Agent<br/>(Nous Research)"]
+    FUSION["Fusion API<br/>(6-layer router)"]
+    AURORA["Aurora API<br/>(inference gateway)"]
+  end
+
   subgraph solo["Standalone projects"]
     CNC["CNC Machine<br/>(hardware)"]
     HTSA["HTSA exosystem<br/>(hardware, local)"]
@@ -135,6 +142,17 @@ flowchart TD
   LLMPROV["external LLM providers"] --> RTK
   HF["HuggingFace models"] --> COMFY
   APPLE["Apple Developer"] --> IOSMAC
+
+  %% Infrastructure and agentic platform edges
+  VPS -->|"hosts"| FUSION
+  VPS -->|"hosts"| AURORA
+  HERMES -->|"manages"| VPS
+  HERMES -->|"operates"| FUSION
+  HERMES -. reads-from .-> IB
+  FUSION -->|"part of"| TALOS
+  FUSION -->|"routes to"| AURORA
+  FUSION -->|"public endpoint"| ADHDFUSIONEXT["adhd-os.co.uk/api/fusion"]
+  AURORA -->|"public endpoint"| ADHDAURORAEXT["adhd-os.co.uk/api/aurora"]
 ```
 
 ## Cluster summaries
@@ -188,6 +206,19 @@ Cross-cutting infrastructure every cluster consumes. RTK (LLM token proxy, 60 to
 savings), ComfyUI (image generation), the ScaleWay iOS Cloud Mac (iOS build and sign host),
 and Unity (game engine). These belong to a future shared `devops-platform` department.
 
+### Infrastructure and agentic platform
+
+The operator's production runtime and AI orchestration layer. The **Netcup VPS**
+(Debian 13, 16 CPU/31 GB) hosts all externally-facing services. **Fusion API** (within
+the TALOS monorepo) is the OpenAI-compatible inference proxy with a 6-layer model router
+and release verification. **Aurora API** is the external inference gateway. **Hermes Agent**
+(Nous Research) is the desktop AI agent that orchestrates the entire ecosystem from both
+operator machines, with skills, cron, memory, and Telegram gateway integration.
+
+Key edges: Hermes manages the VPS and operates Fusion remotely via SSH. Fusion routes
+inference through Aurora and external LLM providers. Both APIs expose public endpoints at
+`adhd-os.co.uk`. Hermes reads from this brain vault as its persistent context layer.
+
 ### Standalone projects
 
 Hardware (CNC Machine, HTSA exosystem), utilities (OWES offline web editor), and unclassified
@@ -236,6 +267,7 @@ content stay in the repos.
 | AI media | `knowledge/ai-media/` | (assembly pending) | doctrine |
 | Revenue and business | `knowledge/revenue-intelligence/` | (assembly pending) | data-system |
 | Shared platform | (cross-cutting) | `departments/devops-platform/` | n/a |
+| Infrastructure | `knowledge/talos/` | `departments/agentic-systems/` | doctrine |
 
 The `revenue-intelligence` namespace is the only `data-system` profile namespace and carries
 two metric primitives (`lead-score`, `qualification-rate`). The `devops-platform` department
@@ -244,7 +276,9 @@ department consumes.
 
 ## Related surfaces
 
-- `repo-registry/`: one entry per system, with ownership and posture
+- `repo-registry/`: one entry per system, with ownership and posture. Includes
+  `hermes-agent.md`, `netcup-vps.md`, `fusion-runtime.md`, `aurora-api.md` for the
+  infrastructure and agentic platform layer
 - `parties/brands/`: adhd-os and talos brand records; `parties/partners/` for the
   collaborative orgs (OCNAI, openclaw, rtk-ai)
 - `tools/`: ComfyUI, the ScaleWay iOS Cloud Mac, LM Studio, Unity, Sunshine, GitHub CLI,

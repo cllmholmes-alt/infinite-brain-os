@@ -1,4 +1,4 @@
-// Target canonical DB (BLOCKED here: no Postgres — see UNKNOWN_BLOCKED_REGISTER B1)
+// Target canonical DB (BLOCKED here: no Postgres - see UNKNOWN_BLOCKED_REGISTER B1)
 generator client { provider = "prisma-client-js" }
 datasource db { provider = "postgresql"; url = env("DATABASE_URL") }
 model Workspace { id String @id @default(cuid()); name String; missions Mission[] }

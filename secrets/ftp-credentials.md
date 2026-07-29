@@ -43,5 +43,5 @@ secret_ref:
 
 ## Scope
 
-GetSubmitReady-only. Multiple FTP endpoints — 8 entries total. Recommend consolidating into
+GetSubmitReady-only. Multiple FTP endpoints - 8 entries total. Recommend consolidating into
 keychain entries or a secrets manager.

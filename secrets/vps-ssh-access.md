@@ -40,7 +40,7 @@ secret_ref:
 
 | Surface | Description |
 |---------|-------------|
-| `~/.ssh/id_ed25519` | Same keypair as GitHub — shared private key |
+| `~/.ssh/id_ed25519` | Same keypair as GitHub - shared private key |
 | `~/.ssh/config` | `Host hermes-vps` → `HostName 37.221.192.116`, `User root` |
 | Windows PC | Separate ed25519 key (`...ID5TaYLgGzT4`) with same VPS access |
 
