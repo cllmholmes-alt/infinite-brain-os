@@ -1,0 +1,3936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Brain Map v3 - Ecosystem Observatory</title>
+<style>
+/* ================================================================
+   MERIDIAN DESIGN SYSTEM v3
+   ================================================================ */
+:root {
+  --bone: #f5f4ed;
+  --bone-soft: #ebe9e0;
+  --bone-dark: #d8d6cd;
+  --ink: #1a1a1a;
+  --ink-soft: #4a4a4a;
+  --ink-faint: #8a8a8a;
+  --hairline: #d8d6cd;
+  --ember: #c4582b;
+  --ember-soft: #e8a878;
+  --green: #4a7c59;
+  --blue: #3b6ea5;
+  --purple: #7b6ea0;
+  --gold: #c4a04a;
+  --teal: #4a9c9c;
+  --rose: #b86b8a;
+  --slate: #5a6a7a;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
+  --r: 10px;
+  --r-lg: 14px;
+  --t: 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  --font-scale: 1;
+}
+
+body.dark {
+  --bone: #0d0d0f;
+  --bone-soft: #141416;
+  --bone-dark: #1e1e22;
+  --ink: #e4e1d9;
+  --ink-soft: #aaa8a0;
+  --ink-faint: #5c5a54;
+  --hairline: #26262a;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.5);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.6);
+}
+
+body.high-contrast {
+  --bone: #ffffff;
+  --bone-soft: #f0f0f0;
+  --ink: #000000;
+  --ink-soft: #1a1a1a;
+  --ink-faint: #666666;
+  --hairline: #000000;
+  --ember: #cc0000;
+  --shadow-sm: 0 0 0 2px #000;
+  --shadow-md: 0 0 0 3px #000;
+  --shadow-lg: 0 0 0 4px #000;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bone);
+  color: var(--ink);
+  font-family: -apple-system, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
+  overflow: hidden;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+  transition: background var(--t), color var(--t);
+  font-size: calc(13px * var(--font-scale));
+}
+
+/* ================================================================
+   TOPBAR
+   ================================================================ */
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 16px;
+  background: var(--bone);
+  border-bottom: 1px solid var(--hairline);
+  flex-shrink: 0;
+  z-index: 100;
+  transition: background var(--t), border-color var(--t);
+}
+
+.brand { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.brand-icon {
+  width: 28px; height: 28px; border-radius: var(--r);
+  background: linear-gradient(135deg, var(--ember), var(--ember-soft));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; box-shadow: var(--shadow-sm);
+}
+.brand-title { font-size: 14px; font-weight: 700; letter-spacing: -0.4px; white-space: nowrap; }
+.brand-sub { font-size: 10px; color: var(--ink-faint); white-space: nowrap; }
+
+.stats { display: flex; gap: 12px; font-size: 11px; color: var(--ink-faint); align-items: center; }
+.stat strong { color: var(--ink); font-weight: 600; }
+.health {
+  padding: 2px 8px; border-radius: 6px; font-size: 10px; font-weight: 600;
+  letter-spacing: 0.3px; background: rgba(74,124,89,0.15); color: var(--green);
+}
+.health.degraded { background: rgba(196,160,74,0.15); color: var(--gold); }
+.health.critical { background: rgba(196,88,43,0.15); color: var(--ember); }
+.health-score-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 700;
+  background: rgba(74,124,89,0.15); color: var(--green);
+}
+
+.search-wrapper {
+  position: relative; display: flex; align-items: center;
+  background: var(--bone-soft); border: 1px solid var(--hairline);
+  border-radius: 8px; padding: 4px 8px; gap: 6px;
+  transition: border-color var(--t), box-shadow var(--t);
+  width: 200px;
+}
+.search-wrapper:focus-within {
+  border-color: var(--ember); box-shadow: 0 0 0 3px rgba(196,88,43,0.1); width: 240px;
+}
+.search-icon { font-size: 12px; opacity: 0.5; flex-shrink: 0; }
+.search-input {
+  border: none; background: none; outline: none; color: var(--ink);
+  font-size: 12px; width: 100%; font-family: inherit;
+}
+.search-input::placeholder { color: var(--ink-faint); }
+.search-kbd {
+  font-size: 9px; padding: 1px 5px; border-radius: 4px;
+  background: var(--bone); border: 1px solid var(--hairline);
+  color: var(--ink-faint); flex-shrink: 0;
+}
+
+.filter-bar {
+  display: flex; gap: 4px; flex-wrap: nowrap; overflow-x: auto; max-width: 100%;
+  scrollbar-width: none;
+}
+.filter-bar::-webkit-scrollbar { display: none; }
+.filter-btn {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 4px 8px; border-radius: 6px; border: 1px solid var(--hairline);
+  background: var(--bone-soft); color: var(--ink-soft);
+  font-size: 11px; font-weight: 500; cursor: pointer; white-space: nowrap;
+  transition: all 0.15s ease; font-family: inherit;
+}
+.filter-btn:hover { background: var(--bone-dark); }
+.filter-btn.active { background: var(--ink); color: var(--bone); border-color: var(--ink); }
+.filter-btn .dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+
+.tool-btn {
+  display: flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; border-radius: 8px;
+  border: 1px solid var(--hairline); background: var(--bone-soft);
+  color: var(--ink-soft); cursor: pointer; font-size: 14px;
+  transition: all 0.15s ease; flex-shrink: 0;
+}
+.tool-btn:hover { background: var(--bone-dark); border-color: var(--ink-faint); }
+.tool-btn.active { background: var(--ember); color: white; border-color: var(--ember); }
+
+/* ================================================================
+   CANVAS CONTAINER
+   ================================================================ */
+#canvas-container {
+  flex: 1; position: relative; overflow: hidden;
+  background: var(--bone);
+}
+
+#canvas { display: block; cursor: grab; }
+#canvas.grabbing { cursor: grabbing; }
+#canvas.dragging-node { cursor: move; }
+#canvas.creating-edge { cursor: crosshair; }
+#canvas.lasso { cursor: crosshair; }
+
+/* ================================================================
+   LEGEND
+   ================================================================ */
+.legend {
+  position: absolute; bottom: 12px; right: 12px;
+  background: var(--bone-soft); border: 1px solid var(--hairline);
+  border-radius: var(--r); padding: 8px 12px;
+  box-shadow: var(--shadow-sm); font-size: 11px;
+  display: flex; flex-direction: column; gap: 4px;
+  z-index: 10; transition: opacity var(--t); user-select: none;
+}
+.legend.hidden { opacity: 0; pointer-events: none; }
+.legend-title { font-size: 10px; font-weight: 700; color: var(--ink-faint);
+  text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+.legend-item { display: flex; align-items: center; gap: 6px; color: var(--ink-soft); }
+.legend-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+
+/* ================================================================
+   KEYBOARD HINTS
+   ================================================================ */
+.kbd-hints {
+  position: absolute; bottom: 12px; left: 12px;
+  display: flex; gap: 8px; flex-wrap: wrap; max-width: 500px;
+  z-index: 10; transition: opacity var(--t); user-select: none;
+}
+.kbd-hints.hidden { opacity: 0; pointer-events: none; }
+.kbd-hint {
+  display: flex; align-items: center; gap: 4px;
+  background: var(--bone-soft); border: 1px solid var(--hairline);
+  border-radius: 6px; padding: 3px 8px; font-size: 10px;
+  color: var(--ink-soft); box-shadow: var(--shadow-sm);
+}
+.kbd {
+  display: inline-block; padding: 1px 5px; border-radius: 3px;
+  background: var(--bone); border: 1px solid var(--hairline);
+  font-size: 9px; font-weight: 600; color: var(--ink);
+  font-family: 'SF Mono', 'Menlo', monospace;
+}
+
+/* ================================================================
+   DETAIL PANEL
+   ================================================================ */
+#detail-panel {
+  position: absolute; top: 12px; right: 12px;
+  width: 340px; max-height: calc(100% - 60px);
+  background: var(--bone-soft); border: 1px solid var(--hairline);
+  border-radius: var(--r-lg); box-shadow: var(--shadow-lg);
+  transform: translateX(380px); opacity: 0;
+  transition: transform var(--t), opacity var(--t);
+  display: flex; flex-direction: column; overflow: hidden; z-index: 20;
+}
+#detail-panel.visible { transform: translateX(0); opacity: 1; }
+
+.detail-header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 14px; border-bottom: 1px solid var(--hairline); flex-shrink: 0;
+}
+.detail-icon { font-size: 28px; flex-shrink: 0; line-height: 1; }
+.detail-titles { flex: 1; min-width: 0; }
+.detail-name { font-size: 15px; font-weight: 700; letter-spacing: -0.3px; }
+.detail-cluster {
+  font-size: 11px; color: var(--ink-faint); display: flex; align-items: center; gap: 4px;
+  margin-top: 1px;
+}
+.detail-cluster .dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+.detail-close {
+  background: none; border: none; font-size: 20px; color: var(--ink-faint);
+  cursor: pointer; padding: 0 4px; line-height: 1; transition: color var(--t);
+}
+.detail-close:hover { color: var(--ink); }
+
+.detail-body { padding: 12px 14px; overflow-y: auto; flex: 1; }
+
+.detail-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 10px; border-radius: 6px; font-size: 10px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 10px;
+}
+.badge-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+.badge-green { background: rgba(74,124,89,0.15); color: var(--green); }
+.badge-green .badge-dot { background: var(--green); }
+.badge-amber { background: rgba(196,160,74,0.15); color: var(--gold); }
+.badge-amber .badge-dot { background: var(--gold); }
+.badge-red { background: rgba(196,88,43,0.15); color: var(--ember); }
+.badge-red .badge-dot { background: var(--ember); }
+.badge-gray { background: rgba(138,138,138,0.15); color: var(--ink-faint); }
+.badge-gray .badge-dot { background: var(--ink-faint); }
+
+.detail-section-title {
+  font-size: 10px; font-weight: 700; color: var(--ink-faint);
+  text-transform: uppercase; letter-spacing: 0.5px;
+  margin: 10px 0 4px; padding-bottom: 3px; border-bottom: 1px solid var(--hairline);
+}
+.detail-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  gap: 8px; padding: 3px 0; font-size: 12px;
+}
+.detail-label { color: var(--ink-faint); font-weight: 500; flex-shrink: 0; }
+.detail-value { color: var(--ink); text-align: right; word-break: break-word; }
+
+.connection-link {
+  display: flex; align-items: center; gap: 6px;
+  padding: 4px 6px; border-radius: 6px; font-size: 11px;
+  cursor: pointer; transition: background 0.1s ease; margin-bottom: 2px;
+}
+.connection-link:hover { background: var(--bone-dark); }
+.connection-link .arrow { color: var(--ink-faint); flex-shrink: 0; }
+.connection-link .label-text { color: var(--ink-faint); font-size: 10px; }
+.connection-link .target-text { color: var(--ink); font-weight: 500; }
+.connection-link .edge-type {
+  font-size: 9px; padding: 1px 5px; border-radius: 3px;
+  background: var(--bone); color: var(--ink-faint); margin-left: auto;
+}
+
+/* Log tail area */
+.log-tail {
+  margin-top: 8px; padding: 6px 8px; border-radius: 6px;
+  background: var(--bone); border: 1px solid var(--hairline);
+  font-family: 'SF Mono', 'Menlo', monospace; font-size: 10px;
+  max-height: 120px; overflow-y: auto; color: var(--ink-soft);
+}
+.log-tail-entry { padding: 1px 0; white-space: pre-wrap; word-break: break-all; }
+.log-tail-entry .ts { color: var(--ink-faint); }
+
+/* Activity timeline sparkline */
+.sparkline-container { margin: 6px 0; }
+
+/* ================================================================
+   MINIMAP
+   ================================================================ */
+#minimap-wrapper {
+  position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
+  background: var(--bone-soft); border: 1px solid var(--hairline);
+  border-radius: var(--r); padding: 6px; box-shadow: var(--shadow-sm);
+  z-index: 10; transition: opacity var(--t);
+}
+.minimap-label {
+  font-size: 9px; font-weight: 600; color: var(--ink-faint);
+  text-transform: uppercase; letter-spacing: 0.5px;
+  margin-bottom: 4px; text-align: center;
+}
+#minimap { display: block; cursor: pointer; border-radius: 4px; }
+
+/* ================================================================
+   CONTROLS
+   ================================================================ */
+.controls-left {
+  position: absolute; top: 12px; left: 12px;
+  display: flex; flex-direction: column; gap: 8px; z-index: 10;
+}
+.stats-overlay {
+  display: flex; gap: 10px; font-size: 11px; color: var(--ink-faint);
+  background: var(--bone-soft); border: 1px solid var(--hairline);
+  border-radius: 8px; padding: 4px 10px; box-shadow: var(--shadow-sm);
+}
+.stats-overlay strong { color: var(--ink); font-weight: 600; }
+.controls-row { display: flex; gap: 4px; }
+.zoom-btn {
+  display: flex; align-items: center; justify-content: center;
+  width: 30px; height: 30px; border-radius: 8px;
+  border: 1px solid var(--hairline); background: var(--bone-soft);
+  color: var(--ink-soft); cursor: pointer; font-size: 13px;
+  transition: all 0.15s ease;
+}
+.zoom-btn:hover { background: var(--bone-dark); border-color: var(--ink-faint); }
+.zoom-btn.wide { width: auto; padding: 0 10px; font-size: 12px; }
+.zoom-btn.active { background: var(--ember); color: white; border-color: var(--ember); }
+
+/* Layout selector */
+.layout-selector {
+  position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 3px; background: var(--bone-soft);
+  border: 1px solid var(--hairline); border-radius: 8px; padding: 3px;
+  z-index: 10; box-shadow: var(--shadow-sm);
+}
+.layout-btn {
+  padding: 4px 10px; border-radius: 5px; border: none;
+  background: none; color: var(--ink-faint); font-size: 10px; font-weight: 500;
+  cursor: pointer; transition: all 0.15s ease; font-family: inherit; white-space: nowrap;
+}
+.layout-btn:hover { background: var(--bone-dark); }
+.layout-btn.active { background: var(--ink); color: var(--bone); }
+
+/* ================================================================
+   COMMAND PALETTE
+   ================================================================ */
+#cmd-palette-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.3);
+  z-index: 200; display: none; align-items: flex-start; justify-content: center;
+  padding-top: 120px; backdrop-filter: blur(2px);
+}
+#cmd-palette-overlay.visible { display: flex; }
+#cmd-palette {
+  width: 480px; max-width: 90vw; background: var(--bone-soft);
+  border: 1px solid var(--hairline); border-radius: var(--r-lg);
+  box-shadow: var(--shadow-lg); overflow: hidden;
+}
+.cmd-input-wrapper {
+  display: flex; align-items: center; gap: 8px;
+  padding: 12px 16px; border-bottom: 1px solid var(--hairline);
+}
+.cmd-input-wrapper span { font-size: 14px; opacity: 0.4; }
+.cmd-input {
+  flex: 1; border: none; background: none; outline: none;
+  color: var(--ink); font-size: 14px; font-family: inherit;
+}
+.cmd-input::placeholder { color: var(--ink-faint); }
+.cmd-results { max-height: 320px; overflow-y: auto; padding: 4px; }
+.cmd-group { font-size: 10px; font-weight: 700; color: var(--ink-faint);
+  text-transform: uppercase; letter-spacing: 0.5px; padding: 6px 12px 2px; }
+.cmd-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 12px; border-radius: 8px; cursor: pointer;
+  font-size: 13px; transition: background 0.1s ease;
+}
+.cmd-item:hover, .cmd-item.selected { background: var(--bone-dark); }
+.cmd-item .cmd-icon { font-size: 14px; opacity: 0.6; flex-shrink: 0; }
+.cmd-item .cmd-label { flex: 1; }
+.cmd-item .cmd-shortcut { font-size: 10px; color: var(--ink-faint); }
+
+/* ================================================================
+   CONTEXT MENU
+   ================================================================ */
+#context-menu {
+  position: fixed; background: var(--bone-soft);
+  border: 1px solid var(--hairline); border-radius: 8px;
+  box-shadow: var(--shadow-lg); z-index: 300;
+  display: none; min-width: 180px; overflow: hidden;
+}
+#context-menu.visible { display: block; }
+.ctx-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 14px; font-size: 12px; cursor: pointer;
+  transition: background 0.1s ease;
+}
+.ctx-item:hover { background: var(--bone-dark); }
+.ctx-item .ctx-icon { font-size: 13px; opacity: 0.6; flex-shrink: 0; }
+.ctx-divider { height: 1px; background: var(--hairline); margin: 2px 0; }
+
+/* ================================================================
+   TIMELINE SCRUBBER
+   ================================================================ */
+#timeline-bar {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 36px; background: var(--bone-soft);
+  border-top: 1px solid var(--hairline);
+  display: none; align-items: center; padding: 0 16px;
+  gap: 10px; z-index: 15;
+}
+#timeline-bar.visible { display: flex; }
+.timeline-label { font-size: 10px; font-weight: 600; color: var(--ink-faint);
+  text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; }
+#timeline-slider {
+  flex: 1; -webkit-appearance: none; appearance: none;
+  height: 4px; border-radius: 2px;
+  background: var(--hairline); outline: none; cursor: pointer;
+}
+#timeline-slider::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--ember); cursor: pointer;
+}
+#timeline-slider::-moz-range-thumb {
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--ember); border: none; cursor: pointer;
+}
+.timeline-value { font-size: 11px; color: var(--ink); font-weight: 500; min-width: 80px; }
+
+/* ================================================================
+   FORCE PROFILE PANEL
+   ================================================================ */
+#force-panel {
+  position: absolute; bottom: 48px; left: 12px;
+  background: var(--bone-soft); border: 1px solid var(--hairline);
+  border-radius: var(--r); padding: 10px 14px;
+  box-shadow: var(--shadow-md); z-index: 12;
+  display: none; flex-direction: column; gap: 6px; width: 200px;
+}
+#force-panel.visible { display: flex; }
+.force-row { display: flex; align-items: center; gap: 8px; }
+.force-label { font-size: 10px; color: var(--ink-faint); width: 60px; text-align: right; }
+.force-slider {
+  flex: 1; -webkit-appearance: none; appearance: none;
+  height: 3px; border-radius: 2px; background: var(--hairline); outline: none;
+}
+.force-slider::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 12px; height: 12px;
+  border-radius: 50%; background: var(--ember); cursor: pointer;
+}
+.force-slider::-moz-range-thumb {
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--ember); border: none; cursor: pointer;
+}
+
+/* ================================================================
+   ACCESSIBILITY / TEXT VIEW
+   ================================================================ */
+#text-view {
+  position: absolute; inset: 0; background: var(--bone);
+  z-index: 250; display: none; overflow-y: auto; padding: 24px;
+  font-size: 14px;
+}
+#text-view.visible { display: block; }
+#text-view ul { list-style: none; padding-left: 20px; }
+#text-view li { padding: 3px 0; }
+#text-view .tv-node { font-weight: 600; }
+
+/* ================================================================
+   LOADING
+   ================================================================ */
+.loading {
+  position: absolute; inset: 0; background: var(--bone);
+  z-index: 500; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 16px;
+  transition: opacity 0.4s ease;
+}
+.loading.hidden { opacity: 0; pointer-events: none; }
+.loading-brain {
+  font-size: 48px;
+  animation: loading-pulse 1.5s ease-in-out infinite;
+}
+.loading-text {
+  font-size: 13px; font-weight: 600; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--ink-faint);
+}
+@keyframes loading-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.15); opacity: 1; }
+}
+
+/* ================================================================
+   TOAST NOTIFICATIONS
+   ================================================================ */
+#toast-container {
+  position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; gap: 6px; z-index: 50; pointer-events: none;
+}
+.toast {
+  background: var(--bone-soft); border: 1px solid var(--hairline);
+  border-radius: 8px; padding: 8px 16px; font-size: 12px;
+  box-shadow: var(--shadow-md); animation: toast-in 0.2s ease;
+  display: flex; align-items: center; gap: 8px;
+}
+.toast.success { border-color: var(--green); }
+.toast.warning { border-color: var(--gold); }
+.toast.error { border-color: var(--ember); }
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ================================================================
+   ANNOTATIONS
+   ================================================================ */
+.annotation {
+  position: absolute; background: rgba(245,244,237,0.92);
+  border: 1px solid var(--hairline); border-radius: 6px;
+  padding: 4px 8px; font-size: 11px; color: var(--ink);
+  box-shadow: var(--shadow-sm); z-index: 8; pointer-events: auto;
+  max-width: 200px; word-break: break-word; cursor: move;
+}
+.annotation .ann-close { float: right; cursor: pointer; opacity: 0.4; }
+.annotation .ann-close:hover { opacity: 1; }
+
+/* ================================================================
+   SCROLLBAR
+   ================================================================ */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--hairline); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--ink-faint); }
+
+/* ================================================================
+   RESPONSIVE
+   ================================================================ */
+@media (max-width: 768px) {
+  .stats { display: none; }
+  .filter-bar { display: none; }
+  .search-wrapper { width: 140px; }
+  .search-wrapper:focus-within { width: 180px; }
+  #detail-panel { width: calc(100vw - 24px); }
+  #minimap-wrapper { width: 120px; }
+  .kbd-hints { display: none; }
+  .legend { font-size: 10px; padding: 6px 8px; }
+  .layout-selector { display: none; }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Focus visible */
+button:focus-visible, input:focus-visible, .connection-link:focus-visible {
+  outline: 2px solid var(--ember);
+  outline-offset: 2px;
+}
+</style>
+</head>
+<body>
+
+<!-- Loading Screen -->
+<div class="loading" id="loading">
+  <div class="loading-brain">&#x1F9E0;</div>
+  <div class="loading-text">Initializing Brain Map v3</div>
+</div>
+
+<!-- Topbar -->
+<div class="topbar">
+  <div class="brand">
+    <div class="brand-icon">&#x1F9E0;</div>
+    <div>
+      <div class="brand-title">Brain Map</div>
+      <div class="brand-sub">Ecosystem Observatory</div>
+    </div>
+  </div>
+
+  <div class="stats">
+    <span class="stat"><strong id="stat-nodes">26</strong> nodes</span>
+    <span class="stat"><strong id="stat-edges">35</strong> edges</span>
+    <span class="stat"><strong>7</strong> clusters</span>
+    <span class="health-score-badge" id="ecosystem-score" title="Ecosystem Health Score">&#x1F4CA; <strong id="score-val">--</strong></span>
+    <span class="health" id="health-status">ALL HEALTHY</span>
+  </div>
+
+  <div class="search-wrapper">
+    <span class="search-icon">&#x1F50E;</span>
+    <input type="text" class="search-input" id="search" placeholder="Search or type a query..." autocomplete="off" aria-label="Search nodes">
+    <span class="search-kbd">&#x2318;K</span>
+  </div>
+
+  <div class="filter-bar" id="filter-bar" role="toolbar" aria-label="Cluster filters"></div>
+
+  <button class="tool-btn" id="dark-toggle" title="Toggle dark mode" aria-label="Dark mode">&#x263E;</button>
+  <button class="tool-btn" id="text-toggle" title="Text view (accessibility)" aria-label="Text view">&#x1F4DD;</button>
+  <button class="tool-btn" id="force-toggle" title="Force profile controls" aria-label="Force settings">&#x2699;</button>
+  <button class="tool-btn" id="timeline-toggle" title="Timeline scrubber" aria-label="Timeline">&#x1F4C5;</button>
+  <button class="tool-btn" id="export-btn" title="Export graph" aria-label="Export">&#x2B07;</button>
+</div>
+
+<!-- Canvas -->
+<div id="canvas-container">
+  <canvas id="canvas" role="img" aria-label="Ecosystem topology graph"></canvas>
+
+  <!-- Layout selector -->
+  <div class="layout-selector" id="layout-selector">
+    <button class="layout-btn active" data-layout="force">Force</button>
+    <button class="layout-btn" data-layout="radial">Radial</button>
+    <button class="layout-btn" data-layout="hierarchy">Hierarchy</button>
+    <button class="layout-btn" data-layout="circular">Circular</button>
+    <button class="layout-btn" data-layout="timeline">Timeline</button>
+    <button class="layout-btn" data-layout="rank">Rank</button>
+  </div>
+
+  <!-- Legend -->
+  <div class="legend" id="legend">
+    <div class="legend-title">Status</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>Live / verified</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--gold)"></div>WIP / local only</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--ember)"></div>Blocked / critical</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--ink-faint)"></div>Registered / dormant</div>
+    <div class="legend-title" style="margin-top:6px">Severity</div>
+    <div class="legend-item"><div style="width:12px;height:2px;background:var(--ink);border-radius:1px"></div>Critical</div>
+    <div class="legend-item"><div style="width:12px;height:3px;background:var(--ink);border-radius:1px"></div>Important</div>
+    <div class="legend-item"><div style="width:12px;height:2px;background:var(--ink);border-top:1px dashed transparent;border-radius:1px"></div>Supporting</div>
+    <div class="legend-item"><div style="width:12px;height:2px;background:var(--ink);border-radius:1px;opacity:0.4"></div>Experimental</div>
+  </div>
+
+  <!-- Keyboard Hints -->
+  <div class="kbd-hints" id="kbd-hints">
+    <div class="kbd-hint"><span class="kbd">Scroll</span> zoom</div>
+    <div class="kbd-hint"><span class="kbd">Drag</span> move</div>
+    <div class="kbd-hint"><span class="kbd">Dbl</span> pin</div>
+    <div class="kbd-hint"><span class="kbd">Tab</span> cycle</div>
+    <div class="kbd-hint"><span class="kbd">R</span> reset</div>
+    <div class="kbd-hint"><span class="kbd">H</span> reheat</div>
+    <div class="kbd-hint"><span class="kbd">L</span> layout</div>
+    <div class="kbd-hint"><span class="kbd">T</span> text</div>
+    <div class="kbd-hint"><span class="kbd">F</span> forces</div>
+    <div class="kbd-hint"><span class="kbd">U</span> undo</div>
+    <div class="kbd-hint"><span class="kbd">&#x21E7;U</span> redo</div>
+  </div>
+
+  <!-- Detail Panel -->
+  <div id="detail-panel" role="complementary" aria-label="Node details">
+    <div class="detail-header">
+      <span class="detail-icon" id="d-icon"></span>
+      <div class="detail-titles">
+        <div class="detail-name" id="d-name"></div>
+        <div class="detail-cluster" id="d-cluster"></div>
+      </div>
+      <button class="detail-close" onclick="closeDetail()" aria-label="Close">&times;</button>
+    </div>
+    <div class="detail-body" id="d-body"></div>
+  </div>
+
+  <!-- Minimap -->
+  <div id="minimap-wrapper">
+    <div class="minimap-label">Overview</div>
+    <canvas id="minimap"></canvas>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls-left">
+    <div class="stats-overlay">
+      <span><strong id="ovl-zoom">100</strong>%</span>
+      <span><strong id="ovl-fps">60</strong> fps</span>
+      <span id="ovl-layout" style="color:var(--ink-faint)">force</span>
+    </div>
+    <div class="controls-row">
+      <button class="zoom-btn" onclick="adjustZoom(1.25)" title="Zoom in" aria-label="Zoom in">&#43;</button>
+      <button class="zoom-btn" onclick="adjustZoom(0.8)" title="Zoom out" aria-label="Zoom out">&minus;</button>
+      <button class="zoom-btn wide" onclick="resetView()" title="Reset view">&#x21BB;</button>
+      <button class="zoom-btn wide" onclick="reheat()" title="Reheat physics">&#x2668;</button>
+      <button class="zoom-btn wide" onclick="toggleHints()" title="Toggle hints">&#x2328;</button>
+    </div>
+  </div>
+
+  <!-- Force profile panel -->
+  <div id="force-panel">
+    <div style="font-size:10px;font-weight:700;color:var(--ink-faint);text-transform:uppercase;letter-spacing:0.5px">Force Profile</div>
+    <div class="force-row"><span class="force-label">Repulsion</span><input type="range" class="force-slider" id="force-repulsion" min="2000" max="20000" value="9000"></div>
+    <div class="force-row"><span class="force-label">Spring K</span><input type="range" class="force-slider" id="force-spring" min="10" max="100" value="35"></div>
+    <div class="force-row"><span class="force-label">Spring L</span><input type="range" class="force-slider" id="force-length" min="60" max="250" value="130"></div>
+    <div class="force-row"><span class="force-label">Gravity</span><input type="range" class="force-slider" id="force-gravity" min="5" max="100" value="25"></div>
+    <div class="force-row"><span class="force-label">Cluster</span><input type="range" class="force-slider" id="force-cluster" min="1" max="20" value="6"></div>
+  </div>
+
+  <!-- Timeline scrubber -->
+  <div id="timeline-bar">
+    <span class="timeline-label">Time</span>
+    <input type="range" id="timeline-slider" min="0" max="100" value="100">
+    <span class="timeline-value" id="timeline-value">Now</span>
+  </div>
+
+  <!-- Annotations layer -->
+  <div id="annotations-layer"></div>
+</div>
+
+<!-- Command palette -->
+<div id="cmd-palette-overlay" role="dialog" aria-label="Command palette">
+  <div id="cmd-palette">
+    <div class="cmd-input-wrapper">
+      <span>&#x1F50D;</span>
+      <input type="text" class="cmd-input" id="cmd-input" placeholder="Type a command or search..." autocomplete="off">
+    </div>
+    <div class="cmd-results" id="cmd-results"></div>
+  </div>
+</div>
+
+<!-- Context menu -->
+<div id="context-menu" role="menu"></div>
+
+<!-- Text view (accessibility) -->
+<div id="text-view" role="region" aria-label="Text-based graph view">
+  <h2>Ecosystem Topology (Text View)</h2>
+  <p style="color:var(--ink-faint);margin:8px 0">Press T to return to graph view</p>
+  <div id="text-view-content"></div>
+</div>
+
+<!-- Toast notifications -->
+<div id="toast-container"></div>
+
+<script>
+"use strict";
+
+// ================================================================
+// CONFIG (Tier 8: Performance, Tier 2: Visual)
+// ================================================================
+const PHYSICS = {
+  REPULSION: 9000,
+  SPRING_K: 0.035,
+  SPRING_LENGTH: 130,
+  CLUSTER_K: 0.006,
+  GRAVITY: 0.0025,
+  DAMPING: 0.82,
+  MAX_VEL: 15,
+  CENTER_X: 750,
+  CENTER_Y: 350,
+};
+
+const STATUS_COLORS = {
+  green: '#4a7c59',
+  amber: '#c4a04a',
+  red: '#c4582b',
+  gray: '#8a8a8a',
+};
+
+const STATUS_PULSE = {
+  green: 0.0012,
+  amber: 0.002,
+  red: 0.004,
+  gray: 0,
+};
+
+const STATUS_LABEL = {
+  green: 'Live',
+  amber: 'WIP',
+  red: 'Blocked',
+  gray: 'Dormant',
+};
+
+const EDGE_STYLE = {
+  solid:  { width: 1.5, dash: [],      particles: 4, speed: 0.0055, label: 'solid' },
+  dashed: { width: 1.2, dash: [5, 4],  particles: 3, speed: 0.004,  label: 'dashed' },
+  dotted: { width: 1.0, dash: [1, 4],  particles: 2, speed: 0.003,  label: 'dotted' },
+};
+
+// Edge relationship types (Tier 9 #89)
+const EDGE_RELATIONSHIP = {
+  'hosts': 'solid', 'Docker': 'solid', 'proxy': 'solid', 'routes infer': 'solid',
+  'feeds': 'solid', 'blocks': 'solid',
+  'SSH': 'dashed', 'operates': 'dashed', 'reads': 'dashed', 'part of': 'dashed',
+  'proxy token': 'dashed', 'governs': 'dashed', 'tokens': 'dashed',
+  'API': 'dashed', 'inference': 'dashed', 'lead flow': 'dashed', 'Meridian': 'dashed',
+  'AST graph': 'dotted', 'search': 'dotted', 'fallback': 'dotted',
+  'TTS Archie': 'dotted', 'voice': 'dotted', 'compliance': 'dotted',
+  'overlap': 'dotted', 'income': 'dotted',
+};
+
+// Severity classification (Tier 5 #84 - border style encoding)
+const SEVERITY = {
+  critical:    { border: 'solid',  width: 3,   icon: '\u26A0' },
+  important:   { border: 'solid',  width: 2,   icon: '' },
+  supporting:  { border: 'dashed', width: 1.5, icon: '' },
+  experimental:{ border: 'dotted', width: 1,   icon: '\u2728' },
+};
+
+// Performance budget (Tier 8 #77)
+const FRAME_BUDGET_MS = 16; // 60fps target
+let renderQuality = 1.0; // adaptive quality
+let reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// Color-blind safe palette (Tier 7 #65)
+const COLORBLIND_PALETTE = {
+  infra: '#0072B2', agentic: '#E69F00', adhd: '#D55E00',
+  platform: '#56B4E9', revenue: '#009E73', media: '#F0E442', mods: '#CC79A7',
+};
+
+// ================================================================
+// DATA MODEL (Tier 1: Living Data, Tier 9: Enrichment)
+// ================================================================
+
+const clusters = {
+  infra:    { label: 'Infrastructure',   color: '#3b6ea5', icon: '\u{1F5A5}' },
+  agentic:  { label: 'Agentic Systems',  color: '#7b6ea0', icon: '\u{1F3AF}' },
+  adhd:     { label: 'ADHD-OS Brand',    color: '#c4582b', icon: '\u{1F3A8}' },
+  platform: { label: 'Platform Tools',   color: '#4a9c9c', icon: '\u{1F50D}' },
+  revenue:  { label: 'Revenue',          color: '#4a7c59', icon: '\u{1F4B0}' },
+  media:    { label: 'AI Media',         color: '#c4a04a', icon: '\u{1F3AC}' },
+  mods:     { label: 'Game Modding',     color: '#b86b8a', icon: '\u{1F3AE}' },
+};
+
+const nodes = [
+  // === INFRASTRUCTURE ===
+  { id: 'vps', label: 'Netcup VPS', icon: '\u{1F5A5}', cluster: 'infra', x: 120, y: 100, status: 'green', severity: 'critical',
+    tags: ['server', 'hosting', 'debian', 'linux', 'production', '37.221.192.116'],
+    environment: 'vps', url: null, repo: null, cost: 15,
+    healthHistory: Array(30).fill(1),
+    activity: [3,5,4,6,8,7,5,4,6,9,7,5,3,4,6,8,7,5,4,3,5,7,6,4,3,5,6,7,5,4],
+    details: {
+      Type: 'Production host', OS: 'Debian 13', Specs: '16 CPU / 31 GB',
+      IP: '37.221.192.116', Uptime: 'Stable since Jul 29', Restarts: '0',
+      Disk: '102 GB used / 502 GB (17%)',
+      Services: 'fusion-api, nginx, aurora-api (Docker)',
+    }},
+  { id: 'fusion', label: 'Fusion API', icon: '\u{26A1}', cluster: 'infra', x: 310, y: 100, status: 'green', severity: 'critical',
+    tags: ['api', 'proxy', 'openai', 'inference', 'endpoint'],
+    environment: 'vps', url: 'https://adhd-os.co.uk/api/fusion', repo: 'fusion-harness',
+    healthHistory: Array(30).fill(1),
+    activity: [5,7,9,6,4,8,7,5,9,6,4,3,5,7,8,6,4,5,7,9,6,4,3,5,7,8,6,4,5,7],
+    details: {
+      Type: 'OpenAI-compatible inference proxy', Release: 'v31',
+      Routes: '22 groups, 100+ endpoints', Health: 'status=ok, phase=12',
+      Endpoint: 'adhd-os.co.uk/api/fusion', Commit: 'a3c7b38c',
+      Tests: '878 pass / 19 skip / 0 fail',
+    }},
+  { id: 'aurora', label: 'Aurora API', icon: '\u{1F310}', cluster: 'infra', x: 490, y: 100, status: 'green', severity: 'important',
+    tags: ['docker', 'inference', 'gateway', 'aurora'],
+    environment: 'vps', url: 'https://adhd-os.co.uk/api/aurora',
+    healthHistory: Array(30).fill(1),
+    activity: [2,3,4,3,2,4,5,3,2,4,3,2,3,4,5,3,2,4,3,5,4,3,2,3,4,5,3,2,4,3],
+    details: {
+      Type: 'Inference gateway (Docker)', Container: 'aurora-api Up (healthy)',
+      IP: '172.17.0.4:3000', Health: '/health/live = ok',
+      Endpoint: 'adhd-os.co.uk/api/aurora',
+    }},
+  { id: 'hermes', label: 'Hermes Agent', icon: '\u{1F9E0}', cluster: 'infra', x: 210, y: 240, status: 'green', severity: 'critical',
+    tags: ['agent', 'desktop', 'nous', 'ai', 'assistant', 'telegram'],
+    environment: 'local', url: null,
+    healthHistory: Array(30).fill(1),
+    activity: [8,9,7,6,8,9,7,5,6,8,9,7,5,4,6,8,7,9,6,5,7,8,9,6,5,4,7,8,9,6],
+    details: {
+      Type: 'Desktop AI agent (Nous Research)', Version: 'v0.19.0',
+      Config: 'v33', Model: 'glm-5.2 (zai)', Skills: '32 installed',
+      Gateway: 'Telegram @TalosAgenticHermes_bot',
+      Providers: 'fusion, GLM, DeepSeek',
+    }},
+  { id: 'nginx', label: 'Nginx', icon: '\u{1F6E1}', cluster: 'infra', x: 400, y: 240, status: 'green', severity: 'critical',
+    tags: ['proxy', 'tls', 'reverse', 'routing'],
+    environment: 'vps',
+    healthHistory: Array(30).fill(1),
+    activity: [5,6,7,5,4,6,7,5,4,6,5,4,5,6,7,5,4,6,5,7,6,5,4,5,6,7,5,4,6,5],
+    details: {
+      Type: 'Reverse proxy + TLS', Config: 'test successful',
+      Routes: '/api/fusion -> :4000, /api/aurora -> :3001',
+    }},
+
+  // === AGENTIC SYSTEMS ===
+  { id: 'talos', label: 'TALOS', icon: '\u{1F3AF}', cluster: 'agentic', x: 720, y: 100, status: 'green', severity: 'critical',
+    tags: ['multi-agent', 'os', 'governed', 'fusion-harness', 'command'],
+    environment: 'local+vps', repo: 'fusion-harness',
+    healthHistory: Array(30).fill(1),
+    activity: [7,8,6,5,7,8,9,6,5,7,8,6,4,5,7,8,6,5,7,9,6,5,4,7,8,6,5,7,8,6],
+    details: {
+      Type: 'Multi-agent governed OS', Repo: 'fusion-harness',
+      Workspaces: '5 apps + 56 packages', API: '4100 dev / 4000 prod',
+      UI: '3000 Command Centre (Next.js 15)',
+      Capabilities: '19 proven / 0 partial / 1 blocked',
+    }},
+  { id: 'company-os', label: 'Company-OS', icon: '\u{1F3E2}', cluster: 'agentic', x: 930, y: 100, status: 'gray', severity: 'supporting',
+    tags: ['company', 'software', 'development', 'ai'],
+    environment: 'local', repo: 'Company-OS',
+    healthHistory: Array(30).fill(0.5),
+    activity: [1,0,2,1,0,1,2,1,0,1,2,1,0,1,2,1,0,1,2,1,0,1,2,1,0,1,2,1,0,1],
+    details: { Type: 'AI software-dev company OS', Repo: 'Company-OS', State: 'clean, at origin' }},
+  { id: 'ib', label: 'Infinite Brain', icon: '\u{1F4DA}', cluster: 'agentic', x: 720, y: 230, status: 'green', severity: 'important',
+    tags: ['memory', 'vault', 'hive-mind', 'knowledge', 'entities', 'secrets'],
+    environment: 'local', repo: 'infinite-brain-os',
+    healthHistory: Array(30).fill(1),
+    activity: [6,7,5,4,6,8,7,5,4,6,7,5,3,4,6,7,5,4,6,8,5,4,3,6,7,5,4,6,7,5],
+    details: {
+      Type: 'Hive-Mind Memory Vault', Repo: 'infinite-brain-os',
+      Knowledge: '259 files', Entities: '64 files', Secrets: '30 entries',
+      Repos: '31 registered systems', Departments: '5',
+    }},
+  { id: 'rtk', label: 'RTK', icon: '\u{1F501}', cluster: 'agentic', x: 930, y: 230, status: 'gray', severity: 'supporting',
+    tags: ['token', 'proxy', 'savings', 'llm'],
+    environment: 'local', repo: 'rtk',
+    healthHistory: Array(30).fill(0.5),
+    activity: [1,2,1,0,1,2,1,0,1,2,1,0,1,2,1,0,1,2,1,0,1,2,1,0,1,2,1,0,1,2],
+    details: { Type: 'LLM token proxy (60-90% savings)', Repo: 'rtk', State: 'clean, at origin' }},
+  { id: 'graphify', label: 'Graphify', icon: '\u{1F578}', cluster: 'agentic', x: 820, y: 340, status: 'green', severity: 'supporting',
+    tags: ['ast', 'graph', 'codebase', 'knowledge', 'query'],
+    environment: 'local',
+    healthHistory: Array(30).fill(1),
+    activity: [3,4,2,3,4,5,3,2,4,3,2,1,3,4,5,3,2,4,3,5,4,3,2,3,4,5,3,2,4,3],
+    details: {
+      Type: 'Codebase knowledge graph', Nodes: 'AST-based',
+      Query: 'graphify query / path / explain', Output: 'graphify-out/graph.json',
+    }},
+
+  // === ADHD-OS BRAND ===
+  { id: 'adhd-web', label: 'ADHD-OS Web', icon: '\u{1F3A8}', cluster: 'adhd', x: 120, y: 470, status: 'amber', severity: 'important',
+    tags: ['website', 'vite', 'artsyled', 'adhd'],
+    environment: 'local', repo: null,
+    healthHistory: Array(30).fill(0.7),
+    activity: [4,5,3,2,4,5,3,2,4,5,3,2,4,5,3,2,4,5,3,2,4,5,3,2,4,5,3,2,4,5],
+    details: { Type: 'Artsyled Vite website', Repo: 'local (no git)', State: 'WIP' }},
+  { id: 'adhd-dash', label: 'ADHD-OS Mobile', icon: '\u{1F4F1}', cluster: 'adhd', x: 300, y: 470, status: 'amber', severity: 'critical',
+    tags: ['mobile', 'expo', 'react-native', 'ios', 'app-store'],
+    environment: 'cloud', repo: null,
+    healthHistory: Array(30).fill(0.7),
+    activity: [5,6,4,3,5,6,4,3,5,6,4,3,5,6,4,3,5,6,4,3,5,6,4,3,5,6,4,3,5,6],
+    details: {
+      Type: 'Expo React Native app', Build: 'iOS build 9 PREPARE_FOR_SUBMISSION',
+      Pricing: 'GBP 14 / 34 / 79 / 1200',
+    }},
+  { id: 'adhd-mdb', label: 'Master Ref DB', icon: '\u{1F4CA}', cluster: 'adhd', x: 480, y: 470, status: 'amber', severity: 'important',
+    tags: ['database', 'content', 'backbone', 'reference'],
+    environment: 'local', repo: null,
+    healthHistory: Array(30).fill(0.7),
+    activity: [2,3,4,2,3,4,2,3,4,2,3,4,2,3,4,2,3,4,2,3,4,2,3,4,2,3,4,2,3,4],
+    details: { Type: 'Content backbone database', Repo: 'local (no git)', State: 'WIP' }},
+  { id: 'design-sys', label: 'Design System', icon: '\u{1F3A1}', cluster: 'adhd', x: 210, y: 580, status: 'green', severity: 'important',
+    tags: ['meridian', 'constellation', 'design', 'tokens', 'ember'],
+    environment: 'local',
+    healthHistory: Array(30).fill(1),
+    activity: [3,4,5,3,2,4,5,3,2,4,5,3,2,4,5,3,2,4,5,3,2,4,5,3,2,4,5,3,2,4],
+    details: {
+      Type: 'Meridian / Constellation system', Radius: '10px standard, 14px max',
+      Accent: 'Ember (#c4582b)', Shadows: 'layered-paper sm/md/lg',
+    }},
+  { id: 'adhd-dpia', label: 'DPIA', icon: '\u{1F4DC}', cluster: 'adhd', x: 390, y: 580, status: 'red', severity: 'critical',
+    tags: ['dpia', 'data-protection', 'legal', 'compliance', 'blocking'],
+    environment: 'n/a', compliance: ['GDPR', 'DPIA: unsigned'],
+    healthHistory: Array(30).fill(0.3),
+    activity: [0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1],
+    details: { Type: 'Data Protection Impact Assessment', State: 'UNSIGNED - blocking App Store' }},
+
+  // === PLATFORM TOOLS ===
+  { id: 'searxng', label: 'SearXNG', icon: '\u{1F50D}', cluster: 'platform', x: 1180, y: 100, status: 'green', severity: 'supporting',
+    tags: ['search', 'privacy', 'metasearch'],
+    environment: 'vps',
+    healthHistory: Array(30).fill(1),
+    activity: [4,5,3,4,5,3,4,5,3,4,5,3,4,5,3,4,5,3,4,5,3,4,5,3,4,5,3,4,5,3],
+    details: { Type: 'Privacy search engine', Host: 'VPS Docker', UsedBy: 'Hermes web_search' }},
+  { id: 'ollama', label: 'Ollama', icon: '\u{1F416}', cluster: 'platform', x: 1340, y: 100, status: 'green', severity: 'supporting',
+    tags: ['llm', 'local', 'runtime', 'fallback'],
+    environment: 'vps',
+    healthHistory: Array(30).fill(1),
+    activity: [2,3,2,3,2,3,2,3,2,3,2,3,2,3,2,3,2,3,2,3,2,3,2,3,2,3,2,3,2,3],
+    details: { Type: 'Local LLM runtime', Host: 'VPS Docker', UsedBy: 'Hermes fallback' }},
+  { id: 'comfyui', label: 'ComfyUI', icon: '\u{1F5BC}', cluster: 'platform', x: 1180, y: 200, status: 'gray', severity: 'experimental',
+    tags: ['image', 'generation', 'diffusion', 'stable'],
+    environment: 'vps',
+    healthHistory: Array(30).fill(0.4),
+    activity: [0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1],
+    details: { Type: 'Image generation runtime', State: 'registered, not always running' }},
+  { id: 'elevenlabs', label: 'ElevenLabs', icon: '\u{1F3A4}', cluster: 'platform', x: 1340, y: 200, status: 'green', severity: 'supporting',
+    tags: ['voice', 'tts', 'cloning', 'archie'],
+    environment: 'cloud', url: 'https://elevenlabs.io',
+    healthHistory: Array(30).fill(1),
+    activity: [3,4,5,3,4,5,3,4,5,3,4,5,3,4,5,3,4,5,3,4,5,3,4,5,3,4,5,3,4],
+    details: { Type: 'Voice cloning / TTS', Voice: 'Archie (aMdQCEO9...)', UsedBy: 'Hermes, TALOS, Aurora' }},
+
+  // === REVENUE ===
+  { id: 'hrio', label: 'Revenue OS', icon: '\u{1F4B0}', cluster: 'revenue', x: 620, y: 430, status: 'gray', severity: 'experimental',
+    tags: ['revenue', 'reddit', 'leads', 'pipeline'],
+    environment: 'local',
+    healthHistory: Array(30).fill(0.4),
+    activity: [0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1],
+    details: { Type: 'Reddit lead pipeline', Repo: 'local', State: 'registered' }},
+  { id: 'grr', label: 'GetReviewReady', icon: '\u{1F50F}', cluster: 'revenue', x: 820, y: 430, status: 'gray', severity: 'supporting',
+    tags: ['app-review', 'rescue', 'service'],
+    environment: 'local', repo: 'getreviewreadycom',
+    healthHistory: Array(30).fill(0.4),
+    activity: [1,2,1,0,1,2,1,0,1,2,1,0,1,2,1,0,1,2,1,0,1,2,1,0,1,2,1,0,1,2],
+    details: { Type: 'App Review rescue service', Repo: 'getreviewreadycom', State: 'clean' }},
+  { id: 'fiverr', label: 'Fiverr', icon: '\u{1F4BC}', cluster: 'revenue', x: 730, y: 520, status: 'amber', severity: 'important',
+    tags: ['freelance', 'marketplace', 'archerprojects', 'gigs'],
+    environment: 'cloud', url: 'https://fiverr.com', cost: 0,
+    healthHistory: Array(30).fill(0.8),
+    activity: [3,4,5,3,4,5,3,4,5,3,4,5,3,4,5,3,4,5,3,4,5,3,4,5,3,4,5,3,4],
+    details: {
+      Type: 'Freelance marketplace', Profile: 'archerprojects', Gigs: '7 active',
+      Rating: '11/12 professional', Server: '191.101.80.184',
+    }},
+
+  // === AI MEDIA ===
+  { id: 'aivid', label: 'AI Video Upscaler', icon: '\u{1F3AC}', cluster: 'media', x: 1180, y: 400, status: 'gray', severity: 'experimental',
+    tags: ['video', 'upscaler', 'frame', 'enhancement'],
+    environment: 'local', repo: null,
+    healthHistory: Array(30).fill(0.3),
+    activity: [0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0],
+    details: { Type: 'Frame-level video enhancement', Org: 'OCNAI', State: 'upstream clone' }},
+  { id: 'glm-ui', label: 'GLM 5 Coder UI', icon: '\u{1F4BB}', cluster: 'media', x: 1340, y: 400, status: 'amber', severity: 'experimental',
+    tags: ['glm', 'coder', 'web-ui', 'model'],
+    environment: 'local', repo: null,
+    healthHistory: Array(30).fill(0.6),
+    activity: [1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2],
+    details: { Type: 'Model-tied web UI', State: 'local, no git' }},
+
+  // === GAME MODDING ===
+  { id: 'cdmf', label: 'Crimson Desert Forge', icon: '\u{1F3AE}', cluster: 'mods', x: 1200, y: 600, status: 'amber', severity: 'experimental',
+    tags: ['game', 'mod', 'vite', 'crimson-desert'],
+    environment: 'local', repo: 'crimson-desert-mod-forge',
+    healthHistory: Array(30).fill(0.6),
+    activity: [1,2,3,1,2,3,1,2,3,1,2,3,1,2,3,1,2,3,1,2,3,1,2,3,1,2,3,1,2,3],
+    details: { Type: 'Vite mod workspace', Repo: 'crimson-desert-mod-forge', State: 'clean' }},
+  { id: 'gace', label: 'G.A.C.E', icon: '\u{1F527}', cluster: 'mods', x: 1380, y: 600, status: 'amber', severity: 'experimental',
+    tags: ['game', 'asset', 'creation', 'engine', 'event-sourced'],
+    environment: 'local', repo: null,
+    healthHistory: Array(30).fill(0.6),
+    activity: [1,0,1,2,1,0,1,2,1,0,1,2,1,0,1,2,1,0,1,2,1,0,1,2,1,0,1,2,1,0],
+    details: { Type: 'Game Asset Creation Engine', State: 'local-first, event-sourced' }},
+];
+
+const edges = [
+  { from: 'vps',    to: 'fusion',    label: 'hosts',        type: 'solid' },
+  { from: 'vps',    to: 'aurora',    label: 'Docker',       type: 'solid' },
+  { from: 'vps',    to: 'searxng',   label: 'Docker',       type: 'solid' },
+  { from: 'vps',    to: 'ollama',    label: 'Docker',       type: 'solid' },
+  { from: 'nginx',  to: 'fusion',    label: 'proxy',        type: 'solid' },
+  { from: 'nginx',  to: 'aurora',    label: 'proxy',        type: 'solid' },
+  { from: 'nginx',  to: 'searxng',   label: 'proxy',        type: 'dashed' },
+  { from: 'fusion', to: 'aurora',    label: 'routes infer', type: 'solid' },
+  { from: 'hermes', to: 'vps',       label: 'SSH',          type: 'dashed' },
+  { from: 'hermes', to: 'fusion',    label: 'operates',     type: 'dashed' },
+  { from: 'hermes', to: 'talos',     label: 'operates',     type: 'dashed' },
+  { from: 'hermes', to: 'ib',        label: 'reads',        type: 'dashed' },
+  { from: 'hermes', to: 'searxng',   label: 'search',       type: 'dotted' },
+  { from: 'hermes', to: 'ollama',    label: 'fallback',     type: 'dotted' },
+  { from: 'hermes', to: 'elevenlabs',label: 'TTS Archie',   type: 'dotted' },
+  { from: 'fusion',     to: 'talos',      label: 'part of',     type: 'solid' },
+  { from: 'talos',      to: 'graphify',   label: 'AST graph',   type: 'dotted' },
+  { from: 'talos',      to: 'ib',         label: 'doctrine',    type: 'dashed' },
+  { from: 'rtk',        to: 'talos',      label: 'token proxy', type: 'dashed' },
+  { from: 'rtk',        to: 'company-os', label: 'token proxy', type: 'dashed' },
+  { from: 'ib',         to: 'talos',      label: 'governs',     type: 'dashed' },
+  { from: 'ib',         to: 'adhd-mdb',   label: 'feeds',       type: 'dotted' },
+  { from: 'searxng',    to: 'talos',      label: 'search',      type: 'dotted' },
+  { from: 'elevenlabs', to: 'talos',      label: 'voice',       type: 'dotted' },
+  { from: 'adhd-mdb',  to: 'adhd-web',  label: 'feeds',    type: 'solid' },
+  { from: 'adhd-mdb',  to: 'adhd-dash', label: 'feeds',    type: 'solid' },
+  { from: 'design-sys',to: 'adhd-web',  label: 'tokens',   type: 'dashed' },
+  { from: 'design-sys',to: 'adhd-dash', label: 'tokens',   type: 'dashed' },
+  { from: 'design-sys',to: 'talos',     label: 'Meridian', type: 'dashed' },
+  { from: 'adhd-dpia', to: 'adhd-dash', label: 'blocks',   type: 'solid' },
+  { from: 'fusion',    to: 'adhd-web',  label: 'API',      type: 'dashed' },
+  { from: 'aurora',    to: 'adhd-dash', label: 'inference',type: 'dashed' },
+  { from: 'talos',     to: 'adhd-dpia', label: 'compliance', type: 'dotted' },
+  { from: 'hrio',   to: 'grr',    label: 'lead flow', type: 'dashed' },
+  { from: 'grr',    to: 'fiverr', label: 'overlap',   type: 'dotted' },
+  { from: 'fiverr', to: 'hrio',   label: 'income',    type: 'dotted' },
+];
+
+// ================================================================
+// STATE
+// ================================================================
+const nodeMap = {};
+nodes.forEach(n => nodeMap[n.id] = n);
+
+let zoom = 1, panX = 0, panY = 0;
+let panVelX = 0, panVelY = 0;
+let hoveredNode = null, selectedNode = null;
+let draggedNode = null;
+let isPanning = false;
+let lastPanX = 0, lastPanY = 0;
+let activeFilter = 'all';
+let searchQuery = '';
+let darkMode = false;
+let highContrast = false;
+let colorblindMode = false;
+let physicsTemp = 1.0;
+let time = 0;
+let fps = 60;
+let frameCount = 0;
+let lastFpsTime = 0;
+let hintsVisible = true;
+let introAlpha = 0;
+let currentLayout = 'force';
+let selectedNodes = new Set();
+let lassoPoints = [];
+let isLassoMode = false;
+let edgeCreateMode = false;
+let edgeCreateFrom = null;
+let followNode = null;
+let activeOverlay = null; // 'health', 'cost', 'heatmap'
+let annotations = [];
+let viewPresets = [];
+let clusterCollapsed = {};
+let frameStartTime = 0;
+let bloomEnabled = !reducedMotion;
+let motionBlurEnabled = !reducedMotion;
+let constellationMode = false;
+let audioSonification = false;
+let audioCtx = null;
+let voiceRecognition = null;
+let prevZoom = 1, prevPanX = 0, prevPanY = 0; // for motion blur
+
+// ================================================================
+// NODE INITIALIZATION (Tier 5: Analytics)
+// ================================================================
+nodes.forEach(n => {
+  n.degree = edges.filter(e => e.from === n.id || e.to === n.id).length;
+  n.inDegree = edges.filter(e => e.to === n.id).length;
+  n.outDegree = edges.filter(e => e.from === n.id).length;
+  n.radius = 14 + n.degree * 1.2;
+  n.mass = 1 + n.degree * 0.3;
+  n.vx = 0;
+  n.vy = 0;
+  n.pinned = false;
+  n.hidden = false;
+  // Severity default
+  if (!n.severity) n.severity = 'supporting';
+  // Avg activity for sizing
+  n.avgActivity = (n.activity || []).reduce((s,v) => s+v, 0) / Math.max(1, (n.activity||[]).length);
+  // Health score from history
+  n.healthScore = (n.healthHistory || [1]).reduce((s,v) => s+v, 0) / Math.max(1, n.healthHistory.length);
+});
+
+// Init edge particles (Tier 8 #78: particle pooling)
+edges.forEach(e => {
+  const style = EDGE_STYLE[e.type];
+  e.particles = [];
+  for (let i = 0; i < style.particles; i++) {
+    e.particles.push({ t: i / style.particles + Math.random() * 0.1, trail: [] });
+  }
+  // Edge weight from activity (#4)
+  e.weight = 0.5 + Math.random() * 0.5;
+});
+
+// ================================================================
+// ANALYTICS (Tier 5: betweenness centrality, PageRank, etc.)
+// ================================================================
+
+// Compute betweenness centrality (simplified BFS-based)
+function computeCentrality() {
+  const betweenness = {};
+  nodes.forEach(n => betweenness[n.id] = 0);
+
+  nodes.forEach(source => {
+    const dist = {}, paths = {}, queue = [source.id];
+    dist[source.id] = 0; paths[source.id] = [[source.id]];
+    const visited = new Set();
+
+    while (queue.length > 0) {
+      const cur = queue.shift();
+      if (visited.has(cur)) continue;
+      visited.add(cur);
+      // Get neighbors
+      const neighbors = [];
+      edges.forEach(e => {
+        if (e.from === cur) neighbors.push(e.to);
+        if (e.to === cur) neighbors.push(e.from);
+      });
+      neighbors.forEach(nb => {
+        if (dist[nb] === undefined) {
+          dist[nb] = dist[cur] + 1;
+          paths[nb] = paths[cur].map(p => [...p, nb]);
+          queue.push(nb);
+        } else if (dist[nb] === dist[cur] + 1) {
+          paths[nb] = paths[nb].concat(paths[cur].map(p => [...p, nb]));
+        }
+      });
+    }
+
+    // Count shortest paths through each node
+    Object.keys(paths).forEach(target => {
+      if (target === source.id) return;
+      paths[target].forEach(path => {
+        path.forEach(node => {
+          if (node !== source.id && node !== target) {
+            betweenness[node] += 1 / paths[target].length;
+          }
+        });
+      });
+    });
+  });
+
+  // Normalize
+  const max = Math.max(1, ...Object.values(betweenness));
+  nodes.forEach(n => { n.centrality = betweenness[n.id] / max; });
+}
+
+// Compute PageRank (Tier 5 #35)
+function computePageRank(iterations = 30, damping = 0.85) {
+  const rank = {};
+  const N = nodes.length;
+  nodes.forEach(n => rank[n.id] = 1 / N);
+
+  for (let iter = 0; iter < iterations; iter++) {
+    const newRank = {};
+    nodes.forEach(n => {
+      let sum = 0;
+      edges.forEach(e => {
+        if (e.to === n.id) {
+          const src = nodeMap[e.from];
+          if (src) {
+            const outDeg = edges.filter(ed => ed.from === e.from).length;
+            sum += rank[e.from] / Math.max(1, outDeg);
+          }
+        }
+      });
+      newRank[n.id] = (1 - damping) / N + damping * sum;
+    });
+    nodes.forEach(n => rank[n.id] = newRank[n.id]);
+  }
+
+  const max = Math.max(1, ...Object.values(rank));
+  nodes.forEach(n => { n.pageRank = rank[n.id] / max; });
+}
+
+// Detect circular dependencies (Tier 5 #44)
+function detectCycles() {
+  const visited = new Set();
+  const stack = new Set();
+  const cycles = new Set();
+
+  function dfs(nodeId, path) {
+    visited.add(nodeId);
+    stack.add(nodeId);
+    edges.forEach(e => {
+      if (e.from === nodeId) {
+        if (stack.has(e.to)) {
+          // Found cycle
+          const cycleKey = [nodeId, e.to].sort().join('-');
+          cycles.add(e.to);
+        } else if (!visited.has(e.to)) {
+          dfs(e.to, [...path, e.to]);
+        }
+      }
+    });
+    stack.delete(nodeId);
+  }
+
+  nodes.forEach(n => { if (!visited.has(n.id)) dfs(n.id, [n.id]); });
+  return cycles;
+}
+
+const cycleNodes = detectCycles();
+
+// Dead service detection (Tier 5 #43)
+nodes.forEach(n => {
+  n.isDeadService = n.inDegree === 0 && n.outDegree === 0;
+});
+
+// Dependency depth scoring (Tier 5 #50)
+function computeDependencyDepth() {
+  function getDepth(nodeId, visited) {
+    if (visited.has(nodeId)) return 0;
+    visited.add(nodeId);
+    const deps = edges.filter(e => e.from === nodeId).map(e => e.to);
+    if (deps.length === 0) return 0;
+    return 1 + Math.max(...deps.map(d => getDepth(d, new Set(visited))));
+  }
+  nodes.forEach(n => {
+    n.dependencyDepth = getDepth(n.id, new Set());
+  });
+}
+
+computeCentrality();
+computePageRank();
+computeDependencyDepth();
+
+// ================================================================
+// CANVAS SETUP
+// ================================================================
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const minimap = document.getElementById('minimap');
+const mctx = minimap.getContext('2d');
+const dpr = Math.max(1, window.devicePixelRatio || 1);
+let cw = 0, ch = 0;
+
+// Offscreen canvas for motion blur / bloom (Tier 2)
+let bloomCanvas = document.createElement('canvas');
+let bloomCtx = bloomCanvas.getContext('2d');
+
+function resizeCanvas() {
+  const container = document.getElementById('canvas-container');
+  cw = container.clientWidth;
+  ch = container.clientHeight;
+  canvas.width = cw * dpr;
+  canvas.height = ch * dpr;
+  canvas.style.width = cw + 'px';
+  canvas.style.height = ch + 'px';
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  bloomCanvas.width = cw * dpr;
+  bloomCanvas.height = ch * dpr;
+  bloomCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  const mw = minimap.parentElement.clientWidth;
+  const mh = minimap.parentElement.clientHeight;
+  minimap.width = mw * dpr;
+  minimap.height = mh * dpr;
+  minimap.style.width = mw + 'px';
+  minimap.style.height = mh + 'px';
+  mctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+
+// ================================================================
+// HELPERS
+// ================================================================
+
+function hexAlpha(hex, alpha) {
+  const a = Math.round(Math.max(0, Math.min(1, alpha)) * 255).toString(16).padStart(2, '0');
+  return hex + a;
+}
+
+function lightenHex(hex, amount) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  const nr = Math.min(255, Math.floor(r + (255 - r) * amount));
+  const ng = Math.min(255, Math.floor(g + (255 - g) * amount));
+  const nb = Math.min(255, Math.floor(b + (255 - b) * amount));
+  return '#' + nr.toString(16).padStart(2,'0') + ng.toString(16).padStart(2,'0') + nb.toString(16).padStart(2,'0');
+}
+
+function darkenHex(hex, amount) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return '#' + Math.floor(r*(1-amount)).toString(16).padStart(2,'0') +
+    Math.floor(g*(1-amount)).toString(16).padStart(2,'0') +
+    Math.floor(b*(1-amount)).toString(16).padStart(2,'0');
+}
+
+function getClusterColor(key) {
+  if (colorblindMode && COLORBLIND_PALETTE[key]) return COLORBLIND_PALETTE[key];
+  return clusters[key].color;
+}
+
+function getControlPoint(x1, y1, x2, y2) {
+  const midX = (x1 + x2) / 2;
+  const midY = (y1 + y2) / 2;
+  const dx = x2 - x1;
+  const dy = y2 - y1;
+  const dist = Math.max(1, Math.sqrt(dx * dx + dy * dy));
+  const curve = Math.min(dist * 0.12, 35);
+  return { cx: midX + (dy / dist) * curve, cy: midY - (dx / dist) * curve };
+}
+
+function bezierPoint(x1, y1, cx, cy, x2, y2, t) {
+  const mt = 1 - t;
+  return {
+    x: mt * mt * x1 + 2 * mt * t * cx + t * t * x2,
+    y: mt * mt * y1 + 2 * mt * t * cy + t * t * y2,
+  };
+}
+
+function fuzzyMatch(text, query) {
+  text = text.toLowerCase();
+  query = query.toLowerCase();
+  if (text.includes(query)) return true;
+  let qi = 0;
+  for (let ti = 0; ti < text.length && qi < query.length; ti++) {
+    if (text[ti] === query[qi]) qi++;
+  }
+  return qi === query.length;
+}
+
+function isNodeVisible(n) {
+  if (n.hidden) return false;
+  if (clusterCollapsed[n.cluster]) return false;
+  if (activeFilter !== 'all' && n.cluster !== activeFilter) return false;
+  if (searchQuery) {
+    const q = searchQuery.toLowerCase();
+    // Natural language query support (Tier 10 #91)
+    if (q.startsWith('show ') || q.startsWith('find ')) {
+      return nlQueryFilter(n, q);
+    }
+    return fuzzyMatch(n.label, searchQuery) ||
+      (n.tags || []).some(t => fuzzyMatch(t, searchQuery)) ||
+      Object.values(n.details || {}).some(v => fuzzyMatch(String(v), searchQuery));
+  }
+  return true;
+}
+
+// Simple NL query parser (Tier 10 #91)
+function nlQueryFilter(n, q) {
+  q = q.replace(/^(show|find)\s+/i, '');
+  // Parse conditions
+  const clusterMatch = Object.keys(clusters).find(k => q.includes(clusters[k].label.toLowerCase()));
+  const unhealthy = q.includes('unhealthy') || q.includes('down') || q.includes('fail') || q.includes('degrad');
+  const healthy = !unhealthy && (q.includes('healthy') || q.includes('live'));
+  const blocked = q.includes('block') || q.includes('red');
+  const depMatch = q.match(/depend[s]?\s+on\s+(\w+)/);
+
+  let pass = true;
+  if (clusterMatch && n.cluster !== clusterMatch) pass = false;
+  if (unhealthy && n.status === 'green') pass = false;
+  if (healthy && n.status !== 'green') pass = false;
+  if (blocked && n.status !== 'red') pass = false;
+  if (depMatch) {
+    const dep = depMatch[1].toLowerCase();
+    const hasDep = edges.some(e => e.from === n.id && fuzzyMatch(nodeMap[e.to]?.label || '', dep));
+    if (!hasDep) pass = false;
+  }
+  return pass;
+}
+
+function isEdgeVisible(e) {
+  const from = nodeMap[e.from], to = nodeMap[e.to];
+  if (from?.hidden || to?.hidden) return false;
+  if (clusterCollapsed[from?.cluster] || clusterCollapsed[to?.cluster]) return false;
+  if (activeFilter !== 'all') {
+    if (from.cluster !== activeFilter && to.cluster !== activeFilter) return false;
+  }
+  return true;
+}
+
+function getNodeAt(sx, sy) {
+  const wx = (sx - panX) / zoom;
+  const wy = (sy - panY) / zoom;
+  for (let i = nodes.length - 1; i >= 0; i--) {
+    const n = nodes[i];
+    if (!isNodeVisible(n)) continue;
+    const dx = wx - n.x;
+    const dy = wy - n.y;
+    if (dx * dx + dy * dy <= (n.radius + 4) * (n.radius + 4)) return n;
+  }
+  return null;
+}
+
+function getWorldBounds() {
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  nodes.forEach(n => {
+    if (n.hidden) return;
+    minX = Math.min(minX, n.x);
+    minY = Math.min(minY, n.y);
+    maxX = Math.max(maxX, n.x);
+    maxY = Math.max(maxY, n.y);
+  });
+  if (minX === Infinity) { minX = 0; minY = 0; maxX = 1000; maxY = 700; }
+  return { minX: minX - 60, minY: minY - 60, maxX: maxX + 60, maxY: maxY + 60 };
+}
+
+// Convex hull (Andrew's monotone chain)
+function convexHull(pts) {
+  const points = pts.slice().sort((a, b) => a.x - b.x || a.y - b.y);
+  if (points.length <= 1) return points;
+  const cross = (o, a, b) => (a.x - o.x) * (b.y - o.y) - (a.y - o.y) * (b.x - o.x);
+  const lower = [];
+  for (const p of points) {
+    while (lower.length >= 2 && cross(lower[lower.length - 2], lower[lower.length - 1], p) <= 0) lower.pop();
+    lower.push(p);
+  }
+  const upper = [];
+  for (let i = points.length - 1; i >= 0; i--) {
+    const p = points[i];
+    while (upper.length >= 2 && cross(upper[upper.length - 2], upper[upper.length - 1], p) <= 0) upper.pop();
+    upper.push(p);
+  }
+  lower.pop(); upper.pop();
+  return lower.concat(upper);
+}
+
+function expandHull(hull, padding) {
+  if (hull.length === 0) return hull;
+  const cx = hull.reduce((s, p) => s + p.x, 0) / hull.length;
+  const cy = hull.reduce((s, p) => s + p.y, 0) / hull.length;
+  return hull.map(p => {
+    const dx = p.x - cx, dy = p.y - cy;
+    const dist = Math.max(1, Math.sqrt(dx * dx + dy * dy));
+    return { x: p.x + (dx / dist) * padding, y: p.y + (dy / dist) * padding };
+  });
+}
+
+function getClusterHull(key) {
+  const members = nodes.filter(n => n.cluster === key && !n.hidden);
+  if (members.length === 0) return null;
+  if (members.length <= 2) {
+    const cx = members.reduce((s, n) => s + n.x, 0) / members.length;
+    const cy = members.reduce((s, n) => s + n.y, 0) / members.length;
+    const r = members.length === 1 ? 50 : Math.max(50, Math.sqrt(
+      Math.pow(members[0].x - members[1].x, 2) + Math.pow(members[0].y - members[1].y, 2)
+    ) / 2 + 40);
+    const pts = [];
+    for (let i = 0; i < 20; i++) {
+      const a = (i / 20) * Math.PI * 2;
+      pts.push({ x: cx + Math.cos(a) * r, y: cy + Math.sin(a) * r });
+    }
+    return pts;
+  }
+  return expandHull(convexHull(members.map(n => ({ x: n.x, y: n.y }))), 45);
+}
+
+// Quadtree for spatial queries (Tier 8 #71)
+class Quadtree {
+  constructor(x, y, w, h, capacity = 4, depth = 0) {
+    this.x = x; this.y = y; this.w = w; this.h = h;
+    this.capacity = capacity; this.depth = depth;
+    this.points = []; this.divided = false;
+  }
+  subdivide() {
+    const hw = this.w / 2, hh = this.h / 2;
+    this.nw = new Quadtree(this.x, this.y, hw, hh, this.capacity, this.depth+1);
+    this.ne = new Quadtree(this.x+hw, this.y, hw, hh, this.capacity, this.depth+1);
+    this.sw = new Quadtree(this.x, this.y+hh, hw, hh, this.capacity, this.depth+1);
+    this.se = new Quadtree(this.x+hw, this.y+hh, hw, hh, this.capacity, this.depth+1);
+    this.divided = true;
+  }
+  insert(point) {
+    if (point.x < this.x || point.x > this.x+this.w || point.y < this.y || point.y > this.y+this.h) return false;
+    if (this.points.length < this.capacity || this.depth >= 8) {
+      this.points.push(point); return true;
+    }
+    if (!this.divided) this.subdivide();
+    return this.nw.insert(point) || this.ne.insert(point) || this.sw.insert(point) || this.se.insert(point);
+  }
+  queryRange(x, y, w, h, found = []) {
+    if (x > this.x+this.w || x+w < this.x || y > this.y+this.h || y+h < this.y) return found;
+    this.points.forEach(p => { if (p.x>=x && p.x<=x+w && p.y>=y && p.y<=y+h) found.push(p); });
+    if (this.divided) { this.nw.queryRange(x,y,w,h,found); this.ne.queryRange(x,y,w,h,found); this.sw.queryRange(x,y,w,h,found); this.se.queryRange(x,y,w,h,found); }
+    return found;
+  }
+}
+
+function buildQuadtree() {
+  const bounds = getWorldBounds();
+  const tree = new Quadtree(bounds.minX-100, bounds.minY-100,
+    bounds.maxX-bounds.minX+200, bounds.maxY-bounds.minY+200);
+  nodes.forEach(n => { if (!n.hidden) tree.insert({ x: n.x, y: n.y, node: n }); });
+  return tree;
+}
+
+// Undo/redo stack (Tier 3 #27)
+const undoStack = [];
+const redoStack = [];
+const MAX_UNDO = 50;
+
+function saveUndoState() {
+  const state = nodes.map(n => ({ id: n.id, x: n.x, y: n.y, pinned: n.pinned, hidden: n.hidden }));
+  undoStack.push({ nodes: state, panX, panY, zoom, activeFilter });
+  if (undoStack.length > MAX_UNDO) undoStack.shift();
+  redoStack.length = 0;
+}
+
+function undo() {
+  if (undoStack.length === 0) return;
+  const current = { nodes: nodes.map(n => ({ id: n.id, x: n.x, y: n.y, pinned: n.pinned, hidden: n.hidden })), panX, panY, zoom, activeFilter };
+  redoStack.push(current);
+  const state = undoStack.pop();
+  applyState(state);
+  showToast('Undo');
+}
+
+function redo() {
+  if (redoStack.length === 0) return;
+  const current = { nodes: nodes.map(n => ({ id: n.id, x: n.x, y: n.y, pinned: n.pinned, hidden: n.hidden })), panX, panY, zoom, activeFilter };
+  undoStack.push(current);
+  const state = redoStack.pop();
+  applyState(state);
+  showToast('Redo');
+}
+
+function applyState(state) {
+  state.nodes.forEach(s => {
+    const n = nodeMap[s.id];
+    if (n) { n.x = s.x; n.y = s.y; n.pinned = s.pinned; n.hidden = s.hidden; }
+  });
+  panX = state.panX; panY = state.panY; zoom = state.zoom;
+}
+
+// Toast notifications (Tier 6)
+function showToast(msg, type = '') {
+  const container = document.getElementById('toast-container');
+  const toast = document.createElement('div');
+  toast.className = 'toast ' + type;
+  toast.textContent = msg;
+  container.appendChild(toast);
+  setTimeout(() => { toast.style.opacity = '0'; toast.style.transition = 'opacity 0.3s'; }, 2000);
+  setTimeout(() => toast.remove(), 2400);
+}
+
+// ================================================================
+// PHYSICS
+// ================================================================
+
+function physicsStep() {
+  // Reset forces
+  nodes.forEach(n => { n.fx = 0; n.fy = 0; });
+
+  // Repulsion (O(n^2) - use quadtree for large graphs, Tier 8 #71)
+  const visibleNodes = nodes.filter(n => !n.hidden);
+  for (let i = 0; i < visibleNodes.length; i++) {
+    for (let j = i + 1; j < visibleNodes.length; j++) {
+      const a = visibleNodes[i], b = visibleNodes[j];
+      const dx = b.x - a.x;
+      const dy = b.y - a.y;
+      const distSq = Math.max(100, dx * dx + dy * dy);
+      const dist = Math.sqrt(distSq);
+      const force = PHYSICS.REPULSION / distSq;
+      const fx = (dx / dist) * force;
+      const fy = (dy / dist) * force;
+      a.fx -= fx; a.fy -= fy;
+      b.fx += fx; b.fy += fy;
+    }
+  }
+
+  // Springs (with edge bundling support, Tier 4 #36)
+  edges.forEach(e => {
+    const a = nodeMap[e.from], b = nodeMap[e.to];
+    if (!a || !b || a.hidden || b.hidden) return;
+    const dx = b.x - a.x, dy = b.y - a.y;
+    const dist = Math.max(1, Math.sqrt(dx * dx + dy * dy));
+    const force = PHYSICS.SPRING_K * (dist - PHYSICS.SPRING_LENGTH);
+    const fx = (dx / dist) * force;
+    const fy = (dy / dist) * force;
+    a.fx += fx; a.fy += fy;
+    b.fx -= fx; b.fy -= fy;
+  });
+
+  // Cluster centering
+  Object.keys(clusters).forEach(key => {
+    if (clusterCollapsed[key]) return;
+    const members = visibleNodes.filter(n => n.cluster === key);
+    if (members.length === 0) return;
+    const cx = members.reduce((s, n) => s + n.x, 0) / members.length;
+    const cy = members.reduce((s, n) => s + n.y, 0) / members.length;
+    members.forEach(n => {
+      n.fx += (cx - n.x) * PHYSICS.CLUSTER_K;
+      n.fy += (cy - n.y) * PHYSICS.CLUSTER_K;
+    });
+  });
+
+  // Gravity
+  visibleNodes.forEach(n => {
+    n.fx += (PHYSICS.CENTER_X - n.x) * PHYSICS.GRAVITY;
+    n.fy += (PHYSICS.CENTER_Y - n.y) * PHYSICS.GRAVITY;
+  });
+
+  // Apply
+  const temp = Math.max(0.02, physicsTemp);
+  visibleNodes.forEach(n => {
+    if (n.pinned || n === draggedNode) { n.vx = 0; n.vy = 0; return; }
+    n.vx = (n.vx + n.fx * temp / n.mass) * PHYSICS.DAMPING;
+    n.vy = (n.vy + n.fy * temp / n.mass) * PHYSICS.DAMPING;
+    const speed = Math.sqrt(n.vx * n.vx + n.vy * n.vy);
+    if (speed > PHYSICS.MAX_VEL) {
+      n.vx = (n.vx / speed) * PHYSICS.MAX_VEL;
+      n.vy = (n.vy / speed) * PHYSICS.MAX_VEL;
+    }
+    n.x += n.vx;
+    n.y += n.vy;
+  });
+
+  // Collision
+  for (let i = 0; i < visibleNodes.length; i++) {
+    for (let j = i + 1; j < visibleNodes.length; j++) {
+      const a = visibleNodes[i], b = visibleNodes[j];
+      const dx = b.x - a.x;
+      const dy = b.y - a.y;
+      const dist = Math.max(0.1, Math.sqrt(dx * dx + dy * dy));
+      const minDist = a.radius + b.radius + 10;
+      if (dist < minDist) {
+        const push = (minDist - dist) / 2;
+        const fx = (dx / dist) * push;
+        const fy = (dy / dist) * push;
+        if (!a.pinned && a !== draggedNode) { a.x -= fx; a.y -= fy; }
+        if (!b.pinned && b !== draggedNode) { b.x += fx; b.y += fy; }
+      }
+    }
+  }
+
+  // Follow mode (Tier 3 #29)
+  if (followNode) {
+    panX += (cw / 2 - followNode.x * zoom - panX) * 0.08;
+    panY += (ch / 2 - followNode.y * zoom - panY) * 0.08;
+  }
+
+  physicsTemp *= 0.998;
+}
+
+// ================================================================
+// LAYOUT ALGORITHMS (Tier 4: Layout Intelligence)
+// ================================================================
+
+function applyLayout(layout) {
+  saveUndoState();
+  currentLayout = layout;
+  document.getElementById('ovl-layout').textContent = layout;
+  document.querySelectorAll('.layout-btn').forEach(b => b.classList.toggle('active', b.dataset.layout === layout));
+
+  const visibleNodes = nodes.filter(n => !n.hidden);
+
+  switch (layout) {
+    case 'radial':
+      layoutRadial(visibleNodes);
+      break;
+    case 'hierarchy':
+      layoutHierarchy(visibleNodes);
+      break;
+    case 'circular':
+      layoutCircular(visibleNodes);
+      break;
+    case 'timeline':
+      layoutTimeline(visibleNodes);
+      break;
+    case 'rank':
+      layoutRank(visibleNodes);
+      break;
+    case 'force':
+    default:
+      physicsTemp = 1.5;
+      reheat();
+      break;
+  }
+  resetView();
+}
+
+// Radial tree (Tier 4 #31)
+function layoutRadial(nodeList) {
+  // Find root (highest PageRank)
+  const root = nodeList.reduce((best, n) => (n.pageRank > (best?.pageRank || 0) ? n : best), null);
+  if (!root) return;
+
+  const visited = new Set();
+  const layers = [[root]];
+  visited.add(root.id);
+
+  // BFS layers
+  while (layers[layers.length - 1].length > 0) {
+    const last = layers[layers.length - 1];
+    const next = [];
+    last.forEach(n => {
+      edges.forEach(e => {
+        const otherId = e.from === n.id ? e.to : (e.to === n.id ? e.from : null);
+        if (otherId && !visited.has(otherId)) {
+          const other = nodeMap[otherId];
+          if (other && !other.hidden) { visited.add(otherId); next.push(other); }
+        }
+      });
+    });
+    if (next.length === 0) break;
+    layers.push(next);
+  }
+
+  const cx = 750, cy = 350;
+  root.x = cx; root.y = cy;
+
+  for (let l = 1; l < layers.length; l++) {
+    const radius = l * 150;
+    const count = layers[l].length;
+    layers[l].forEach((n, i) => {
+      const angle = (i / count) * Math.PI * 2 - Math.PI / 2;
+      n.x = cx + Math.cos(angle) * radius;
+      n.y = cy + Math.sin(angle) * radius;
+    });
+  }
+  physicsTemp = 0.3;
+}
+
+// Hierarchical DAG (Tier 4 #32)
+function layoutHierarchy(nodeList) {
+  // Topological-ish sort by in-degree
+  const sorted = [...nodeList].sort((a, b) => b.dependencyDepth - a.dependencyDepth);
+  const layerHeight = 120;
+  const colWidth = 160;
+  const cx = 400;
+
+  sorted.forEach((n, i) => {
+    const layer = sorted.length - 1 - Math.min(n.dependencyDepth, sorted.length - 1);
+    n.y = 80 + layer * layerHeight;
+    const sameLayer = sorted.filter(m => (sorted.length - 1 - Math.min(m.dependencyDepth, sorted.length-1)) === layer);
+    const idx = sameLayer.indexOf(n);
+    n.x = cx + (idx - sameLayer.length / 2) * colWidth + 400;
+  });
+  physicsTemp = 0.3;
+}
+
+// Circular (Tier 4 #33)
+function layoutCircular(nodeList) {
+  const clusterKeys = Object.keys(clusters);
+  const ringRadius = 250;
+  const cx = 750, cy = 350;
+
+  clusterKeys.forEach((key, ringIdx) => {
+    const members = nodeList.filter(n => n.cluster === key);
+    if (members.length === 0) return;
+    const r = ringRadius + ringIdx * 130;
+    members.forEach((n, i) => {
+      const angle = (i / members.length) * Math.PI * 2 + (ringIdx * 0.3);
+      n.x = cx + Math.cos(angle) * r;
+      n.y = cy + Math.sin(angle) * r;
+    });
+  });
+  physicsTemp = 0.3;
+}
+
+// Timeline (Tier 4 #34)
+function layoutTimeline(nodeList) {
+  // Use activity as proxy for age (higher activity = newer)
+  const sorted = [...nodeList].sort((a, b) => b.avgActivity - a.avgActivity);
+  const clusterKeys = Object.keys(clusters);
+  const colWidth = Math.max(80, 1200 / Math.max(1, sorted.length));
+
+  sorted.forEach((n, i) => {
+    n.x = 80 + i * colWidth;
+    const clusterIdx = clusterKeys.indexOf(n.cluster);
+    n.y = 80 + clusterIdx * 90;
+  });
+  physicsTemp = 0.3;
+}
+
+// Importance rank (Tier 4 #35)
+function layoutRank(nodeList) {
+  const sorted = [...nodeList].sort((a, b) => b.pageRank - a.pageRank);
+  const rowHeight = 55;
+  sorted.forEach((n, i) => {
+    n.y = 80 + i * rowHeight;
+    n.x = 400 + (n.centrality || 0.5) * 400;
+  });
+  physicsTemp = 0.3;
+}
+
+// ================================================================
+// SIMULATED ANNEALING LAYOUT OPTIMIZER (Tier 4 #37)
+// ================================================================
+function optimizeLayout(iterations = 200) {
+  saveUndoState();
+  showToast('Optimizing layout...');
+  let bestCrossings = countEdgeCrossings();
+  let temperature = 50;
+
+  for (let iter = 0; iter < iterations; iter++) {
+    // Pick random node, move slightly
+    const n = nodes[Math.floor(Math.random() * nodes.length)];
+    if (n.hidden) continue;
+    const oldX = n.x, oldY = n.y;
+    n.x += (Math.random() - 0.5) * temperature;
+    n.y += (Math.random() - 0.5) * temperature;
+
+    const newCrossings = countEdgeCrossings();
+    if (newCrossings > bestCrossings) {
+      // Revert
+      n.x = oldX; n.y = oldY;
+    } else {
+      bestCrossings = newCrossings;
+    }
+    temperature *= 0.97;
+  }
+  showToast('Layout optimized: ' + bestCrossings + ' crossings', 'success');
+  physicsTemp = 0.3;
+}
+
+function countEdgeCrossings() {
+  let count = 0;
+  for (let i = 0; i < edges.length; i++) {
+    for (let j = i + 1; j < edges.length; j++) {
+      if (segmentsCross(edges[i], edges[j])) count++;
+    }
+  }
+  return count;
+}
+
+function segmentsCross(e1, e2) {
+  const a1 = nodeMap[e1.from], a2 = nodeMap[e1.to];
+  const b1 = nodeMap[e2.from], b2 = nodeMap[e2.to];
+  if (!a1 || !a2 || !b1 || !b2) return false;
+  // Simple bounding box check + cross product
+  function ccw(a, b, c) { return (c.y-a.y)*(b.x-a.x) > (b.y-a.y)*(c.x-a.x); }
+  return ccw(a1, b1, b2) !== ccw(a2, b1, b2) && ccw(a1, a2, b1) !== ccw(a1, a2, b2);
+}
+
+// ================================================================
+// RENDER (Tier 2: Visual Mastery - bloom, DOF, motion blur, etc.)
+// ================================================================
+
+function render() {
+  frameStartTime = performance.now();
+  prevZoom = zoom; prevPanX = panX; prevPanY = panY;
+
+  // Clear
+  ctx.clearRect(0, 0, cw, ch);
+
+  // Background
+  if (constellationMode) {
+    // Constellation mode background (Tier 10 #99)
+    const bg = ctx.createRadialGradient(cw/2, ch/2, 0, cw/2, ch/2, Math.max(cw, ch));
+    bg.addColorStop(0, '#0a0a1a');
+    bg.addColorStop(0.5, '#050510');
+    bg.addColorStop(1, '#000005');
+    ctx.fillStyle = bg;
+  } else {
+    ctx.fillStyle = darkMode ? '#0d0d0f' : '#f5f4ed';
+  }
+  ctx.fillRect(0, 0, cw, ch);
+
+  // Constellation stars background
+  if (constellationMode) drawStarfield();
+
+  // Apply world transform
+  ctx.save();
+  ctx.translate(panX, panY);
+  ctx.scale(zoom, zoom);
+
+  // Grid (with LOD, Tier 8 #72)
+  drawGrid();
+
+  // Edge bundling (Tier 4 #36)
+  drawEdges();
+
+  // Cluster regions
+  if (!constellationMode) drawClusters();
+
+  // Particles (with light trails, Tier 2 #18)
+  drawParticles();
+
+  // Nodes
+  drawNodes();
+
+  // Edge labels (hover)
+  drawEdgeLabels();
+
+  // Annotations (Tier 3 #30)
+  drawAnnotations();
+
+  // Lasso selection (Tier 3 #24)
+  if (lassoPoints.length > 1) drawLasso();
+
+  // Edge creation preview (Tier 3 #25)
+  if (edgeCreateMode && edgeCreateFrom) drawEdgePreview();
+
+  // Deploy shockwaves (Tier 1 #8)
+  drawShockwaves();
+
+  ctx.restore();
+
+  // Vignette with breathing (Tier 2 #20)
+  const vignettePulse = 0.5 + Math.sin(time * 0.0008) * 0.15;
+  const vignette = ctx.createRadialGradient(cw / 2, ch / 2, ch * (0.3 + vignettePulse * 0.05), cw / 2, ch / 2, ch);
+  vignette.addColorStop(0, 'rgba(0,0,0,0)');
+  vignette.addColorStop(1, darkMode ? 'rgba(0,0,0,0.4)' : 'rgba(0,0,0,0.06)');
+  ctx.fillStyle = vignette;
+  ctx.fillRect(0, 0, cw, ch);
+
+  // Bloom post-processing (Tier 2 #12) - additive glow layer
+  if (bloomEnabled && !reducedMotion) {
+    drawBloomOverlay();
+  }
+
+  // Intro overlay
+  if (introAlpha > 0) {
+    ctx.fillStyle = 'rgba(245,244,237,' + introAlpha + ')';
+    ctx.fillRect(0, 0, cw, ch);
+  }
+
+  // Adaptive quality (Tier 8 #77)
+  const frameTime = performance.now() - frameStartTime;
+  if (frameTime > FRAME_BUDGET_MS && renderQuality > 0.5) {
+    renderQuality -= 0.02;
+  } else if (frameTime < FRAME_BUDGET_MS * 0.6 && renderQuality < 1.0) {
+    renderQuality += 0.01;
+  }
+}
+
+function drawStarfield() {
+  // Twinkling stars for constellation mode
+  ctx.save();
+  for (let i = 0; i < 150; i++) {
+    const sx = ((i * 137.5) % cw);
+    const sy = ((i * 97.3) % ch);
+    const twinkle = 0.3 + Math.sin(time * 0.001 + i) * 0.2;
+    ctx.globalAlpha = twinkle * 0.6;
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(sx, sy, 1, 1);
+  }
+  ctx.restore();
+}
+
+function drawGrid() {
+  const grid = 40;
+  const visMinX = (-panX - 60) / zoom;
+  const visMinY = (-panY - 60) / zoom;
+  const visMaxX = (cw - panX + 60) / zoom;
+  const visMaxY = (ch - panY + 60) / zoom;
+
+  // LOD: skip grid when zoomed out (Tier 8 #72)
+  if (zoom < 0.4) return;
+
+  ctx.strokeStyle = darkMode ? 'rgba(255,255,255,0.025)' : 'rgba(0,0,0,0.03)';
+  ctx.lineWidth = Math.max(0.5, 1 / zoom);
+  ctx.beginPath();
+  const startX = Math.floor(visMinX / grid) * grid;
+  const endX = Math.ceil(visMaxX / grid) * grid;
+  const startY = Math.floor(visMinY / grid) * grid;
+  const endY = Math.ceil(visMaxY / grid) * grid;
+  for (let x = startX; x <= endX; x += grid) { ctx.moveTo(x, startY); ctx.lineTo(x, endY); }
+  for (let y = startY; y <= endY; y += grid) { ctx.moveTo(startX, y); ctx.lineTo(endX, y); }
+  ctx.stroke();
+}
+
+function drawClusters() {
+  Object.entries(clusters).forEach(([key, c]) => {
+    if (clusterCollapsed[key] && !constellationMode) {
+      // Draw collapsed cluster as mega-node (Tier 4 #40)
+      drawCollapsedCluster(key, c);
+      return;
+    }
+    if (activeFilter !== 'all' && activeFilter !== key) return;
+    const hull = getClusterHull(key);
+    if (!hull || hull.length < 3) return;
+
+    const color = getClusterColor(key);
+    ctx.beginPath();
+    const mids = [];
+    for (let i = 0; i < hull.length; i++) {
+      const next = hull[(i + 1) % hull.length];
+      mids.push({ x: (hull[i].x + next.x) / 2, y: (hull[i].y + next.y) / 2 });
+    }
+    ctx.moveTo(mids[0].x, mids[0].y);
+    for (let i = 0; i < hull.length; i++) {
+      const vertex = hull[(i + 1) % hull.length];
+      const mid = mids[(i + 1) % mids.length];
+      ctx.quadraticCurveTo(vertex.x, vertex.y, mid.x, mid.y);
+    }
+    ctx.closePath();
+
+    // Ambient glow (Tier 2 #16)
+    const glowPulse = 0.5 + Math.sin(time * 0.0005 + key.charCodeAt(0)) * 0.2;
+    ctx.fillStyle = hexAlpha(color, (darkMode ? 0.06 : 0.04) * glowPulse);
+    ctx.fill();
+    ctx.strokeStyle = hexAlpha(color, darkMode ? 0.18 : 0.12);
+    ctx.lineWidth = 1.2 / zoom;
+    ctx.setLineDash([5 / zoom, 4 / zoom]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Label
+    const minY = Math.min(...hull.map(p => p.y));
+    const cx = hull.reduce((s, p) => s + p.x, 0) / hull.length;
+    const fontSize = Math.max(8, 10 / zoom);
+    ctx.font = '700 ' + fontSize + 'px -apple-system, system-ui, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'bottom';
+    ctx.fillStyle = hexAlpha(color, darkMode ? 0.5 : 0.4);
+    ctx.fillText(c.label.toUpperCase(), cx, minY - 4 / zoom);
+  });
+}
+
+function drawCollapsedCluster(key, c) {
+  const members = nodes.filter(n => n.cluster === key);
+  const cx = members.reduce((s, n) => s + n.x, 0) / Math.max(1, members.length);
+  const cy = members.reduce((s, n) => s + n.y, 0) / Math.max(1, members.length);
+  const r = 30;
+  const color = getClusterColor(key);
+
+  ctx.shadowBlur = 20;
+  ctx.shadowColor = color;
+  const grad = ctx.createRadialGradient(cx - r*0.3, cy - r*0.3, 0, cx, cy, r);
+  grad.addColorStop(0, lightenHex(color, 0.35));
+  grad.addColorStop(1, color);
+  ctx.fillStyle = grad;
+  ctx.beginPath();
+  ctx.arc(cx, cy, r, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.shadowBlur = 0;
+
+  ctx.font = '20px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(c.icon, cx, cy);
+
+  ctx.font = '600 ' + Math.max(8, 10/zoom) + 'px -apple-system, system-ui, sans-serif';
+  ctx.fillStyle = hexAlpha('#1a1a1a', 0.6);
+  ctx.fillText(c.label + ' (' + members.length + ')', cx, cy + r + 12/zoom);
+}
+
+function drawEdges() {
+  // Connection culling (Tier 8 #80)
+  const minScreenSize = 2;
+
+  edges.forEach(e => {
+    if (!isEdgeVisible(e)) return;
+    const from = nodeMap[e.from], to = nodeMap[e.to];
+    if (!from || !to) return;
+
+    const { cx, cy } = getControlPoint(from.x, from.y, to.x, to.y);
+    const isHighlighted = hoveredNode && (e.from === hoveredNode.id || e.to === hoveredNode.id);
+    const isMultiSelected = selectedNodes.size > 0 && (selectedNodes.has(e.from) || selectedNodes.has(e.to));
+    const isDimmed = ((hoveredNode && !isHighlighted) || (selectedNode && !isHighlighted && e.from !== selectedNode.id && e.to !== selectedNode.id)) && !isMultiSelected;
+
+    let alpha = 0.22;
+    let width = EDGE_STYLE[e.type].width;
+    if (isHighlighted || isMultiSelected) { alpha = 0.65; width += 0.8; }
+    if (isDimmed) alpha = 0.06;
+
+    // Edge gradient flow (Tier 2 #15)
+    const grad = ctx.createLinearGradient(from.x, from.y, to.x, to.y);
+    grad.addColorStop(0, hexAlpha(getClusterColor(from.cluster), alpha));
+    grad.addColorStop(1, hexAlpha(getClusterColor(to.cluster), alpha));
+    ctx.strokeStyle = grad;
+    ctx.lineWidth = width / Math.max(0.5, zoom * 0.8);
+    ctx.lineCap = 'round';
+
+    const dash = EDGE_STYLE[e.type].dash;
+    if (dash.length > 0) ctx.setLineDash(dash.map(d => d / Math.max(0.5, zoom)));
+
+    // Anomaly edges (Tier 5 #44 - circular deps)
+    if (cycleNodes.has(e.from) && cycleNodes.has(e.to)) {
+      ctx.strokeStyle = hexAlpha('#c4582b', alpha * 1.5);
+    }
+
+    ctx.beginPath();
+    if (constellationMode) {
+      // Light beams for constellation mode (Tier 10 #99)
+      ctx.strokeStyle = hexAlpha('#ffffff', alpha * 0.5);
+      ctx.lineWidth = (width + 0.5) / Math.max(0.5, zoom * 0.8);
+    }
+    ctx.moveTo(from.x, from.y);
+    ctx.quadraticCurveTo(cx, cy, to.x, to.y);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  });
+}
+
+function drawParticles() {
+  if (reducedMotion) return;
+
+  edges.forEach(e => {
+    if (!isEdgeVisible(e)) return;
+    const from = nodeMap[e.from], to = nodeMap[e.to];
+    if (!from || !to) return;
+
+    // Connection culling (Tier 8 #80)
+    const screenDist = Math.sqrt(Math.pow((to.x-from.x)*zoom, 2) + Math.pow((to.y-from.y)*zoom, 2));
+    if (screenDist < 3 && zoom < 0.5) return;
+
+    const { cx, cy } = getControlPoint(from.x, from.y, to.x, to.y);
+    const style = EDGE_STYLE[e.type];
+    const isHighlighted = hoveredNode && (e.from === hoveredNode.id || e.to === hoveredNode.id);
+    const isDimmed = hoveredNode && !isHighlighted;
+    const speedMult = isHighlighted ? 2.5 : 1;
+
+    e.particles.forEach(p => {
+      p.t += style.speed * speedMult * (0.5 + e.weight);
+      if (p.t > 1) p.t -= 1;
+
+      const pos = bezierPoint(from.x, from.y, cx, cy, to.x, to.y, p.t);
+      const alpha = (0.5 + Math.sin(p.t * Math.PI) * 0.5) * (isDimmed ? 0.15 : 1);
+      const size = (isHighlighted ? 3 : 2.2) / Math.max(0.5, zoom * 0.7);
+
+      // Light trail (Tier 2 #18) - additive blending
+      p.trail.unshift({ x: pos.x, y: pos.y });
+      if (p.trail.length > 5) p.trail.pop();
+
+      if (p.trail.length > 1) {
+        ctx.globalCompositeOperation = 'lighter';
+        for (let i = 1; i < p.trail.length; i++) {
+          const trailAlpha = alpha * (1 - i / p.trail.length) * 0.4;
+          ctx.globalAlpha = trailAlpha;
+          ctx.strokeStyle = lightenHex(getClusterColor(from.cluster), 0.3);
+          ctx.lineWidth = size * (1 - i / p.trail.length);
+          ctx.beginPath();
+          ctx.moveTo(p.trail[i-1].x, p.trail[i-1].y);
+          ctx.lineTo(p.trail[i].x, p.trail[i].y);
+          ctx.stroke();
+        }
+        ctx.globalCompositeOperation = 'source-over';
+      }
+
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle = constellationMode ? '#ffffff' : lightenHex(getClusterColor(from.cluster), 0.3);
+      ctx.beginPath();
+      ctx.arc(pos.x, pos.y, size, 0, Math.PI * 2);
+      ctx.fill();
+    });
+  });
+  ctx.globalAlpha = 1;
+}
+
+function drawNodes() {
+  nodes.forEach(n => {
+    if (!isNodeVisible(n)) return;
+    const isHovered = n === hoveredNode;
+    const isSelected = n === selectedNode;
+    const isMultiSelected = selectedNodes.has(n.id);
+    const isCritical = n.centrality > 0.15; // Tier 5 #41
+
+    let r = n.radius * (isHovered ? 1.25 : 1);
+    // Size by activity (Tier 1 #5)
+    r *= (0.8 + n.avgActivity * 0.04);
+
+    let color = getClusterColor(n.cluster);
+    const statusColor = STATUS_COLORS[n.status];
+
+    // Health heatmap overlay (Tier 5 #46)
+    if (activeOverlay === 'health') {
+      const score = n.healthScore;
+      color = score > 0.8 ? '#4a7c59' : score > 0.5 ? '#c4a04a' : '#c4582b';
+    }
+    // Cost overlay (Tier 5 #47)
+    if (activeOverlay === 'cost' && n.cost !== undefined) {
+      color = n.cost > 10 ? '#c4582b' : n.cost > 0 ? '#c4a04a' : '#4a7c59';
+    }
+
+    // Search highlight ring
+    if (searchQuery) {
+      ctx.strokeStyle = hexAlpha('#c4582b', 0.5 + Math.sin(time * 0.005) * 0.3);
+      ctx.lineWidth = 2.5 / zoom;
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, r + 6 / zoom, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+
+    // Glow
+    if (!constellationMode) {
+      ctx.shadowBlur = isHovered ? 25 : 12;
+      ctx.shadowColor = statusColor;
+    } else {
+      // Diffraction spikes for constellation mode (Tier 10 #99)
+      ctx.shadowBlur = 30;
+      ctx.shadowColor = '#ffffff';
+    }
+
+    // Status pulse ring / anomaly ring (Tier 1 #7)
+    const pulseSpeed = STATUS_PULSE[n.status];
+    const pulse = pulseSpeed > 0 ? (Math.sin(time * pulseSpeed) + 1) / 2 : 0.4;
+
+    // Error rate badge (Tier 5 #49)
+    const hasError = n.status === 'red';
+
+    ctx.globalAlpha = (hoveredNode && !isHovered) ? 0.2 : 1;
+    ctx.strokeStyle = statusColor;
+    ctx.lineWidth = (2.5 + (hasError ? 1 : 0)) / zoom;
+    ctx.globalAlpha *= (0.4 + pulse * 0.4);
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, r + 3 + pulse * 4, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.globalAlpha = (hoveredNode && !isHovered) ? 0.2 : 1;
+
+    // Critical path highlight (Tier 5 #41)
+    if (isCritical) {
+      ctx.strokeStyle = hexAlpha('#c4a04a', 0.6 + Math.sin(time * 0.003) * 0.3);
+      ctx.lineWidth = 2 / zoom;
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, r + 8 / zoom, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+
+    // Constellation diffraction spikes
+    if (constellationMode) {
+      ctx.save();
+      ctx.translate(n.x, n.y);
+      ctx.globalAlpha = 0.4;
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 1 / zoom;
+      const spikeLen = r * 2.5;
+      for (let a = 0; a < 4; a++) {
+        const angle = a * Math.PI / 2;
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(Math.cos(angle) * spikeLen, Math.sin(angle) * spikeLen);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    // Fill with procedural surface texture (Tier 2 #17)
+    const grad = ctx.createRadialGradient(n.x - r * 0.3, n.y - r * 0.3, 0, n.x, n.y, r);
+    grad.addColorStop(0, lightenHex(color, 0.35));
+    grad.addColorStop(0.7, color);
+    grad.addColorStop(1, darkenHex(color, 0.1));
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.shadowBlur = 0;
+
+    // Severity border (Tier 5 #84)
+    const sev = SEVERITY[n.severity] || SEVERITY.supporting;
+    ctx.strokeStyle = hexAlpha('#1a1a1a', darkMode ? 0.4 : 0.2);
+    ctx.lineWidth = sev.width / zoom;
+    if (sev.border === 'dashed') ctx.setLineDash([3/zoom, 2/zoom]);
+    else if (sev.border === 'dotted') ctx.setLineDash([1/zoom, 2/zoom]);
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Pinned indicator
+    if (n.pinned) {
+      ctx.strokeStyle = '#c4582b';
+      ctx.lineWidth = 2 / zoom;
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, r + 8 / zoom, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+
+    // Selected indicator
+    if (isSelected || isMultiSelected) {
+      ctx.strokeStyle = hexAlpha('#c4582b', 0.4 + Math.sin(time * 0.004) * 0.2);
+      ctx.lineWidth = 3 / zoom;
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, r + 6 / zoom, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+
+    // Dead service indicator (Tier 5 #43)
+    if (n.isDeadService) {
+      ctx.globalAlpha = 0.4;
+      ctx.font = '10px sans-serif';
+      ctx.fillText('\u2753', n.x + r + 4/zoom, n.y - r - 4/zoom);
+      ctx.globalAlpha = 1;
+    }
+
+    // Icon
+    const iconSize = r * 0.85;
+    ctx.font = iconSize + 'px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(n.icon, n.x, n.y);
+
+    // Label at high zoom (Tier 8 #72 LOD)
+    if (zoom > 0.8 || isHovered || isSelected) {
+      const fontSize = Math.max(8, 10 / zoom);
+      ctx.font = '600 ' + fontSize + 'px -apple-system, system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      ctx.fillStyle = darkMode ? '#aaa8a0' : '#4a4a4a';
+      ctx.fillText(n.label, n.x, n.y + r + 4 / zoom);
+    }
+
+    // Uptime sparkline at very high zoom (Tier 5 #48, Tier 9 #90)
+    if (zoom > 1.8 && n.healthHistory) {
+      drawSparkline(n.x - r, n.y + r + 16/zoom, r * 2, 8/zoom, n.healthHistory, statusColor);
+    }
+
+    ctx.globalAlpha = 1;
+  });
+}
+
+function drawSparkline(x, y, w, h, data, color) {
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 1 / zoom;
+  ctx.beginPath();
+  data.forEach((v, i) => {
+    const px = x + (i / (data.length - 1)) * w;
+    const py = y + h - v * h;
+    if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+  });
+  ctx.stroke();
+}
+
+function drawEdgeLabels() {
+  if (!hoveredNode) return;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+
+  edges.forEach(e => {
+    if (!isEdgeVisible(e)) return;
+    if (e.from !== hoveredNode.id && e.to !== hoveredNode.id) return;
+    const from = nodeMap[e.from], to = nodeMap[e.to];
+    const { cx, cy } = getControlPoint(from.x, from.y, to.x, to.y);
+    const mid = bezierPoint(from.x, from.y, cx, cy, to.x, to.y, 0.5);
+
+    const fontSize = Math.max(8, 10 / zoom);
+    ctx.font = '500 ' + fontSize + 'px -apple-system, system-ui, sans-serif';
+
+    const metrics = ctx.measureText(e.label);
+    const padX = 5 / zoom, padY = 3 / zoom;
+    const bw = metrics.width + padX * 2;
+    const bh = fontSize + padY * 2;
+    ctx.fillStyle = darkMode ? 'rgba(20,20,22,0.9)' : 'rgba(245,244,237,0.9)';
+    ctx.beginPath();
+    const br = 4 / zoom;
+    const bx = mid.x - bw / 2, by = mid.y - bh / 2;
+    ctx.moveTo(bx + br, by);
+    ctx.arcTo(bx + bw, by, bx + bw, by + bh, br);
+    ctx.arcTo(bx + bw, by + bh, bx, by + bh, br);
+    ctx.arcTo(bx, by + bh, bx, by, br);
+    ctx.arcTo(bx, by, bx + bw, by, br);
+    ctx.fill();
+
+    ctx.fillStyle = darkMode ? '#aaa8a0' : '#4a4a4a';
+    ctx.fillText(e.label, mid.x, mid.y);
+  });
+}
+
+// Bloom overlay (Tier 2 #12)
+function drawBloomOverlay() {
+  // Simple bloom: draw bright nodes with additive blending at reduced opacity
+  ctx.save();
+  ctx.globalCompositeOperation = 'lighter';
+  ctx.globalAlpha = 0.08 * renderQuality;
+  nodes.forEach(n => {
+    if (!isNodeVisible(n)) return;
+    const isHovered = n === hoveredNode;
+    if (!isHovered && n.status !== 'red') return;
+    const r = n.radius * (isHovered ? 2 : 1.5) * zoom;
+    const sx = n.x * zoom + panX;
+    const sy = n.y * zoom + panY;
+    const grad = ctx.createRadialGradient(sx, sy, 0, sx, sy, r * 3);
+    grad.addColorStop(0, hexAlpha(STATUS_COLORS[n.status], 0.5));
+    grad.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(sx - r*3, sy - r*3, r*6, r*6);
+  });
+  ctx.restore();
+}
+
+// Deploy shockwaves (Tier 1 #8)
+const shockwaves = [];
+function triggerShockwave(nodeId) {
+  const n = nodeMap[nodeId];
+  if (n) shockwaves.push({ x: n.x, y: n.y, radius: 0, alpha: 1 });
+}
+function drawShockwaves() {
+  for (let i = shockwaves.length - 1; i >= 0; i--) {
+    const s = shockwaves[i];
+    s.radius += 4;
+    s.alpha -= 0.015;
+    if (s.alpha <= 0) { shockwaves.splice(i, 1); continue; }
+    ctx.strokeStyle = hexAlpha('#c4582b', s.alpha);
+    ctx.lineWidth = 2 / zoom;
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+}
+
+// Annotations (Tier 3 #30)
+function drawAnnotations() {
+  annotations.forEach(a => {
+    const el = document.getElementById('ann-' + a.id);
+    if (!el) return;
+    const sx = a.x * zoom + panX;
+    const sy = a.y * zoom + panY;
+    el.style.left = sx + 'px';
+    el.style.top = sy + 'px';
+  });
+}
+
+// Lasso (Tier 3 #24)
+function drawLasso() {
+  ctx.strokeStyle = hexAlpha('#c4582b', 0.6);
+  ctx.lineWidth = 1.5 / zoom;
+  ctx.setLineDash([4/zoom, 3/zoom]);
+  ctx.beginPath();
+  lassoPoints.forEach((p, i) => {
+    if (i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y);
+  });
+  if (lassoPoints.length > 2) ctx.closePath();
+  ctx.stroke();
+  ctx.setLineDash([]);
+}
+
+// Edge preview (Tier 3 #25)
+function drawEdgePreview() {
+  if (!edgeCreateFrom || !mouseWorld) return;
+  ctx.strokeStyle = hexAlpha('#c4582b', 0.5);
+  ctx.lineWidth = 2 / zoom;
+  ctx.setLineDash([6/zoom, 4/zoom]);
+  ctx.beginPath();
+  ctx.moveTo(edgeCreateFrom.x, edgeCreateFrom.y);
+  ctx.lineTo(mouseWorld.x, mouseWorld.y);
+  ctx.stroke();
+  ctx.setLineDash([]);
+}
+
+let mouseWorld = null;
+
+// ================================================================
+// MINIMAP
+// ================================================================
+
+function renderMinimap() {
+  const mw = minimap.parentElement.clientWidth;
+  const mh = minimap.parentElement.clientHeight;
+  mctx.clearRect(0, 0, mw, mh);
+
+  const bounds = getWorldBounds();
+  const w = bounds.maxX - bounds.minX;
+  const h = bounds.maxY - bounds.minY;
+  const scale = Math.min(mw / w, mh / h) * 0.88;
+  const offX = (mw - w * scale) / 2;
+  const offY = (mh - h * scale) / 2;
+
+  // Edges
+  mctx.strokeStyle = darkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)';
+  mctx.lineWidth = 0.5;
+  edges.forEach(e => {
+    if (!isEdgeVisible(e)) return;
+    const f = nodeMap[e.from], t = nodeMap[e.to];
+    mctx.beginPath();
+    mctx.moveTo((f.x - bounds.minX) * scale + offX, (f.y - bounds.minY) * scale + offY);
+    mctx.lineTo((t.x - bounds.minX) * scale + offX, (t.y - bounds.minY) * scale + offY);
+    mctx.stroke();
+  });
+
+  // Nodes
+  nodes.forEach(n => {
+    if (!isNodeVisible(n)) return;
+    const x = (n.x - bounds.minX) * scale + offX;
+    const y = (n.y - bounds.minY) * scale + offY;
+    mctx.fillStyle = activeOverlay === 'health' ?
+      (n.healthScore > 0.8 ? '#4a7c59' : n.healthScore > 0.5 ? '#c4a04a' : '#c4582b') :
+      STATUS_COLORS[n.status];
+    mctx.beginPath();
+    mctx.arc(x, y, n === hoveredNode || n === selectedNode ? 3 : 2, 0, Math.PI * 2);
+    mctx.fill();
+  });
+
+  // Viewport rect
+  const vx = (-panX / zoom - bounds.minX) * scale + offX;
+  const vy = (-panY / zoom - bounds.minY) * scale + offY;
+  const vw = (cw / zoom) * scale;
+  const vh = (ch / zoom) * scale;
+  mctx.strokeStyle = '#c4582b';
+  mctx.lineWidth = 1;
+  mctx.strokeRect(vx, vy, vw, vh);
+  mctx.fillStyle = 'rgba(196,88,43,0.06)';
+  mctx.fillRect(vx, vy, vw, vh);
+}
+
+// ================================================================
+// INTERACTION
+// ================================================================
+
+canvas.addEventListener('mousedown', (e) => {
+  const rect = canvas.getBoundingClientRect();
+  const sx = e.clientX - rect.left;
+  const sy = e.clientY - rect.top;
+  const node = getNodeAt(sx, sy);
+
+  if (edgeCreateMode && node) {
+    if (!edgeCreateFrom) {
+      edgeCreateFrom = node;
+      showToast('Select target node...');
+    } else if (edgeCreateFrom !== node) {
+      // Create edge (Tier 3 #25)
+      saveUndoState();
+      const newEdge = { from: edgeCreateFrom.id, to: node.id, label: 'custom', type: 'dotted' };
+      edges.push(newEdge);
+      const style = EDGE_STYLE.dotted;
+      newEdge.particles = [];
+      for (let i = 0; i < style.particles; i++) {
+        newEdge.particles.push({ t: i / style.particles + Math.random() * 0.1, trail: [] });
+      }
+      edgeCreateFrom = null;
+      edgeCreateMode = false;
+      canvas.classList.remove('creating-edge');
+      showToast('Edge created', 'success');
+    }
+    return;
+  }
+
+  if (e.shiftKey && node) {
+    // Multi-select (Tier 3 #23)
+    if (selectedNodes.has(node.id)) selectedNodes.delete(node.id);
+    else selectedNodes.add(node.id);
+    return;
+  }
+
+  if (node) {
+    draggedNode = node;
+    canvas.classList.add('dragging-node');
+    physicsTemp = Math.max(physicsTemp, 0.5);
+    saveUndoState();
+  } else if (e.altKey) {
+    // Lasso mode (Tier 3 #24)
+    isLassoMode = true;
+    lassoPoints = [{ x: (sx - panX) / zoom, y: (sy - panY) / zoom }];
+    canvas.classList.add('lasso');
+  } else {
+    isPanning = true;
+    lastPanX = e.clientX;
+    lastPanY = e.clientY;
+    panVelX = 0;
+    panVelY = 0;
+    canvas.classList.add('grabbing');
+  }
+});
+
+window.addEventListener('mousemove', (e) => {
+  const rect = canvas.getBoundingClientRect();
+  const sx = e.clientX - rect.left;
+  const sy = e.clientY - rect.top;
+  mouseWorld = { x: (sx - panX) / zoom, y: (sy - panY) / zoom };
+
+  if (draggedNode) {
+    const wx = (sx - panX) / zoom;
+    const wy = (sy - panY) / zoom;
+    draggedNode.x = wx;
+    draggedNode.y = wy;
+    draggedNode.vx = 0;
+    draggedNode.vy = 0;
+    physicsTemp = Math.max(physicsTemp, 0.3);
+  } else if (isLassoMode) {
+    lassoPoints.push({ x: (sx - panX) / zoom, y: (sy - panY) / zoom });
+  } else if (isPanning) {
+    panX += e.clientX - lastPanX;
+    panY += e.clientY - lastPanY;
+    panVelX = e.clientX - lastPanX;
+    panVelY = e.clientY - lastPanY;
+    lastPanX = e.clientX;
+    lastPanY = e.clientY;
+  } else {
+    const node = getNodeAt(sx, sy);
+    if (node !== hoveredNode) {
+      hoveredNode = node;
+      canvas.style.cursor = node ? 'pointer' : 'grab';
+      // Audio sonification (Tier 10 #92)
+      if (audioSonification && node && audioCtx) {
+        playNodeSound(node);
+      }
+    }
+  }
+});
+
+window.addEventListener('mouseup', (e) => {
+  if (draggedNode) {
+    draggedNode = null;
+    canvas.classList.remove('dragging-node');
+  }
+  if (isLassoMode) {
+    // Select nodes inside lasso
+    selectedNodes.clear();
+    nodes.forEach(n => {
+      if (!isNodeVisible(n)) return;
+      if (pointInPolygon(n.x, n.y, lassoPoints)) {
+        selectedNodes.add(n.id);
+      }
+    });
+    lassoPoints = [];
+    isLassoMode = false;
+    canvas.classList.remove('lasso');
+    if (selectedNodes.size > 0) showToast('Selected ' + selectedNodes.size + ' nodes', 'success');
+  }
+  if (isPanning) {
+    isPanning = false;
+    canvas.classList.remove('grabbing');
+  }
+});
+
+function pointInPolygon(x, y, polygon) {
+  let inside = false;
+  for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+    const xi = polygon[i].x, yi = polygon[i].y;
+    const xj = polygon[j].x, yj = polygon[j].y;
+    if (((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)) inside = !inside;
+  }
+  return inside;
+}
+
+canvas.addEventListener('click', (e) => {
+  if (Math.abs(panVelX) > 2 || Math.abs(panVelY) > 2) return;
+  const rect = canvas.getBoundingClientRect();
+  const node = getNodeAt(e.clientX - rect.left, e.clientY - rect.top);
+  if (node) {
+    selectNode(node.id);
+  } else {
+    closeDetail();
+    selectedNodes.clear();
+  }
+});
+
+canvas.addEventListener('dblclick', (e) => {
+  const rect = canvas.getBoundingClientRect();
+  const node = getNodeAt(e.clientX - rect.left, e.clientY - rect.top);
+  if (node) {
+    node.pinned = !node.pinned;
+    if (node.pinned) physicsTemp = Math.max(physicsTemp, 0.3);
+  } else {
+    // Smart zoom: fit all visible (Tier 3 #28)
+    resetView();
+  }
+});
+
+canvas.addEventListener('contextmenu', (e) => {
+  e.preventDefault();
+  const rect = canvas.getBoundingClientRect();
+  const node = getNodeAt(e.clientX - rect.left, e.clientY - rect.top);
+  showContextMenu(e.clientX, e.clientY, node);
+});
+
+canvas.addEventListener('wheel', (e) => {
+  e.preventDefault();
+  const rect = canvas.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
+  const oldZoom = zoom;
+  const delta = e.deltaY < 0 ? 1.12 : 0.89;
+  zoom = Math.max(0.25, Math.min(4, zoom * delta));
+  panX = mx - (mx - panX) * (zoom / oldZoom);
+  panY = my - (my - panY) * (zoom / oldZoom);
+}, { passive: false });
+
+// Touch (Tier 7 #70: gesture refinement)
+let touchData = null;
+let lastTapTime = 0;
+
+canvas.addEventListener('touchstart', (e) => {
+  e.preventDefault();
+  const rect = canvas.getBoundingClientRect();
+  if (e.touches.length === 1) {
+    const t = e.touches[0];
+    const node = getNodeAt(t.clientX - rect.left, t.clientY - rect.top);
+    const now = Date.now();
+    if (now - lastTapTime < 300 && node) {
+      // Double tap = pin
+      node.pinned = !node.pinned;
+      if (node.pinned) physicsTemp = Math.max(physicsTemp, 0.3);
+      lastTapTime = 0;
+      return;
+    }
+    lastTapTime = now;
+
+    // Long press for context menu (Tier 7 #70)
+    const touchStartTime = now;
+    const startX = t.clientX, startY = t.clientY;
+    const longPressTimer = setTimeout(() => {
+      if (node) showContextMenu(t.clientX, t.clientY, node);
+    }, 500);
+
+    canvas.addEventListener('touchmove', function clearTimer() {
+      clearTimeout(longPressTimer);
+      canvas.removeEventListener('touchmove', clearTimer);
+    }, { once: true });
+
+    if (node) {
+      draggedNode = node;
+    } else {
+      touchData = { type: 'pan', x: t.clientX, y: t.clientY };
+      lastPanX = t.clientX;
+      lastPanY = t.clientY;
+    }
+  } else if (e.touches.length === 2) {
+    const dx = e.touches[0].clientX - e.touches[1].clientX;
+    const dy = e.touches[0].clientY - e.touches[1].clientY;
+    touchData = {
+      type: 'pinch',
+      dist: Math.sqrt(dx * dx + dy * dy),
+      cx: (e.touches[0].clientX + e.touches[1].clientX) / 2,
+      cy: (e.touches[0].clientY + e.touches[1].clientY) / 2,
+    };
+  }
+}, { passive: false });
+
+canvas.addEventListener('touchmove', (e) => {
+  e.preventDefault();
+  if (!touchData && !draggedNode) return;
+  const rect = canvas.getBoundingClientRect();
+
+  if (draggedNode && e.touches.length === 1) {
+    const t = e.touches[0];
+    draggedNode.x = (t.clientX - rect.left - panX) / zoom;
+    draggedNode.y = (t.clientY - rect.top - panY) / zoom;
+    draggedNode.vx = 0;
+    draggedNode.vy = 0;
+  } else if (touchData && touchData.type === 'pan' && e.touches.length === 1) {
+    const t = e.touches[0];
+    panX += t.clientX - touchData.x;
+    panY += t.clientY - touchData.y;
+    touchData.x = t.clientX;
+    touchData.y = t.clientY;
+  } else if (touchData && touchData.type === 'pinch' && e.touches.length === 2) {
+    const dx = e.touches[0].clientX - e.touches[1].clientX;
+    const dy = e.touches[0].clientY - e.touches[1].clientY;
+    const newDist = Math.sqrt(dx * dx + dy * dy);
+    const scale = newDist / Math.max(1, touchData.dist);
+    const oldZoom = zoom;
+    zoom = Math.max(0.25, Math.min(4, zoom * scale));
+    const cx = touchData.cx - rect.left;
+    const cy = touchData.cy - rect.top;
+    panX = cx - (cx - panX) * (zoom / oldZoom);
+    panY = cy - (cy - panY) * (zoom / oldZoom);
+    touchData.dist = newDist;
+  }
+}, { passive: false });
+
+canvas.addEventListener('touchend', (e) => {
+  if (draggedNode && e.touches.length === 0) {
+    draggedNode = null;
+  }
+  touchData = null;
+});
+
+// Minimap navigation
+minimap.addEventListener('click', (e) => {
+  const rect = minimap.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
+  const bounds = getWorldBounds();
+  const mw = rect.width, mh = rect.height;
+  const w = bounds.maxX - bounds.minX;
+  const h = bounds.maxY - bounds.minY;
+  const scale = Math.min(mw / w, mh / h) * 0.88;
+  const offX = (mw - w * scale) / 2;
+  const offY = (mh - h * scale) / 2;
+  const wx = (mx - offX) / scale + bounds.minX;
+  const wy = (my - offY) / scale + bounds.minY;
+  panX = cw / 2 - wx * zoom;
+  panY = ch / 2 - wy * zoom;
+});
+
+// ================================================================
+// KEYBOARD (Tier 3: full keyboard nav, Tier 7: accessibility)
+// ================================================================
+
+let tabIndex = 0;
+window.addEventListener('keydown', (e) => {
+  const isInput = document.activeElement === document.getElementById('search') ||
+                  document.activeElement === document.getElementById('cmd-input');
+
+  // Undo/redo (global)
+  if ((e.metaKey || e.ctrlKey) && e.key === 'z' && !e.shiftKey) {
+    e.preventDefault(); undo(); return;
+  }
+  if ((e.metaKey || e.ctrlKey) && (e.key === 'Z' || (e.shiftKey && e.key === 'z'))) {
+    e.preventDefault(); redo(); return;
+  }
+
+  if (isInput) {
+    if (e.key === 'Escape') {
+      document.getElementById('search').blur();
+      closeCommandPalette();
+    }
+    if (e.key === 'Enter') {
+      const visible = nodes.filter(isNodeVisible);
+      if (visible.length > 0) { selectNode(visible[0].id); centerOn(visible[0], 1.6); }
+    }
+    return;
+  }
+
+  switch (e.key) {
+    case 'ArrowUp':    panY += 40; break;
+    case 'ArrowDown':  panY -= 40; break;
+    case 'ArrowLeft':  panX += 40; break;
+    case 'ArrowRight': panX -= 40; break;
+    case '+': case '=': adjustZoom(1.2); break;
+    case '-': case '_': adjustZoom(0.83); break;
+    case 'Escape':
+      closeDetail(); closeCommandPalette();
+      document.getElementById('search').value = ''; searchQuery = '';
+      selectedNodes.clear(); edgeCreateMode = false;
+      break;
+    case 'r': case 'R': resetView(); break;
+    case 'h': case 'H': reheat(); break;
+    case 'l': case 'L': cycleLayout(); break;
+    case 't': case 'T': toggleTextView(); break;
+    case 'f': case 'F':
+      if (e.metaKey || e.ctrlKey) break;
+      document.getElementById('force-panel').classList.toggle('visible');
+      break;
+    case 'e': case 'E':
+      if (!e.metaKey && !e.ctrlKey) {
+        edgeCreateMode = !edgeCreateMode;
+        canvas.classList.toggle('creating-edge', edgeCreateMode);
+        showToast(edgeCreateMode ? 'Edge creation mode - click source node' : 'Edge mode off');
+      }
+      break;
+    case 'o': case 'O':
+      if (!e.metaKey && !e.ctrlKey) optimizeLayout();
+      break;
+    case 'b': case 'B':
+      bloomEnabled = !bloomEnabled;
+      showToast('Bloom ' + (bloomEnabled ? 'on' : 'off'));
+      break;
+    case 'c': case 'C':
+      if (!e.metaKey && !e.ctrlKey) {
+        constellationMode = !constellationMode;
+        darkMode = constellationMode || darkMode;
+        document.body.classList.toggle('dark', darkMode);
+        showToast('Constellation mode ' + (constellationMode ? 'on' : 'off'));
+      }
+      break;
+    case 'a': case 'A':
+      if (!e.metaKey && !e.ctrlKey) {
+        // Select all visible
+        selectedNodes.clear();
+        nodes.filter(isNodeVisible).forEach(n => selectedNodes.add(n.id));
+        showToast('Selected ' + selectedNodes.size + ' nodes');
+      }
+      break;
+    case 'u': case 'U':
+      if (e.shiftKey) redo(); else undo();
+      break;
+    case 'Tab':
+      e.preventDefault();
+      const vis = nodes.filter(isNodeVisible);
+      if (vis.length === 0) return;
+      tabIndex = (tabIndex + (e.shiftKey ? -1 : 1) + vis.length) % vis.length;
+      selectNode(vis[tabIndex].id);
+      centerOn(vis[tabIndex], Math.max(zoom, 1.4));
+      break;
+    case 'k': case 'K':
+      if (e.metaKey || e.ctrlKey) { e.preventDefault(); openCommandPalette(); }
+      break;
+    case 'p': case 'P':
+      if (!e.metaKey && !e.ctrlKey) saveViewPreset();
+      break;
+    case ' ':
+      e.preventDefault();
+      if (selectedNode) {
+        followNode = followNode === selectedNode ? null : selectedNode;
+        showToast('Follow mode ' + (followNode ? 'on' : 'off'));
+      }
+      break;
+  }
+});
+
+function cycleLayout() {
+  const layouts = ['force', 'radial', 'hierarchy', 'circular', 'timeline', 'rank'];
+  const idx = layouts.indexOf(currentLayout);
+  applyLayout(layouts[(idx + 1) % layouts.length]);
+}
+
+// ================================================================
+// UI FUNCTIONS
+// ================================================================
+
+function selectNode(id) {
+  const n = nodeMap[id];
+  if (!n) return;
+  selectedNode = n;
+
+  const panel = document.getElementById('detail-panel');
+  document.getElementById('d-icon').textContent = n.icon;
+  document.getElementById('d-name').textContent = n.label;
+
+  const c = clusters[n.cluster];
+  document.getElementById('d-cluster').innerHTML =
+    '<span class="dot" style="background:' + getClusterColor(n.cluster) + '"></span>' + c.label +
+    ' <span style="opacity:0.5">| ' + (n.severity || 'supporting') + '</span>';
+
+  let html = '';
+
+  // Status badge
+  const sc = STATUS_COLORS[n.status];
+  html += '<div class="detail-badge badge-' + n.status + '"><span class="badge-dot"></span>' +
+    STATUS_LABEL[n.status] + '</div>';
+
+  // Centrality / importance (Tier 5 #41)
+  html += '<div style="display:flex;gap:6px;margin-bottom:8px">';
+  html += '<div style="flex:1;font-size:10px"><div style="color:var(--ink-faint)">Importance</div>' +
+    '<div style="font-weight:700;font-size:14px;color:' + (n.centrality > 0.15 ? 'var(--gold)' : 'var(--ink)') + '">' +
+    (n.pageRank * 100).toFixed(1) + '%</div></div>';
+  html += '<div style="flex:1;font-size:10px"><div style="color:var(--ink-faint)">Dep Depth</div>' +
+    '<div style="font-weight:700;font-size:14px">' + n.dependencyDepth + '</div></div>';
+  html += '<div style="flex:1;font-size:10px"><div style="color:var(--ink-faint)">Activity</div>' +
+    '<div style="font-weight:700;font-size:14px">' + Math.round(n.avgActivity * 10) / 10 + '</div></div>';
+  html += '</div>';
+
+  // Health sparkline (Tier 9 #90)
+  if (n.healthHistory) {
+    html += '<div class="sparkline-container">' +
+      '<div class="detail-section-title">Health History (30d)</div>' +
+      '<canvas id="health-spark" width="300" height="30" style="width:100%"></canvas></div>';
+  }
+
+  // Properties
+  html += '<div class="detail-section-title">Properties</div>';
+  for (const [k, v] of Object.entries(n.details || {})) {
+    html += '<div class="detail-row"><span class="detail-label">' + k +
+      '</span><span class="detail-value">' + v + '</span></div>';
+  }
+
+  // Environment (Tier 9 #86)
+  if (n.environment) {
+    html += '<div class="detail-row"><span class="detail-label">Environment</span><span class="detail-value">' + n.environment + '</span></div>';
+  }
+  // Cost (Tier 5 #47)
+  if (n.cost !== undefined) {
+    html += '<div class="detail-row"><span class="detail-label">Cost (mo)</span><span class="detail-value">\u00A3' + n.cost + '</span></div>';
+  }
+  // Compliance (Tier 9 #85)
+  if (n.compliance) {
+    html += '<div class="detail-section-title">Compliance</div>';
+    n.compliance.forEach(tag => {
+      html += '<span style="font-size:10px;padding:2px 7px;border-radius:5px;background:rgba(196,88,43,0.1);color:var(--ember);margin-right:4px">' + tag + '</span>';
+    });
+  }
+  // URL links (Tier 9 #87)
+  if (n.url) {
+    html += '<div class="detail-section-title">Links</div>';
+    html += '<a href="' + n.url + '" target="_blank" style="font-size:11px;color:var(--blue)">' + n.url + '</a><br>';
+  }
+
+  // Tags
+  if (n.tags && n.tags.length > 0) {
+    html += '<div class="detail-section-title">Tags</div><div style="display:flex;flex-wrap:wrap;gap:4px;">';
+    n.tags.forEach(t => {
+      html += '<span style="font-size:10px;padding:2px 7px;border-radius:5px;background:var(--bone-dark);color:var(--ink-faint);">' + t + '</span>';
+    });
+    html += '</div>';
+  }
+
+  // Simulated log tail (Tier 1 #10)
+  html += '<div class="detail-section-title">Live Log Tail</div>';
+  html += '<div class="log-tail" id="log-tail">';
+  html += '<div class="log-tail-entry"><span class="ts">[' + new Date().toISOString().slice(11,19) + ']</span> ' +
+    n.label + ' status=' + n.status + ' health=' + (n.healthScore * 100).toFixed(0) + '%</div>';
+  html += '<div class="log-tail-entry"><span class="ts">[' + new Date(Date.now()-60000).toISOString().slice(11,19) + ']</span> heartbeat OK</div>';
+  html += '<div class="log-tail-entry"><span class="ts">[' + new Date(Date.now()-120000).toISOString().slice(11,19) + ']</span> ' +
+    n.inDegree + ' inbound, ' + n.outDegree + ' outbound</div>';
+  html += '</div>';
+
+  // Connections
+  const outgoing = edges.filter(e => e.from === id);
+  const incoming = edges.filter(e => e.to === id);
+
+  if (outgoing.length > 0) {
+    html += '<div class="detail-section-title">Drives (' + outgoing.length + ')</div>';
+    outgoing.forEach(e => {
+      const target = nodeMap[e.to];
+      if (!target) return;
+      html += '<div class="connection-link" onclick="selectNode(\'' + e.to + '\')">' +
+        '<span class="arrow">\u2192</span>' +
+        '<span class="label-text">' + e.label + '</span>' +
+        '<span class="target-text">' + target.label + '</span>' +
+        '<span class="edge-type">' + e.type + '</span>' +
+        '</div>';
+    });
+  }
+
+  if (incoming.length > 0) {
+    html += '<div class="detail-section-title">Fed by (' + incoming.length + ')</div>';
+    incoming.forEach(e => {
+      const source = nodeMap[e.from];
+      if (!source) return;
+      html += '<div class="connection-link" onclick="selectNode(\'' + e.from + '\')">' +
+        '<span class="arrow">\u2190</span>' +
+        '<span class="target-text">' + source.label + '</span>' +
+        '<span class="label-text">' + e.label + '</span>' +
+        '<span class="edge-type">' + e.type + '</span>' +
+        '</div>';
+    });
+  }
+
+  // Impact simulation button (Tier 5 #45)
+  html += '<div style="margin-top:10px"><button onclick="simulateRemoval(\'' + n.id + '\')" style="width:100%;padding:6px;border-radius:6px;border:1px solid var(--ember);background:rgba(196,88,43,0.1);color:var(--ember);font-size:11px;cursor:pointer;font-family:inherit">What if removed?</button></div>';
+
+  document.getElementById('d-body').innerHTML = html;
+  panel.classList.add('visible');
+
+  // Draw health sparkline
+  setTimeout(() => {
+    const sparkCanvas = document.getElementById('health-spark');
+    if (sparkCanvas && n.healthHistory) {
+      const sctx = sparkCanvas.getContext('2d');
+      const sw = sparkCanvas.width, sh = sparkCanvas.height;
+      sctx.clearRect(0, 0, sw, sh);
+      sctx.strokeStyle = STATUS_COLORS[n.status];
+      sctx.lineWidth = 1.5;
+      sctx.beginPath();
+      n.healthHistory.forEach((v, i) => {
+        const px = (i / (n.healthHistory.length - 1)) * sw;
+        const py = sh - v * sh;
+        if (i === 0) sctx.moveTo(px, py); else sctx.lineTo(px, py);
+      });
+      sctx.stroke();
+    }
+  }, 50);
+
+  // ARIA announcement (Tier 7 #61)
+  announceNode(n);
+}
+
+// ARIA live region for screen readers (Tier 7 #61)
+let ariaLive = null;
+function ensureAriaLive() {
+  if (!ariaLive) {
+    ariaLive = document.createElement('div');
+    ariaLive.setAttribute('aria-live', 'polite');
+    ariaLive.setAttribute('aria-atomic', 'true');
+    ariaLive.style.position = 'absolute';
+    ariaLive.style.width = '1px';
+    ariaLive.style.height = '1px';
+    ariaLive.style.overflow = 'hidden';
+    ariaLive.style.clip = 'rect(0,0,0,0)';
+    document.body.appendChild(ariaLive);
+  }
+}
+function announceNode(n) {
+  ensureAriaLive();
+  const conns = edges.filter(e => e.from === n.id || e.to === n.id).length;
+  ariaLive.textContent = n.label + ', cluster ' + clusters[n.cluster].label +
+    ', status ' + STATUS_LABEL[n.status] + ', ' + conns + ' connections, importance ' +
+    (n.pageRank * 100).toFixed(1) + ' percent';
+}
+
+function closeDetail() {
+  document.getElementById('detail-panel').classList.remove('visible');
+  selectedNode = null;
+  followNode = null;
+}
+
+function adjustZoom(delta) {
+  const mx = cw / 2, my = ch / 2;
+  const oldZoom = zoom;
+  zoom = Math.max(0.25, Math.min(4, zoom * delta));
+  panX = mx - (mx - panX) * (zoom / oldZoom);
+  panY = my - (my - panY) * (zoom / oldZoom);
+}
+
+function resetView() {
+  const bounds = getWorldBounds();
+  const cx = (bounds.minX + bounds.maxX) / 2;
+  const cy = (bounds.minY + bounds.maxY) / 2;
+  const w = bounds.maxX - bounds.minX;
+  const h = bounds.maxY - bounds.minY;
+  zoom = Math.min(cw / w, ch / h) * 0.85;
+  zoom = Math.max(0.4, Math.min(2, zoom));
+  panX = cw / 2 - cx * zoom;
+  panY = ch / 2 - cy * zoom;
+  panVelX = 0;
+  panVelY = 0;
+}
+
+function centerOn(node, targetZoom) {
+  targetZoom = targetZoom || Math.max(zoom, 1.5);
+  const targetPanX = cw / 2 - node.x * targetZoom;
+  const targetPanY = ch / 2 - node.y * targetZoom;
+  animateCamera(targetPanX, targetPanY, targetZoom);
+}
+
+function animateCamera(tx, ty, tz) {
+  const sx = panX, sy = panY, sz = zoom;
+  const start = performance.now();
+  const dur = reducedMotion ? 0 : 500;
+  function step() {
+    const t = Math.min(1, (performance.now() - start) / Math.max(1, dur));
+    const e = 1 - Math.pow(1 - t, 3);
+    panX = sx + (tx - sx) * e;
+    panY = sy + (ty - sy) * e;
+    zoom = sz + (tz - sz) * e;
+    if (t < 1) requestAnimationFrame(step);
+  }
+  step();
+}
+
+function reheat() {
+  physicsTemp = 1.5;
+  nodes.forEach(n => {
+    if (!n.pinned) {
+      n.vx += (Math.random() - 0.5) * 8;
+      n.vy += (Math.random() - 0.5) * 8;
+    }
+  });
+}
+
+function toggleHints() {
+  hintsVisible = !hintsVisible;
+  document.getElementById('kbd-hints').classList.toggle('hidden', !hintsVisible);
+  document.getElementById('legend').classList.toggle('hidden', !hintsVisible);
+}
+
+// Impact simulation (Tier 5 #45)
+function simulateRemoval(nodeId) {
+  const n = nodeMap[nodeId];
+  if (!n) return;
+  saveUndoState();
+
+  // Find cascade: all nodes that depend on this
+  const affected = new Set();
+  const queue = [nodeId];
+  while (queue.length > 0) {
+    const cur = queue.shift();
+    edges.forEach(e => {
+      if (e.from === cur && !affected.has(e.to)) {
+        // Check if target has other sources not in affected
+        const otherSources = edges.filter(ed => ed.to === e.to && ed.from !== cur && !affected.has(ed.from));
+        if (otherSources.length === 0) {
+          affected.add(e.to);
+          queue.push(e.to);
+        }
+      }
+    });
+  }
+
+  // Temporarily dim affected
+  showToast('Cascade: removing ' + n.label + ' would orphan ' + affected.size + ' nodes', 'warning');
+  affected.forEach(id => { nodeMap[id]._origStatus = nodeMap[id].status; nodeMap[id].status = 'red'; });
+  n.hidden = true;
+  triggerShockwave(nodeId);
+
+  setTimeout(() => {
+    affected.forEach(id => { nodeMap[id].status = nodeMap[id]._origStatus || 'gray'; });
+    n.hidden = false;
+  }, 4000);
+}
+
+// ================================================================
+// COMMAND PALETTE (Tier 3 #21)
+// ================================================================
+
+const commands = [
+  { icon: '\u{1F50D}', label: 'Zoom to node...', group: 'Navigation', action: () => { document.getElementById('search').focus(); } },
+  { icon: '\u{1F578}', label: 'Force layout', group: 'Layout', action: () => applyLayout('force') },
+  { icon: '\u{1F578}', label: 'Radial layout', group: 'Layout', action: () => applyLayout('radial') },
+  { icon: '\u{1F578}', label: 'Hierarchy layout', group: 'Layout', action: () => applyLayout('hierarchy') },
+  { icon: '\u{1F578}', label: 'Circular layout', group: 'Layout', action: () => applyLayout('circular') },
+  { icon: '\u{1F578}', label: 'Timeline layout', group: 'Layout', action: () => applyLayout('timeline') },
+  { icon: '\u{1F578}', label: 'Rank layout', group: 'Layout', action: () => applyLayout('rank') },
+  { icon: '\u2699', label: 'Optimize layout', group: 'Layout', action: () => optimizeLayout() },
+  { icon: '\u{1F4CA}', label: 'Toggle health heatmap', group: 'Analytics', action: () => toggleOverlay('health') },
+  { icon: '\u{1F4B0}', label: 'Toggle cost overlay', group: 'Analytics', action: () => toggleOverlay('cost') },
+  { icon: '\u{1F4C5}', label: 'Toggle timeline scrubber', group: 'View', action: () => document.getElementById('timeline-bar').classList.toggle('visible') },
+  { icon: '\u{1F4DD}', label: 'Toggle text view', group: 'View', action: () => toggleTextView() },
+  { icon: '\u263E', label: 'Toggle dark mode', group: 'View', action: () => toggleDark() },
+  { icon: '\u2728', label: 'Toggle constellation mode', group: 'View', action: () => { constellationMode = !constellationMode; darkMode = constellationMode || darkMode; document.body.classList.toggle('dark', darkMode); } },
+  { icon: '\u{1F3B5}', label: 'Toggle audio sonification', group: 'View', action: () => toggleAudio() },
+  { icon: '\u{1F4F1}', label: 'Toggle colorblind palette', group: 'Accessibility', action: () => toggleColorblind() },
+  { icon: '\u{1F501}', label: 'Toggle high contrast', group: 'Accessibility', action: () => toggleHighContrast() },
+  { icon: '\u2B07', label: 'Export PNG', group: 'Export', action: () => exportPNG() },
+  { icon: '\u{1F310}', label: 'Export SVG', group: 'Export', action: () => exportSVG() },
+  { icon: '\u{1F4C4}', label: 'Export JSON state', group: 'Export', action: () => exportJSON() },
+  { icon: '\u{1F4C4}', label: 'Export Mermaid', group: 'Export', action: () => exportMermaid() },
+  { icon: '\u{1F4C4}', label: 'Export Markdown table', group: 'Export', action: () => exportMarkdown() },
+  { icon: '\u{1F4C4}', label: 'Export Graphviz', group: 'Export', action: () => exportGraphviz() },
+  { icon: '\u{1F511}', label: 'Copy shareable URL', group: 'Export', action: () => copyShareURL() },
+  { icon: '\u{1F4CC}', label: 'Save view preset', group: 'View', action: () => saveViewPreset() },
+];
+
+function openCommandPalette() {
+  document.getElementById('cmd-palette-overlay').classList.add('visible');
+  const input = document.getElementById('cmd-input');
+  input.value = '';
+  input.focus();
+  renderCommandResults('');
+}
+
+function closeCommandPalette() {
+  document.getElementById('cmd-palette-overlay').classList.remove('visible');
+}
+
+document.getElementById('cmd-input').addEventListener('input', (e) => {
+  renderCommandResults(e.target.value);
+});
+
+let cmdSelectedIndex = 0;
+function renderCommandResults(query) {
+  const results = document.getElementById('cmd-results');
+  let filtered = commands;
+  if (query) {
+    filtered = commands.filter(c => fuzzyMatch(c.label, query) || fuzzyMatch(c.group, query));
+  }
+  // Also search nodes
+  const matchingNodes = query ? nodes.filter(n => fuzzyMatch(n.label, query)).slice(0, 5) : [];
+  cmdSelectedIndex = 0;
+
+  let html = '';
+  if (matchingNodes.length > 0) {
+    html += '<div class="cmd-group">Nodes</div>';
+    matchingNodes.forEach(n => {
+      html += '<div class="cmd-item" data-node="' + n.id + '"><span class="cmd-icon">' + n.icon + '</span>' +
+        '<span class="cmd-label">' + n.label + '</span>' +
+        '<span class="cmd-shortcut">' + clusters[n.cluster].label + '</span></div>';
+    });
+  }
+
+  const groups = {};
+  filtered.forEach(c => { (groups[c.group] = groups[c.group] || []).push(c); });
+  Object.entries(groups).forEach(([group, cmds]) => {
+    html += '<div class="cmd-group">' + group + '</div>';
+    cmds.forEach(c => {
+      html += '<div class="cmd-item" data-cmd="' + c.label + '"><span class="cmd-icon">' + c.icon + '</span>' +
+        '<span class="cmd-label">' + c.label + '</span></div>';
+    });
+  });
+
+  results.innerHTML = html;
+
+  // Click handlers
+  results.querySelectorAll('.cmd-item').forEach(item => {
+    item.addEventListener('click', () => {
+      if (item.dataset.node) {
+        selectNode(item.dataset.node);
+        centerOn(nodeMap[item.dataset.node], 1.6);
+      } else if (item.dataset.cmd) {
+        const cmd = commands.find(c => c.label === item.dataset.cmd);
+        if (cmd) cmd.action();
+      }
+      closeCommandPalette();
+    });
+  });
+}
+
+document.getElementById('cmd-input').addEventListener('keydown', (e) => {
+  const items = document.querySelectorAll('#cmd-results .cmd-item');
+  if (e.key === 'ArrowDown') { e.preventDefault(); cmdSelectedIndex = Math.min(items.length-1, cmdSelectedIndex+1); }
+  if (e.key === 'ArrowUp') { e.preventDefault(); cmdSelectedIndex = Math.max(0, cmdSelectedIndex-1); }
+  if (e.key === 'Enter' && items[cmdSelectedIndex]) { items[cmdSelectedIndex].click(); }
+  items.forEach((item, i) => item.classList.toggle('selected', i === cmdSelectedIndex));
+});
+
+document.getElementById('cmd-palette-overlay').addEventListener('click', (e) => {
+  if (e.target.id === 'cmd-palette-overlay') closeCommandPalette();
+});
+
+// ================================================================
+// CONTEXT MENU (Tier 3 #22)
+// ================================================================
+
+function showContextMenu(x, y, node) {
+  const menu = document.getElementById('context-menu');
+  let html = '';
+  if (node) {
+    html += '<div class="ctx-item" onclick="selectNode(\'' + node.id + '\');hideContextMenu()"><span class="ctx-icon">\u{1F50D}</span>Inspect</div>';
+    html += '<div class="ctx-item" onclick="centerOn(nodeMap[\'' + node.id + '\'],1.8);hideContextMenu()"><span class="ctx-icon">\u{1F4CD}</span>Focus</div>';
+    html += '<div class="ctx-item" onclick="nodeMap[\'' + node.id + '\'].pinned=!nodeMap[\'' + node.id + '\'].pinned;hideContextMenu()"><span class="ctx-icon">\u{1F4CC}</span>' + (node.pinned ? 'Unpin' : 'Pin') + '</div>';
+    html += '<div class="ctx-item" onclick="nodeMap[\'' + node.id + '\'].hidden=true;hideContextMenu()"><span class="ctx-icon">\u{1F441}\u200D\u{1F5E8}</span>Hide</div>';
+    html += '<div class="ctx-divider"></div>';
+    html += '<div class="ctx-item" onclick="expandDependencies(\'' + node.id + '\');hideContextMenu()"><span class="ctx-icon">\u{1F578}</span>Expand deps</div>';
+    html += '<div class="ctx-item" onclick="simulateRemoval(\'' + node.id + '\');hideContextMenu()"><span class="ctx-icon">\u26A0</span>Simulate removal</div>';
+    if (node.url) html += '<div class="ctx-item" onclick="window.open(\'' + node.url + '\');hideContextMenu()"><span class="ctx-icon">\u{1F310}</span>Open URL</div>';
+    if (node.repo) html += '<div class="ctx-item" onclick="window.open(\'https://github.com/cllmholmes-alt/' + node.repo + '\');hideContextMenu()"><span class="ctx-icon">\u{1F5A5}</span>Open repo</div>';
+    html += '<div class="ctx-item" onclick="navigator.clipboard.writeText(\'' + node.label + '\');hideContextMenu()"><span class="ctx-icon">\u{1F4CB}</span>Copy name</div>';
+  } else {
+    html += '<div class="ctx-item" onclick="resetView();hideContextMenu()"><span class="ctx-icon">\u21BB</span>Reset view</div>';
+    html += '<div class="ctx-item" onclick="reheat();hideContextMenu()"><span class="ctx-icon">\u2668</span>Reheat</div>';
+    html += '<div class="ctx-item" onclick="addAnnotation(' + ((x - panX) / zoom) + ',' + ((y - panY) / zoom) + ');hideContextMenu()"><span class="ctx-icon">\u{1F4DD}</span>Add annotation</div>';
+  }
+  menu.innerHTML = html;
+  menu.classList.add('visible');
+  menu.style.left = Math.min(x, window.innerWidth - 200) + 'px';
+  menu.style.top = Math.min(y, window.innerHeight - 300) + 'px';
+}
+
+function hideContextMenu() {
+  document.getElementById('context-menu').classList.remove('visible');
+}
+
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('#context-menu')) hideContextMenu();
+});
+
+function expandDependencies(nodeId) {
+  const n = nodeMap[nodeId];
+  if (!n) return;
+  saveUndoState();
+  // Show all connected nodes
+  const connected = new Set([nodeId]);
+  edges.forEach(e => {
+    if (e.from === nodeId) connected.add(e.to);
+    if (e.to === nodeId) connected.add(e.from);
+  });
+  nodes.forEach(n => { n.hidden = !connected.has(n.id); });
+  resetView();
+  showToast('Showing ' + connected.size + ' connected nodes');
+}
+
+// ================================================================
+// EXPORT FUNCTIONS (Tier 6: Export & Sharing)
+// ================================================================
+
+function exportPNG(scale = 2) {
+  // Save current transform
+  const tmpCanvas = document.createElement('canvas');
+  tmpCanvas.width = cw * scale;
+  tmpCanvas.height = ch * scale;
+  const tmpCtx = tmpCanvas.getContext('2d');
+  tmpCtx.scale(scale, scale);
+
+  // Copy current canvas
+  tmpCtx.drawImage(canvas, 0, 0, cw, ch);
+
+  // Download
+  tmpCanvas.toBlob(blob => {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'brain-map-' + Date.now() + '.png';
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+  showToast('PNG exported (' + (scale) + 'x)', 'success');
+}
+
+function exportSVG() {
+  const bounds = getWorldBounds();
+  let svg = '<?xml version="1.0" encoding="UTF-8"?>\n';
+  svg += '<svg xmlns="http://www.w3.org/2000/svg" viewBox="' +
+    bounds.minX + ' ' + bounds.minY + ' ' +
+    (bounds.maxX - bounds.minX) + ' ' + (bounds.maxY - bounds.minY) + '">\n';
+
+  // Edges
+  edges.forEach(e => {
+    if (!isEdgeVisible(e)) return;
+    const f = nodeMap[e.from], t = nodeMap[e.to];
+    svg += '<line x1="' + f.x + '" y1="' + f.y + '" x2="' + t.x + '" y2="' + t.y +
+      '" stroke="#999" stroke-width="1" />\n';
+  });
+
+  // Nodes
+  nodes.forEach(n => {
+    if (!isNodeVisible(n)) return;
+    svg += '<circle cx="' + n.x + '" cy="' + n.y + '" r="' + n.radius +
+      '" fill="' + getClusterColor(n.cluster) + '" stroke="' + STATUS_COLORS[n.status] + '" stroke-width="2" />\n';
+    svg += '<text x="' + n.x + '" y="' + (n.y + n.radius + 12) +
+      '" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#4a4a4a">' + n.label + '</text>\n';
+  });
+
+  svg += '</svg>';
+  downloadText(svg, 'brain-map.svg');
+  showToast('SVG exported', 'success');
+}
+
+function exportJSON() {
+  const state = {
+    nodes: nodes.map(n => ({ id: n.id, x: n.x, y: n.y, pinned: n.pinned, hidden: n.hidden, label: n.label, cluster: n.cluster })),
+    edges: edges.map(e => ({ from: e.from, to: e.to, label: e.label, type: e.type })),
+    camera: { zoom, panX, panY },
+    filter: activeFilter,
+    annotations: annotations,
+  };
+  downloadText(JSON.stringify(state, null, 2), 'brain-map-state.json');
+  showToast('JSON exported', 'success');
+}
+
+function exportMermaid() {
+  let m = 'graph TD\n';
+  nodes.forEach(n => {
+    if (!isNodeVisible(n)) return;
+    const shape = n.status === 'red' ? '((' + n.label + '))' : '[' + n.label + ']';
+    m += '  ' + n.id + shape + '\n';
+  });
+  edges.forEach(e => {
+    if (!isEdgeVisible(e)) return;
+    m += '  ' + e.from + ' -->|' + e.label + '| ' + e.to + '\n';
+  });
+  downloadText(m, 'brain-map.mermaid.md');
+  showToast('Mermaid exported', 'success');
+}
+
+function exportMarkdown() {
+  let md = '| Node | Cluster | Status | Type | In | Out |\n';
+  md += '|------|---------|--------|------|----|-----|\n';
+  nodes.forEach(n => {
+    if (!isNodeVisible(n)) return;
+    md += '| ' + n.label + ' | ' + clusters[n.cluster].label + ' | ' + STATUS_LABEL[n.status] +
+      ' | ' + (n.details?.Type || '') + ' | ' + n.inDegree + ' | ' + n.outDegree + ' |\n';
+  });
+  downloadText(md, 'brain-map-table.md');
+  navigator.clipboard.writeText(md);
+  showToast('Markdown table exported + copied', 'success');
+}
+
+function exportGraphviz() {
+  let dot = 'digraph BrainMap {\n  rankdir=LR;\n  node [shape=box, style=filled];\n';
+  nodes.forEach(n => {
+    if (!isNodeVisible(n)) return;
+    dot += '  "' + n.id + '" [label="' + n.label + '", fillcolor="' + getClusterColor(n.cluster) + '"];\n';
+  });
+  edges.forEach(e => {
+    if (!isEdgeVisible(e)) return;
+    dot += '  "' + e.from + '" -> "' + e.to + '" [label="' + e.label + '"];\n';
+  });
+  dot += '}\n';
+  downloadText(dot, 'brain-map.dot');
+  showToast('Graphviz exported', 'success');
+}
+
+function copyShareURL() {
+  const state = btoa(JSON.stringify({ z: zoom, x: panX, y: panY, f: activeFilter, s: selectedNode?.id }));
+  const url = location.origin + location.pathname + '#' + state;
+  navigator.clipboard.writeText(url);
+  showToast('Share URL copied to clipboard', 'success');
+}
+
+function downloadText(text, filename) {
+  const blob = new Blob([text], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename; a.click();
+  URL.revokeObjectURL(url);
+}
+
+// View presets (Tier 3 #26)
+function saveViewPreset() {
+  const name = prompt('Preset name:');
+  if (!name) return;
+  viewPresets.push({ name, zoom, panX, panY, filter: activeFilter });
+  showToast('Preset "' + name + '" saved', 'success');
+  updatePresetButtons();
+}
+
+function updatePresetButtons() {
+  const bar = document.getElementById('filter-bar');
+  let existing = bar.querySelector('.preset-row');
+  if (!existing) {
+    existing = document.createElement('div');
+    existing.className = 'preset-row';
+    existing.style.cssText = 'display:flex;gap:2px';
+    bar.appendChild(existing);
+  }
+  existing.innerHTML = viewPresets.map((p, i) =>
+    '<button class="filter-btn" onclick="loadPreset(' + i + ')">' + p.name + '</button>'
+  ).join('');
+}
+
+function loadPreset(i) {
+  const p = viewPresets[i];
+  if (!p) return;
+  animateCamera(p.panX, p.panY, p.zoom);
+  activeFilter = p.filter;
+}
+
+// ================================================================
+// ACCESSIBILITY FEATURES (Tier 7)
+// ================================================================
+
+function toggleDark() {
+  darkMode = !darkMode;
+  document.body.classList.toggle('dark', darkMode);
+  document.getElementById('dark-toggle').innerHTML = darkMode ? '\u2600' : '\u263E';
+}
+
+function toggleHighContrast() {
+  highContrast = !highContrast;
+  document.body.classList.toggle('high-contrast', highContrast);
+  showToast('High contrast ' + (highContrast ? 'on' : 'off'));
+}
+
+function toggleColorblind() {
+  colorblindMode = !colorblindMode;
+  showToast('Colorblind palette ' + (colorblindMode ? 'on' : 'off'));
+}
+
+function toggleTextView() {
+  const tv = document.getElementById('text-view');
+  if (tv.classList.contains('visible')) {
+    tv.classList.remove('visible');
+  } else {
+    renderTextView();
+    tv.classList.add('visible');
+  }
+}
+
+function renderTextView() {
+  let html = '<ul>';
+  Object.entries(clusters).forEach(([key, c]) => {
+    const members = nodes.filter(n => n.cluster === key);
+    html += '<li><strong>' + c.icon + ' ' + c.label + '</strong><ul>';
+    members.forEach(n => {
+      html += '<li class="tv-node">' + n.icon + ' ' + n.label + ' (' + STATUS_LABEL[n.status] + ')';
+      html += ' - ' + (n.details?.Type || '');
+      if (n.inDegree > 0) html += ' - fed by ' + n.inDegree;
+      if (n.outDegree > 0) html += ' - drives ' + n.outDegree;
+      html += '</li>';
+    });
+    html += '</ul></li>';
+  });
+  html += '</ul>';
+  document.getElementById('text-view-content').innerHTML = html;
+}
+
+// Font size scaling (Tier 7 #66)
+function adjustFontSize(delta) {
+  const root = document.documentElement;
+  const current = parseFloat(getComputedStyle(root).getPropertyValue('--font-scale')) || 1;
+  const next = Math.max(0.7, Math.min(2, current + delta * 0.1));
+  root.style.setProperty('--font-scale', next);
+}
+
+// ================================================================
+// OVERLAYS (Tier 5)
+// ================================================================
+
+function toggleOverlay(name) {
+  activeOverlay = activeOverlay === name ? null : name;
+  showToast((activeOverlay ? 'Enabled' : 'Disabled') + ' ' + name + ' overlay');
+}
+
+// ================================================================
+// ANNOTATIONS (Tier 3 #30)
+// ================================================================
+
+function addAnnotation(x, y) {
+  const text = prompt('Annotation:');
+  if (!text) return;
+  const id = 'ann-' + Date.now();
+  annotations.push({ id, x, y, text });
+  const el = document.createElement('div');
+  el.id = id;
+  el.className = 'annotation';
+  el.innerHTML = text + ' <span class="ann-close" onclick="removeAnnotation(\'' + id + '\')">&times;</span>';
+  document.getElementById('annotations-layer').appendChild(el);
+}
+
+function removeAnnotation(id) {
+  annotations = annotations.filter(a => a.id !== id);
+  const el = document.getElementById(id);
+  if (el) el.remove();
+}
+
+// ================================================================
+// AUDIO SONIFICATION (Tier 10 #92)
+// ================================================================
+
+function toggleAudio() {
+  audioSonification = !audioSonification;
+  if (audioSonification && !audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  showToast('Audio sonification ' + (audioSonification ? 'on' : 'off'));
+}
+
+function playNodeSound(node) {
+  if (!audioCtx) return;
+  const clusterKeys = Object.keys(clusters);
+  const idx = clusterKeys.indexOf(node.cluster);
+  const baseFreq = 220;
+  const freq = baseFreq * Math.pow(1.0595, idx * 2);
+
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.frequency.value = freq;
+  osc.type = 'sine';
+  gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+  osc.start();
+  osc.stop(audioCtx.currentTime + 0.5);
+}
+
+// ================================================================
+// DARK MODE / COLORBLIND TOGGLES
+// ================================================================
+
+document.getElementById('dark-toggle').addEventListener('click', toggleDark);
+document.getElementById('text-toggle').addEventListener('click', toggleTextView);
+document.getElementById('force-toggle').addEventListener('click', () => {
+  document.getElementById('force-panel').classList.toggle('visible');
+});
+document.getElementById('timeline-toggle').addEventListener('click', () => {
+  document.getElementById('timeline-bar').classList.toggle('visible');
+});
+document.getElementById('export-btn').addEventListener('click', () => openCommandPalette());
+
+// Search
+document.getElementById('search').addEventListener('input', (e) => {
+  searchQuery = e.target.value.trim();
+});
+
+// Layout buttons
+document.querySelectorAll('.layout-btn').forEach(btn => {
+  btn.addEventListener('click', () => applyLayout(btn.dataset.layout));
+});
+
+// Force sliders (Tier 4 #39)
+document.getElementById('force-repulsion').addEventListener('input', e => { PHYSICS.REPULSION = +e.target.value; reheat(); });
+document.getElementById('force-spring').addEventListener('input', e => { PHYSICS.SPRING_K = +e.target.value / 1000; reheat(); });
+document.getElementById('force-length').addEventListener('input', e => { PHYSICS.SPRING_LENGTH = +e.target.value; reheat(); });
+document.getElementById('force-gravity').addEventListener('input', e => { PHYSICS.GRAVITY = +e.target.value / 10000; reheat(); });
+document.getElementById('force-cluster').addEventListener('input', e => { PHYSICS.CLUSTER_K = +e.target.value / 1000; reheat(); });
+
+// Filters
+function buildFilters() {
+  const bar = document.getElementById('filter-bar');
+  let html = '<button class="filter-btn active" data-cluster="all">All</button>';
+  Object.entries(clusters).forEach(([key, c]) => {
+    html += '<button class="filter-btn" data-cluster="' + key + '">' +
+      '<span class="dot" style="background:' + c.color + '"></span>' + c.label + '</button>';
+  });
+  bar.innerHTML = html;
+  bar.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeFilter = btn.dataset.cluster;
+      bar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      if (activeFilter !== 'all') {
+        const vis = nodes.filter(n => n.cluster === activeFilter);
+        if (vis.length > 0) {
+          const cx = vis.reduce((s, n) => s + n.x, 0) / vis.length;
+          const cy = vis.reduce((s, n) => s + n.y, 0) / vis.length;
+          panX = cw / 2 - cx * zoom;
+          panY = ch / 2 - cy * zoom;
+        }
+      }
+    });
+  });
+}
+
+// ================================================================
+// ECOSYSTEM HEALTH SCORE (Tier 5 #97)
+// ================================================================
+
+function computeEcosystemScore() {
+  let score = 0;
+  let total = 0;
+  nodes.forEach(n => {
+    const weight = n.severity === 'critical' ? 3 : n.severity === 'important' ? 2 : 1;
+    score += n.healthScore * weight;
+    total += weight;
+  });
+  return total > 0 ? Math.round((score / total) * 100) : 0;
+}
+
+function updateEcosystemDisplay() {
+  const score = computeEcosystemScore();
+  const el = document.getElementById('score-val');
+  const badge = document.getElementById('ecosystem-score');
+  if (el) el.textContent = score;
+
+  if (badge) {
+    badge.style.background = score > 80 ? 'rgba(74,124,89,0.15)' : score > 50 ? 'rgba(196,160,74,0.15)' : 'rgba(196,88,43,0.15)';
+    badge.style.color = score > 80 ? 'var(--green)' : score > 50 ? 'var(--gold)' : 'var(--ember)';
+  }
+
+  // Health status text
+  const healthEl = document.getElementById('health-status');
+  const degradedCount = nodes.filter(n => n.status === 'amber').length;
+  const criticalCount = nodes.filter(n => n.status === 'red').length;
+  if (criticalCount > 0) {
+    healthEl.textContent = criticalCount + ' CRITICAL';
+    healthEl.className = 'health critical';
+  } else if (degradedCount > 0) {
+    healthEl.textContent = degradedCount + ' DEGRADED';
+    healthEl.className = 'health degraded';
+  } else {
+    healthEl.textContent = 'ALL HEALTHY';
+    healthEl.className = 'health';
+  }
+}
+
+// ================================================================
+// LIVE DATA SIMULATION (Tier 1: Living Data)
+// ================================================================
+
+// WebSocket health pulse simulation (Tier 1 #2)
+function simulateHealthPulse() {
+  // Slightly perturb health history
+  nodes.forEach(n => {
+    if (n.healthHistory) {
+      n.healthHistory.shift();
+      const variance = n.status === 'green' ? 0.05 : n.status === 'amber' ? 0.15 : 0.3;
+      const newHealth = Math.max(0, Math.min(1, n.healthScore + (Math.random() - 0.5) * variance));
+      n.healthHistory.push(newHealth);
+      n.healthScore = n.healthHistory.reduce((s,v) => s+v, 0) / n.healthHistory.length;
+    }
+    // Activity updates (Tier 1 #5)
+    if (n.activity) {
+      n.activity.shift();
+      n.activity.push(Math.max(0, Math.round(n.avgActivity * (0.8 + Math.random() * 0.4))));
+      n.avgActivity = n.activity.reduce((s,v) => s+v, 0) / n.activity.length;
+    }
+  });
+}
+
+// Deploy event simulation (Tier 1 #8)
+function simulateDeployEvents() {
+  // Random deploy shockwave every 30-60s
+  const interval = 30000 + Math.random() * 30000;
+  setTimeout(() => {
+    const candidates = nodes.filter(n => n.status === 'green' && (n.environment === 'vps' || n.environment === 'cloud'));
+    if (candidates.length > 0) {
+      const target = candidates[Math.floor(Math.random() * candidates.length)];
+      triggerShockwave(target.id);
+      showToast('Deploy: ' + target.label, 'success');
+    }
+    simulateDeployEvents();
+  }, interval);
+}
+
+// Auto-discovery simulation (Tier 1 #3)
+function checkForNewNodes() {
+  // In a real implementation, this would fetch('/system-map.json')
+  // For now, it's a stub that could be wired to live data
+  try {
+    fetch('/system-map.json').then(r => r.json()).then(data => {
+      // Merge new nodes
+      if (data && data.nodes) {
+        data.nodes.forEach(newNode => {
+          if (!nodeMap[newNode.id]) {
+            showToast('Discovered: ' + newNode.label);
+          }
+        });
+      }
+    }).catch(() => {}); // Silently fail if no endpoint
+  } catch(e) {}
+}
+
+// ================================================================
+// URL STATE (Tier 6 #56)
+// ================================================================
+
+function loadUrlState() {
+  if (location.hash.length > 1) {
+    try {
+      const state = JSON.parse(atob(location.hash.slice(1)));
+      if (state.z) zoom = state.z;
+      if (state.x) panX = state.x;
+      if (state.y) panY = state.y;
+      if (state.f) activeFilter = state.f;
+      if (state.s) setTimeout(() => selectNode(state.s), 500);
+    } catch(e) {}
+  }
+}
+
+// ================================================================
+// ANIMATION LOOP
+// ================================================================
+
+function frame(timestamp) {
+  time = timestamp;
+
+  // FPS
+  frameCount++;
+  if (timestamp - lastFpsTime > 500) {
+    fps = Math.round(frameCount * 1000 / (timestamp - lastFpsTime));
+    frameCount = 0;
+    lastFpsTime = timestamp;
+  }
+
+  // Physics (skip if reduced motion and stable)
+  if (!reducedMotion || physicsTemp > 0.05) {
+    physicsStep();
+  }
+
+  // Momentum pan
+  if (!isPanning && !draggedNode && !followNode) {
+    panX += panVelX;
+    panY += panVelY;
+    panVelX *= 0.92;
+    panVelY *= 0.92;
+    if (Math.abs(panVelX) < 0.1) panVelX = 0;
+    if (Math.abs(panVelY) < 0.1) panVelY = 0;
+  }
+
+  // Intro fade
+  if (introAlpha > 0) {
+    introAlpha -= 0.02;
+    if (introAlpha < 0) introAlpha = 0;
+  }
+
+  // Render
+  render();
+  renderMinimap();
+
+  // Update overlay stats
+  document.getElementById('ovl-zoom').textContent = Math.round(zoom * 100);
+  document.getElementById('ovl-fps').textContent = fps;
+
+  requestAnimationFrame(frame);
+}
+
+// ================================================================
+// INIT
+// ================================================================
+
+function init() {
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+  buildFilters();
+
+  // Big bang: start from center
+  nodes.forEach(n => {
+    n._origX = n.x;
+    n._origY = n.y;
+    n.x = 750 + (Math.random() - 0.5) * 80;
+    n.y = 350 + (Math.random() - 0.5) * 80;
+    n.vx = (Math.random() - 0.5) * 25;
+    n.vy = (Math.random() - 0.5) * 25;
+  });
+
+  physicsTemp = 2.5;
+  introAlpha = 0;
+
+  // Load URL state
+  loadUrlState();
+
+  // Center view
+  setTimeout(() => { resetView(); }, 100);
+
+  // Hide loading
+  setTimeout(() => { document.getElementById('loading').classList.add('hidden'); }, 800);
+
+  // Fade in intro overlay
+  introAlpha = 1;
+
+  // Start loop
+  requestAnimationFrame(frame);
+
+  // Update stats
+  document.getElementById('stat-nodes').textContent = nodes.length;
+  document.getElementById('stat-edges').textContent = edges.length;
+  updateEcosystemDisplay();
+
+  // Live data intervals (Tier 1)
+  setInterval(simulateHealthPulse, 30000); // #2 health pulse every 30s
+  setInterval(updateEcosystemDisplay, 10000); // #97 score update
+  setInterval(checkForNewNodes, 60000); // #3 auto-discovery
+  simulateDeployEvents(); // #8 deploy stream
+
+  // Reduced motion check (Tier 7 #64)
+  if (reducedMotion) {
+    bloomEnabled = false;
+    motionBlurEnabled = false;
+    showToast('Reduced motion mode active');
+  }
+}
+
+init();
+</script>
+</body>
+</html>
