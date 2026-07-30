@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "4.0.0",
+  "generatedAt": "2026-07-30T10:00:00.000Z",
+  "nodes": [
+    {
+      "id": "repo-infinite-brain-os",
+      "aliases": ["ib-os", "root-repo"],
+      "class": "repository",
+      "name": "infinite-brain-os",
+      "lifecycle": "active",
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-30T10:00:00.000Z",
+      "ownerId": "owner-build-bot",
+      "sensitivity": "internal",
+      "facts": {
+        "health": {
+          "value": {
+            "green": true
+          },
+          "evidence": {
+            "sourceId": "collector.git.local",
+            "observedAt": "2026-07-30T09:59:00.000Z",
+            "collectedAt": "2026-07-30T09:59:01.000Z",
+            "expiresAt": "2026-07-30T10:14:00.000Z",
+            "method": "git-status",
+            "confidence": "high",
+            "authority": "observed",
+            "collectorVersion": "1.0.0",
+            "environment": "ci",
+            "evidenceHandle": "ev-1"
+          }
+        }
+      }
+    },
+    {
+      "id": "service-dashboard",
+      "aliases": ["bm-dashboard"],
+      "class": "service",
+      "name": "Dashboard",
+      "lifecycle": "active",
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-30T10:00:00.000Z",
+      "ownerId": "owner-build-bot",
+      "sensitivity": "confidential",
+      "facts": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "source": "repo-infinite-brain-os",
+      "target": "service-dashboard",
+      "relation": "deploys-to",
+      "direction": "outbound",
+      "criticality": "high",
+      "confidence": "high",
+      "evidenceId": "ev-1",
+      "lifecycle": "active"
+    }
+  ],
+  "clusters": [
+    {
+      "id": "cluster-core",
+      "label": "Core",
+      "nodeIds": ["repo-infinite-brain-os", "service-dashboard"],
+      "summary": "Main project graph"
+    }
+  ],
+  "sources": [
+    {
+      "id": "collector.git.local",
+      "label": "Local git state",
+      "kind": "git",
+      "owner": "ops",
+      "authorityRank": 10,
+      "activeSince": "2026-07-01T00:00:00.000Z"
+    }
+  ],
+  "health": {},
+  "facts": {
+    "globalRisk": {
+      "value": "low",
+      "evidence": {
+        "sourceId": "collector.git.local",
+        "observedAt": "2026-07-30T09:58:00.000Z",
+        "collectedAt": "2026-07-30T09:58:00.000Z",
+        "expiresAt": "2026-07-30T10:08:00.000Z",
+        "method": "health-summary",
+        "confidence": "medium",
+        "authority": "derived",
+        "collectorVersion": "1.0.0",
+        "environment": "ci",
+        "evidenceHandle": "ev-2"
+      }
+    }
+  }
+}

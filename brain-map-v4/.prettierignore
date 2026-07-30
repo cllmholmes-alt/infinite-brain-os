@@ -1,0 +1,9 @@
+node_modules
+dist
+coverage
+playwright-report
+test-results
+brain-map-v4.html
+src/capabilities/plan.generated.ts
+*.png
+*.json

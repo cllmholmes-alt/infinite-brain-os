@@ -1,0 +1,35 @@
+{
+  "name": "brain-map-v4",
+  "version": "4.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint . --max-warnings 0",
+    "format:check": "prettier --check .",
+    "build": "node scripts/build.mjs",
+    "collect": "node scripts/collect-ecosystem.mjs",
+    "test:e2e": "playwright test",
+    "generate:plan": "node scripts/generate-plan-ledger.mjs",
+    "validate:plan": "node scripts/validate-plan-coverage.mjs",
+    "security": "node scripts/security-validation.mjs",
+    "benchmark": "node scripts/perf-benchmark.mjs",
+    "offline": "node scripts/offline-validation.mjs",
+    "verify:v3": "node scripts/verify-v3-rollback.mjs",
+    "certify": "node scripts/certify.mjs"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.10.2",
+    "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.54.1",
+    "@types/node": "^22.15.30",
+    "esbuild": "^0.25.5",
+    "eslint": "^10.8.0",
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.65.0",
+    "vitest": "^3.2.3"
+  }
+}

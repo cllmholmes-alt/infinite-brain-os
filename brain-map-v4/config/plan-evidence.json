@@ -1,0 +1,702 @@
+[
+  {
+    "id": 1,
+    "testId": "plan-001",
+    "testFile": "tests/plan/truth-001-010.test.ts",
+    "source": "src/identity/registry.ts",
+    "symbol": "export class IdentityRegistry"
+  },
+  {
+    "id": 2,
+    "testId": "plan-002",
+    "testFile": "tests/plan/truth-001-010.test.ts",
+    "source": "src/evidence/truth.ts",
+    "symbol": "export function evidenceHash"
+  },
+  {
+    "id": 3,
+    "testId": "plan-003",
+    "testFile": "tests/plan/truth-001-010.test.ts",
+    "source": "src/evidence/truth.ts",
+    "symbol": "export function deriveTruthState"
+  },
+  {
+    "id": 4,
+    "testId": "plan-004",
+    "testFile": "tests/plan/truth-001-010.test.ts",
+    "source": "src/domain/truth.ts",
+    "symbol": "export function resolveAuthoritativeFact"
+  },
+  {
+    "id": 5,
+    "testId": "plan-005",
+    "testFile": "tests/plan/truth-001-010.test.ts",
+    "source": "src/domain/truth.ts",
+    "symbol": "export function buildConflictAwareState"
+  },
+  {
+    "id": 6,
+    "testId": "plan-006",
+    "testFile": "tests/plan/truth-001-010.test.ts",
+    "source": "src/domain/truth.ts",
+    "symbol": "export function combineTruthStates"
+  },
+  {
+    "id": 7,
+    "testId": "plan-007",
+    "testFile": "tests/plan/truth-001-010.test.ts",
+    "source": "src/events/ledger.ts",
+    "symbol": "export class EventLedger"
+  },
+  {
+    "id": 8,
+    "testId": "plan-008",
+    "testFile": "tests/plan/truth-001-010.test.ts",
+    "source": "src/events/temporal.ts",
+    "symbol": "export class SnapshotStore"
+  },
+  {
+    "id": 9,
+    "testId": "plan-009",
+    "testFile": "tests/plan/truth-001-010.test.ts",
+    "source": "src/schema/migrations.ts",
+    "symbol": "export function importGraphDocument"
+  },
+  {
+    "id": 10,
+    "testId": "plan-010",
+    "testFile": "tests/plan/truth-001-010.test.ts",
+    "source": "src/schema/migrations.ts",
+    "symbol": "export const COMPATIBILITY_MANIFEST"
+  },
+  {
+    "id": 11,
+    "testId": "plan-011",
+    "testFile": "tests/plan/adapters-011-020.test.ts",
+    "source": "src/adapters/telemetry.ts",
+    "symbol": "export function buildCollectionHealth"
+  },
+  {
+    "id": 12,
+    "testId": "plan-012",
+    "testFile": "tests/plan/adapters-011-020.test.ts",
+    "source": "src/adapters/telemetry.ts",
+    "symbol": "export function evaluateCollectionSlo"
+  },
+  {
+    "id": 13,
+    "testId": "plan-013",
+    "testFile": "tests/plan/adapters-011-020.test.ts",
+    "source": "src/adapters/telemetry.ts",
+    "symbol": "export function detectConfigurationDrift"
+  },
+  {
+    "id": 14,
+    "testId": "plan-014",
+    "testFile": "tests/plan/adapters-011-020.test.ts",
+    "source": "src/adapters/telemetry.ts",
+    "symbol": "export function buildGitCiState"
+  },
+  {
+    "id": 15,
+    "testId": "plan-015",
+    "testFile": "tests/plan/adapters-011-020.test.ts",
+    "source": "src/adapters/telemetry.ts",
+    "symbol": "export function evaluateRuntimeServiceHealth"
+  },
+  {
+    "id": 16,
+    "testId": "plan-016",
+    "testFile": "tests/plan/adapters-011-020.test.ts",
+    "source": "src/adapters/telemetry.ts",
+    "symbol": "export function detectDependencyDrift"
+  },
+  {
+    "id": 17,
+    "testId": "plan-017",
+    "testFile": "tests/plan/adapters-011-020.test.ts",
+    "source": "src/adapters/telemetry.ts",
+    "symbol": "export function buildWorkflowExecutionGraph"
+  },
+  {
+    "id": 18,
+    "testId": "plan-018",
+    "testFile": "tests/plan/adapters-011-020.test.ts",
+    "source": "src/adapters/telemetry.ts",
+    "symbol": "export function collectSupportedExternalStatus"
+  },
+  {
+    "id": 19,
+    "testId": "plan-019",
+    "testFile": "tests/plan/adapters-011-020.test.ts",
+    "source": "src/adapters/telemetry.ts",
+    "symbol": "export function unsupportedProviderState"
+  },
+  {
+    "id": 20,
+    "testId": "plan-020",
+    "testFile": "tests/plan/adapters-011-020.test.ts",
+    "source": "src/adapters/telemetry.ts",
+    "symbol": "export function correlateOperationalSignals"
+  },
+  {
+    "id": 21,
+    "testId": "plan-021",
+    "testFile": "tests/plan/temporal-021-030.test.ts",
+    "source": "src/events/temporal.ts",
+    "symbol": "export class ObservationLog"
+  },
+  {
+    "id": 22,
+    "testId": "plan-022",
+    "testFile": "tests/plan/temporal-021-030.test.ts",
+    "source": "src/events/temporal.ts",
+    "symbol": "export function validateLifecycleTransition"
+  },
+  {
+    "id": 23,
+    "testId": "plan-023",
+    "testFile": "tests/plan/temporal-021-030.test.ts",
+    "source": "src/events/temporal.ts",
+    "symbol": "capture(graph"
+  },
+  {
+    "id": 24,
+    "testId": "plan-024",
+    "testFile": "tests/plan/temporal-021-030.test.ts",
+    "source": "src/events/temporal.ts",
+    "symbol": "at(timestamp"
+  },
+  {
+    "id": 25,
+    "testId": "plan-025",
+    "testFile": "tests/plan/temporal-021-030.test.ts",
+    "source": "src/events/diff.ts",
+    "symbol": "export function diffSnapshots"
+  },
+  {
+    "id": 26,
+    "testId": "plan-026",
+    "testFile": "tests/plan/temporal-021-030.test.ts",
+    "source": "src/events/temporal.ts",
+    "symbol": "export function buildIncidentPlayback"
+  },
+  {
+    "id": 27,
+    "testId": "plan-027",
+    "testFile": "tests/plan/temporal-021-030.test.ts",
+    "source": "src/events/temporal.ts",
+    "symbol": "export class DeterministicCommandExecutor"
+  },
+  {
+    "id": 28,
+    "testId": "plan-028",
+    "testFile": "tests/plan/temporal-021-030.test.ts",
+    "source": "src/events/temporal.ts",
+    "symbol": "export function allocateCollectionBudget"
+  },
+  {
+    "id": 29,
+    "testId": "plan-029",
+    "testFile": "tests/plan/temporal-021-030.test.ts",
+    "source": "src/events/temporal.ts",
+    "symbol": "export function chooseDegradationMode"
+  },
+  {
+    "id": 30,
+    "testId": "plan-030",
+    "testFile": "tests/plan/temporal-021-030.test.ts",
+    "source": "src/events/temporal.ts",
+    "symbol": "export class CollectorTrace"
+  },
+  {
+    "id": 31,
+    "testId": "plan-031",
+    "testFile": "tests/plan/analytics-031-040.test.ts",
+    "source": "src/analytics/decision-intelligence.ts",
+    "symbol": "export function buildOutcomeGraph"
+  },
+  {
+    "id": 32,
+    "testId": "plan-032",
+    "testFile": "tests/plan/analytics-031-040.test.ts",
+    "source": "src/analytics/algorithms.ts",
+    "symbol": "export function probabilisticBlastRadius"
+  },
+  {
+    "id": 33,
+    "testId": "plan-033",
+    "testFile": "tests/plan/analytics-031-040.test.ts",
+    "source": "src/analytics/decision-intelligence.ts",
+    "symbol": "export function clusterCorrelatedRisk"
+  },
+  {
+    "id": 34,
+    "testId": "plan-034",
+    "testFile": "tests/plan/analytics-031-040.test.ts",
+    "source": "src/analytics/decision-intelligence.ts",
+    "symbol": "export function analyzeCriticalPath"
+  },
+  {
+    "id": 35,
+    "testId": "plan-035",
+    "testFile": "tests/plan/analytics-031-040.test.ts",
+    "source": "src/analytics/decision-intelligence.ts",
+    "symbol": "export function scoreOperationalBottlenecks"
+  },
+  {
+    "id": 36,
+    "testId": "plan-036",
+    "testFile": "tests/plan/analytics-031-040.test.ts",
+    "source": "src/analytics/decision-intelligence.ts",
+    "symbol": "export function computeFlowMetrics"
+  },
+  {
+    "id": 37,
+    "testId": "plan-037",
+    "testFile": "tests/plan/analytics-031-040.test.ts",
+    "source": "src/analytics/decision-intelligence.ts",
+    "symbol": "export function simulateScenario"
+  },
+  {
+    "id": 38,
+    "testId": "plan-038",
+    "testFile": "tests/plan/analytics-031-040.test.ts",
+    "source": "src/analytics/decision-intelligence.ts",
+    "symbol": "export function backtestForecasts"
+  },
+  {
+    "id": 39,
+    "testId": "plan-039",
+    "testFile": "tests/plan/analytics-031-040.test.ts",
+    "source": "src/analytics/scenarios.ts",
+    "symbol": "export function paretoRank"
+  },
+  {
+    "id": 40,
+    "testId": "plan-040",
+    "testFile": "tests/plan/analytics-031-040.test.ts",
+    "source": "src/analytics/decision-intelligence.ts",
+    "symbol": "export function rankDecisionRecommendations"
+  },
+  {
+    "id": 41,
+    "testId": "plan-041",
+    "testFile": "tests/plan/visualization-041-050.test.ts",
+    "source": "src/visualization/view-model.ts",
+    "symbol": "export function buildSemanticViewModel"
+  },
+  {
+    "id": 42,
+    "testId": "plan-042",
+    "testFile": "tests/plan/visualization-041-050.test.ts",
+    "source": "src/visualization/view-model.ts",
+    "symbol": "visibleFactKeys"
+  },
+  {
+    "id": 43,
+    "testId": "plan-043",
+    "testFile": "tests/plan/visualization-041-050.test.ts",
+    "source": "src/layout/seed.ts",
+    "symbol": "export function layoutNodes"
+  },
+  {
+    "id": 44,
+    "testId": "plan-044",
+    "testFile": "tests/plan/visualization-041-050.test.ts",
+    "source": "src/visualization/view-model.ts",
+    "symbol": "export function computeConvexHull"
+  },
+  {
+    "id": 45,
+    "testId": "plan-045",
+    "testFile": "tests/plan/visualization-041-050.test.ts",
+    "source": "src/visualization/view-model.ts",
+    "symbol": "export function buildFocusTunnel"
+  },
+  {
+    "id": 46,
+    "testId": "plan-046",
+    "testFile": "tests/plan/visualization-041-050.test.ts",
+    "source": "src/visualization/view-model.ts",
+    "symbol": "export function buildPathBreadcrumb"
+  },
+  {
+    "id": 47,
+    "testId": "plan-047",
+    "testFile": "tests/plan/visualization-041-050.test.ts",
+    "source": "src/visualization/view-model.ts",
+    "symbol": "export function applyGraphLenses"
+  },
+  {
+    "id": 48,
+    "testId": "plan-048",
+    "testFile": "tests/plan/visualization-041-050.test.ts",
+    "source": "src/visualization/view-model.ts",
+    "symbol": "export function evidenceVisualEncoding"
+  },
+  {
+    "id": 49,
+    "testId": "plan-049",
+    "testFile": "tests/plan/visualization-041-050.test.ts",
+    "source": "src/visualization/view-model.ts",
+    "symbol": "export class PinStore"
+  },
+  {
+    "id": 50,
+    "testId": "plan-050",
+    "testFile": "tests/plan/visualization-041-050.test.ts",
+    "source": "src/visualization/view-model.ts",
+    "symbol": "export function motionPreset"
+  },
+  {
+    "id": 51,
+    "testId": "plan-051",
+    "testFile": "tests/plan/actions-051-060.test.ts",
+    "source": "src/actions/governance.ts",
+    "symbol": "export class ActionRegistry"
+  },
+  {
+    "id": 52,
+    "testId": "plan-052",
+    "testFile": "tests/plan/actions-051-060.test.ts",
+    "source": "src/actions/governance.ts",
+    "symbol": "export function createDryRunPreview"
+  },
+  {
+    "id": 53,
+    "testId": "plan-053",
+    "testFile": "tests/plan/actions-051-060.test.ts",
+    "source": "src/actions/governance.ts",
+    "symbol": "export function buildApprovalPack"
+  },
+  {
+    "id": 54,
+    "testId": "plan-054",
+    "testFile": "tests/plan/actions-051-060.test.ts",
+    "source": "src/actions/governance.ts",
+    "symbol": "export function mapActionToRunbook"
+  },
+  {
+    "id": 55,
+    "testId": "plan-055",
+    "testFile": "tests/plan/actions-051-060.test.ts",
+    "source": "src/actions/governance.ts",
+    "symbol": "export async function runCanaryChecks"
+  },
+  {
+    "id": 56,
+    "testId": "plan-056",
+    "testFile": "tests/plan/actions-051-060.test.ts",
+    "source": "src/actions/governance.ts",
+    "symbol": "export async function executeRollback"
+  },
+  {
+    "id": 57,
+    "testId": "plan-057",
+    "testFile": "tests/plan/actions-051-060.test.ts",
+    "source": "src/actions/governance.ts",
+    "symbol": "export async function dispatchGovernedAction"
+  },
+  {
+    "id": 58,
+    "testId": "plan-058",
+    "testFile": "tests/plan/actions-051-060.test.ts",
+    "source": "src/actions/governance.ts",
+    "symbol": "export class IncidentWorkspace"
+  },
+  {
+    "id": 59,
+    "testId": "plan-059",
+    "testFile": "tests/plan/actions-051-060.test.ts",
+    "source": "src/actions/governance.ts",
+    "symbol": "export function buildPostmortem"
+  },
+  {
+    "id": 60,
+    "testId": "plan-060",
+    "testFile": "tests/plan/actions-051-060.test.ts",
+    "source": "src/actions/governance.ts",
+    "symbol": "export function createEscalation"
+  },
+  {
+    "id": 61,
+    "testId": "plan-061",
+    "testFile": "tests/plan/product-061-070.test.ts",
+    "source": "src/product/operations.ts",
+    "symbol": "export function buildLivingDocumentationGraph"
+  },
+  {
+    "id": 62,
+    "testId": "plan-062",
+    "testFile": "tests/plan/product-061-070.test.ts",
+    "source": "src/product/operations.ts",
+    "symbol": "export function detectDocumentationDrift"
+  },
+  {
+    "id": 63,
+    "testId": "plan-063",
+    "testFile": "tests/plan/product-061-070.test.ts",
+    "source": "src/product/operations.ts",
+    "symbol": "export function buildStewardshipMap"
+  },
+  {
+    "id": 64,
+    "testId": "plan-064",
+    "testFile": "tests/plan/product-061-070.test.ts",
+    "source": "src/product/operations.ts",
+    "symbol": "export class DecisionLedger"
+  },
+  {
+    "id": 65,
+    "testId": "plan-065",
+    "testFile": "tests/plan/product-061-070.test.ts",
+    "source": "src/product/operations.ts",
+    "symbol": "export function buildRiskRegister"
+  },
+  {
+    "id": 66,
+    "testId": "plan-066",
+    "testFile": "tests/plan/product-061-070.test.ts",
+    "source": "src/product/operations.ts",
+    "symbol": "export function buildComplianceFlow"
+  },
+  {
+    "id": 67,
+    "testId": "plan-067",
+    "testFile": "tests/plan/product-061-070.test.ts",
+    "source": "src/product/operations.ts",
+    "symbol": "export function buildDependencyView"
+  },
+  {
+    "id": 68,
+    "testId": "plan-068",
+    "testFile": "tests/plan/product-061-070.test.ts",
+    "source": "src/product/operations.ts",
+    "symbol": "export function evaluateGoalProgress"
+  },
+  {
+    "id": 69,
+    "testId": "plan-069",
+    "testFile": "tests/plan/product-061-070.test.ts",
+    "source": "src/product/operations.ts",
+    "symbol": "export function findTechnicalDebtHotspots"
+  },
+  {
+    "id": 70,
+    "testId": "plan-070",
+    "testFile": "tests/plan/product-061-070.test.ts",
+    "source": "src/product/operations.ts",
+    "symbol": "export function evaluateLaunchReadiness"
+  },
+  {
+    "id": 71,
+    "testId": "plan-071",
+    "testFile": "tests/plan/product-071-080.test.ts",
+    "source": "src/product/collaboration.ts",
+    "symbol": "export class SavedViewStore"
+  },
+  {
+    "id": 72,
+    "testId": "plan-072",
+    "testFile": "tests/plan/product-071-080.test.ts",
+    "source": "src/product/collaboration.ts",
+    "symbol": "export class AnnotationThreadStore"
+  },
+  {
+    "id": 73,
+    "testId": "plan-073",
+    "testFile": "tests/plan/product-071-080.test.ts",
+    "source": "src/product/collaboration.ts",
+    "symbol": "export function buildDecisionCockpit"
+  },
+  {
+    "id": 74,
+    "testId": "plan-074",
+    "testFile": "tests/plan/product-071-080.test.ts",
+    "source": "src/product/collaboration.ts",
+    "symbol": "export function buildExecutiveBriefing"
+  },
+  {
+    "id": 75,
+    "testId": "plan-075",
+    "testFile": "tests/plan/product-071-080.test.ts",
+    "source": "src/product/collaboration.ts",
+    "symbol": "export function buildOperationsInbox"
+  },
+  {
+    "id": 76,
+    "testId": "plan-076",
+    "testFile": "tests/plan/product-071-080.test.ts",
+    "source": "src/product/collaboration.ts",
+    "symbol": "export class WatchlistStore"
+  },
+  {
+    "id": 77,
+    "testId": "plan-077",
+    "testFile": "tests/plan/product-071-080.test.ts",
+    "source": "src/product/collaboration.ts",
+    "symbol": "export function createEmbedPayload"
+  },
+  {
+    "id": 78,
+    "testId": "plan-078",
+    "testFile": "tests/plan/product-071-080.test.ts",
+    "source": "src/product/collaboration.ts",
+    "symbol": "export function exportExecutiveReport"
+  },
+  {
+    "id": 79,
+    "testId": "plan-079",
+    "testFile": "tests/plan/product-071-080.test.ts",
+    "source": "src/product/collaboration.ts",
+    "symbol": "export function queryGraph"
+  },
+  {
+    "id": 80,
+    "testId": "plan-080",
+    "testFile": "tests/plan/product-071-080.test.ts",
+    "source": "src/product/collaboration.ts",
+    "symbol": "export function buildNarrativeWalkthrough"
+  },
+  {
+    "id": 81,
+    "testId": "plan-081",
+    "testFile": "tests/plan/mirror-081-090.test.ts",
+    "source": "src/shared/graph-contract.ts",
+    "symbol": "export function toSharedGraphNode"
+  },
+  {
+    "id": 82,
+    "testId": "plan-082",
+    "testFile": "tests/plan/mirror-081-090.test.ts",
+    "source": "src/shared/graph-contract.ts",
+    "symbol": "export class DomainBoundaryStore"
+  },
+  {
+    "id": 83,
+    "testId": "plan-083",
+    "testFile": "tests/plan/mirror-081-090.test.ts",
+    "source": "src/shared/graph-contract.ts",
+    "symbol": "export function buildSharedRelationship"
+  },
+  {
+    "id": 84,
+    "testId": "plan-084",
+    "testFile": "tests/plan/mirror-081-090.test.ts",
+    "source": "src/shared/graph-contract.ts",
+    "symbol": "export function qualitativeConfidenceLabel"
+  },
+  {
+    "id": 85,
+    "testId": "plan-085",
+    "testFile": "tests/plan/mirror-081-090.test.ts",
+    "source": "src/shared/graph-contract.ts",
+    "symbol": "export function validateConstitutionalWording"
+  },
+  {
+    "id": 86,
+    "testId": "plan-086",
+    "testFile": "tests/plan/mirror-081-090.test.ts",
+    "source": "src/shared/graph-contract.ts",
+    "symbol": "export function applyConsentLens"
+  },
+  {
+    "id": 87,
+    "testId": "plan-087",
+    "testFile": "tests/plan/mirror-081-090.test.ts",
+    "source": "src/shared/graph-contract.ts",
+    "symbol": "export class MirrorLocalStore"
+  },
+  {
+    "id": 88,
+    "testId": "plan-088",
+    "testFile": "tests/plan/mirror-081-090.test.ts",
+    "source": "src/shared/graph-contract.ts",
+    "symbol": "export function buildCalmInteractionProfile"
+  },
+  {
+    "id": 89,
+    "testId": "plan-089",
+    "testFile": "tests/plan/mirror-081-090.test.ts",
+    "source": "src/shared/graph-contract.ts",
+    "symbol": "export function applyUserCorrection"
+  },
+  {
+    "id": 90,
+    "testId": "plan-090",
+    "testFile": "tests/plan/mirror-081-090.test.ts",
+    "source": "src/shared/graph-contract.ts",
+    "symbol": "export class ReciprocalLearningLedger"
+  },
+  {
+    "id": 91,
+    "testId": "plan-091",
+    "testFile": "tests/plan/platform-091-100.test.ts",
+    "source": "src/platform/release.ts",
+    "symbol": "export function createModuleReleaseManifest"
+  },
+  {
+    "id": 92,
+    "testId": "plan-092",
+    "testFile": "tests/plan/platform-091-100.test.ts",
+    "source": "src/platform/release.ts",
+    "symbol": "export class RendererRegistry"
+  },
+  {
+    "id": 93,
+    "testId": "plan-093",
+    "testFile": "tests/plan/platform-091-100.test.ts",
+    "source": "src/workers/graph-worker.ts",
+    "symbol": "export function acceptBoundWorkerResult"
+  },
+  {
+    "id": 94,
+    "testId": "plan-094",
+    "testFile": "tests/plan/platform-091-100.test.ts",
+    "source": "src/adapters/plugins.ts",
+    "symbol": "export class AdapterPluginRegistry"
+  },
+  {
+    "id": 95,
+    "testId": "plan-095",
+    "testFile": "tests/plan/platform-091-100.test.ts",
+    "source": "src/offline/snapshot-cache.ts",
+    "symbol": "export class OfflineSnapshotCache"
+  },
+  {
+    "id": 96,
+    "testId": "plan-096",
+    "testFile": "tests/plan/platform-091-100.test.ts",
+    "source": "src/platform/scheduler.ts",
+    "symbol": "export class GraphWorkScheduler"
+  },
+  {
+    "id": 97,
+    "testId": "plan-097",
+    "testFile": "tests/plan/platform-091-100.test.ts",
+    "source": "src/accessibility/model.ts",
+    "symbol": "export function buildAccessibleGraphModel"
+  },
+  {
+    "id": 98,
+    "testId": "plan-098",
+    "testFile": "tests/plan/platform-091-100.test.ts",
+    "source": "src/accessibility/cognitive-load.ts",
+    "symbol": "export class CognitiveLoadController"
+  },
+  {
+    "id": 99,
+    "testId": "plan-099",
+    "testFile": "tests/plan/platform-091-100.test.ts",
+    "source": "src/security/threat-model.ts",
+    "symbol": "export function evaluateThreatModel"
+  },
+  {
+    "id": 100,
+    "testId": "plan-100",
+    "testFile": "tests/plan/platform-091-100.test.ts",
+    "source": "src/certification/evidence.ts",
+    "symbol": "export function evaluateReleaseEvidence"
+  }
+]

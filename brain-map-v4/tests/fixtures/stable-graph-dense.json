@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "4.0.0",
+  "generatedAt": "2026-07-30T10:00:00.000Z",
+  "nodes": [
+    {"id":"n1","aliases":["a1"],"class":"service","name":"Service A","lifecycle":"active","createdAt":"2026-07-01T00:00:00.000Z","updatedAt":"2026-07-30T10:00:00.000Z","ownerId":"ops","sensitivity":"public","facts":{}},
+    {"id":"n2","aliases":["a2"],"class":"service","name":"Service B","lifecycle":"active","createdAt":"2026-07-01T00:00:00.000Z","updatedAt":"2026-07-30T10:00:00.000Z","ownerId":"ops","sensitivity":"internal","facts":{}},
+    {"id":"n3","aliases":["a3"],"class":"service","name":"Service C","lifecycle":"active","createdAt":"2026-07-01T00:00:00.000Z","updatedAt":"2026-07-30T10:00:00.000Z","ownerId":"ops","sensitivity":"internal","facts":{}},
+    {"id":"n4","aliases":["a4"],"class":"service","name":"Service D","lifecycle":"active","createdAt":"2026-07-01T00:00:00.000Z","updatedAt":"2026-07-30T10:00:00.000Z","ownerId":"ops","sensitivity":"internal","facts":{}},
+    {"id":"n5","aliases":["a5"],"class":"service","name":"Service E","lifecycle":"active","createdAt":"2026-07-01T00:00:00.000Z","updatedAt":"2026-07-30T10:00:00.000Z","ownerId":"ops","sensitivity":"internal","facts":{}}
+  ],
+  "edges":[
+    {"id":"e1","source":"n1","target":"n2","relation":"calls","direction":"outbound","criticality":"high","confidence":"high","evidenceId":"ev-1","lifecycle":"active"},
+    {"id":"e2","source":"n2","target":"n3","relation":"calls","direction":"outbound","criticality":"medium","confidence":"medium","evidenceId":"ev-1","lifecycle":"active"},
+    {"id":"e3","source":"n3","target":"n4","relation":"calls","direction":"outbound","criticality":"high","confidence":"high","evidenceId":"ev-1","lifecycle":"active"},
+    {"id":"e4","source":"n4","target":"n5","relation":"calls","direction":"outbound","criticality":"critical","confidence":"high","evidenceId":"ev-1","lifecycle":"active"},
+    {"id":"e5","source":"n5","target":"n1","relation":"imports","direction":"outbound","criticality":"low","confidence":"medium","evidenceId":"ev-1","lifecycle":"active"}
+  ],
+  "clusters":[
+    {"id":"dense-cluster","label":"Dense","nodeIds":["n1","n2","n3","n4","n5"],"summary":"Dense service circle"}
+  ],
+  "sources":[{"id":"collector.system.local","label":"System","kind":"runtime","owner":"ops","authorityRank":8,"activeSince":"2026-07-01T00:00:00.000Z"}],
+  "health":{},
+  "facts":{}
+}

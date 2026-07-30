@@ -1,0 +1,18 @@
+[
+  {
+    "id": "evt-1",
+    "type": "graph-edit",
+    "timestamp": "2026-07-30T08:00:00.000Z",
+    "actorId": "agent-alpha",
+    "targetId": "n1",
+    "data": {"action": "upsert-node", "node": {"id":"n6","aliases":[],"class":"service","name":"Service F","lifecycle":"active","createdAt":"2026-07-30T08:00:00.000Z","updatedAt":"2026-07-30T08:00:00.000Z","ownerId":"ops","sensitivity":"internal","facts":{}}}
+  },
+  {
+    "id": "evt-2",
+    "type": "graph-edit",
+    "timestamp": "2026-07-30T09:00:00.000Z",
+    "actorId": "agent-beta",
+    "targetId": "n1",
+    "data": {"action": "upsert-edge", "edge": {"id":"e6","source":"n6","target":"n1","relation":"calls","direction":"outbound","criticality":"medium","confidence":"high","evidenceId":"ev-1","lifecycle":"active"}}
+  }
+]
